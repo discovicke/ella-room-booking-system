@@ -99,7 +99,8 @@ SQL
 
 ### Auth
 
-?
+**Stateful Sessions** (Reference Tokens) stored in SQLite.
+*(Simplified for learning: Server checks DB for token on every request)*
 
 ## MVP
 * Ingen återkommande bokning i MVP

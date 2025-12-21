@@ -10,6 +10,8 @@ sequenceDiagram
     participant Repo as 📚 Repository (The Librarian)
     participant DB as 💽 Database (SQLite)
 
+    Note right of Middleware: ⚠️ MVP Exception: The Bouncer checks the Database directly<br/>to validate the Wristband (skipping the Librarian).
+
     Note over User, Frontend: Phase 1: The Order
     User->>Frontend: Clicks "Book Room"
     Frontend->>Frontend: Checks localStorage<br/>(Finds "Wristband" Token: wkPv...73s)

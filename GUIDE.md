@@ -12,11 +12,8 @@
 - **`repositories/`** 📚 Librarian
   Runs all SQL queries. Talks to the database only.
 
-- **`services/`** 🧠 Manager
-  Handles complex business logic and decisions. Optional.
-
 - **`controllers/`** 🤵 Waiter
-  Handles requests and responses. Calls repositories or services.
+  Handles requests and responses. Calls repositories.
 
 - **`middleware/`** 🛡️ The Bouncer
   Code that runs _before_ the controller to check if you are allowed in.
@@ -118,19 +115,6 @@ This folder holds small, useful tools that are used across the application but a
 
 These are pure functions: Data in -> Data out.
 
-### `src/services/` 🧠
-
-**Analogy:** The Manager
-
-Services hold business logic and decision making. They exist to keep controllers simple.
-
-Use this layer when a feature involves multiple steps or rules, such as validating bookings or checking credentials.
-
-Example:
-`auth.service.js` verifies passwords and handles authentication logic.
-
-For very simple features, you can skip this layer.
-
 ### `src/controllers/` 🤵
 
 **Analogy:** The Waiter
@@ -216,3 +200,19 @@ When a user clicks **Show Rooms**:
 7. The browser renders the result as HTML
 
 That is the full loop from click to content.
+
+## ⚠️ Important Notes for the Team
+
+### 1. The "Date" Trap 📅
+SQLite does not have a native "Date" type; it saves dates as plain text.
+To ensure sorting works (so Monday comes before Tuesday), **ALWAYS** use the ISO 8601 format:
+
+- ✅ **Correct:** `YYYY-MM-DD HH:MM:SS` (e.g., "2025-01-06 14:30:00")
+- ❌ **Incorrect:** `2025-1-6 2:30pm` (This will break sorting!)
+
+### 2. "Are we RESTful?" (The Wristband Logic) 🎟️
+Strict REST APIs are "Stateless" (the server forgets you after every request).
+However, to make this project easier to learn and debug, we use **Stateful Sessions**.
+
+- **How it works:** We give the user a "Wristband" (Token). The server looks up this token in the Database (`sessions` table) to see who they are.
+- **Why?** This makes "Logging Out" easy (we just delete the wristband from the DB) and avoids complex cryptography (JWTs) for now.
