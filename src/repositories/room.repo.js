@@ -39,6 +39,44 @@ export const getRoomsByLocation = (location) => {
     return db.prepare("SELECT * FROM rooms WHERE location = ?").all(location);
 };
 
+export const createRoom = (roomData) => {
+    const stmt = db.prepare(`
+        INSERT INTO rooms (room_number, type, capacity, location)
+        VALUES (?, ?, ?, ?)
+    `);
+
+    return stmt.run(
+        roomData.room_number,
+        roomData.type,
+        roomData.capacity,
+        roomData.location
+    );
+};
+
+export const updateRoom = (roomId, roomData) => {
+    const stmt = db.prepare(`
+        UPDATE rooms
+        SET room_number = ?,
+            type = ?,
+            capacity = ?,
+            location = ?
+        WHERE id = ?
+    `);
+
+    return stmt.run(
+        roomData.room_number,
+        roomData.type,
+        roomData.capacity,
+        roomData.location,
+        roomId
+    );
+};
+
+export const deleteRoom = (roomId) => {
+    const stmt = db.prepare("DELETE FROM rooms WHERE id = ?");
+    return stmt.run(roomId);
+};
+
 
 /**
  ===================
