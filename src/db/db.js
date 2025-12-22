@@ -33,9 +33,4 @@ if (!fs.existsSync(dbPath)) {
 }
 
 // 3. Initialize connection
-const db = new DatabaseSync(dbPath);
-
-const query = db.prepare("SELECT * FROM users");
-const users = query.all();
-
-console.log(users);
+export const db = new DatabaseSync(dbPath);

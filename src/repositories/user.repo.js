@@ -9,3 +9,9 @@
  * - Imports: 'src/db/query.js'
  * - Imported by: 'src/controllers/auth.controller.js'
  */
+import db from "../db/db.js";
+
+const query = db.prepare("SELECT * FROM users");
+const users = query.all();
+
+console.log(users);
