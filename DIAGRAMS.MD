@@ -10,18 +10,18 @@ sequenceDiagram
     participant Repo as 📚 Repository (The Librarian)
     participant DB as 💽 Database (SQLite)
 
-    Note right of Middleware: ⚠️ MVP Exception: The Bouncer checks the Database directly<br/>to validate the Wristband (skipping the Librarian).
+    Note right of Middleware: 🛡️ Basic Auth: The Bouncer decodes the Authorization header<br/>and verifies credentials against the Users table on every request.
 
     Note over User, Frontend: Phase 1: The Order
     User->>Frontend: Clicks "Book Room"
-    Frontend->>Frontend: Checks localStorage<br/>(Finds "Wristband" Token: wkPv...73s)
-    Frontend->>Middleware: POST /api/bookings Headers: { Authorization: "wkPv...73s" }
+    Frontend->>Frontend: Retrieves Base64 credentials<br/>(Finds "Basic Auth" string in localStorage)
+    Frontend->>Middleware: POST /api/bookings Headers: { Authorization: "Basic YW5kcmU..." }
 
     Note over Middleware, Controller: Phase 2: Security Check
-    Middleware->>DB: SELECT * FROM sessions WHERE token = "wkPv...73s"
-    alt No Wristband / Invalid?
+    Middleware->>DB: SELECT * FROM users WHERE email = "..."
+    alt Invalid Credentials?
         Middleware-->>Frontend: 401 Unauthorized ⛔
-    else Valid Wristband
+    else Valid Credentials
         Middleware->>Controller: next() (User ID attached) ✅
     end
 
@@ -44,7 +44,7 @@ graph TD
     subgraph Client ["🍽️ Dining Room (Frontend)"]
         User((👤 User))
         Browser["🖥️ Browser / public/"]
-        LS[("Wristband / localStorage")]
+        LS[("Credentials / localStorage")]
     end
 
     subgraph Server ["The Kitchen (Backend)"]
@@ -63,12 +63,12 @@ graph TD
 
     %% Connections
     User -- Clicks Button --> Browser
-    Browser -- 1. Reads --> LS
-    Browser -- 2. Sends HTTP Request --> App
+    Browser -- 1. Reads Credentials --> LS
+    Browser -- 2. Sends HTTP Request with Basic Auth --> App
 
     App --> Route
     Route --> MW
-    MW -- Checks Token --> DB
+    MW -- Verifies Email/Password --> DB
     MW -- If Valid --> Ctrl
 
     Ctrl -- Asks for Data --> Repo
