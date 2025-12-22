@@ -24,10 +24,10 @@ const dbPath = path.resolve(__dirname, "../../identifier.sqlite");
 
 // 2. DEBUG: Verify the file exists physically on the disk
 if (!fs.existsSync(dbPath)) {
-  console.error("❌ CRITICAL ERROR: Database file not found!");
-  console.error(`📍 Expected location: ${dbPath}`);
+  console.error("CRITICAL ERROR: Database file not found!");
+  console.error(`Expected location: ${dbPath}`);
   console.log(
-    "💡 Tip: Check if the filename is exactly 'identifier.sqlite' and not 'identifier.sqlite.sqlite'"
+    "Tip: Check if the filename is exactly 'identifier.sqlite' and not 'identifier.sqlite.sqlite'"
   );
   process.exit(1);
 }
