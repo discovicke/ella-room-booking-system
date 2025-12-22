@@ -11,3 +11,181 @@
   * RELATION:
   * - Loaded by both index.html and login.html.
 */
+
+/* --- LOG IN --- */
+body {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Layout: två kolumner --- */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+/* --- Vänster sida --- */
+.form-side {
+  display: grid;
+  grid-template-rows: auto 1fr; /* header högst upp, resten centrerat */
+  padding: 40px;
+  background: #ffffff;
+}
+
+.small-logo {
+  width: 150px;
+  height: auto;
+}
+
+/* --- Inloggningsrutan centrerad --- */
+.form-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* centrerar vertikalt */
+  align-items: flex-start;    /* vänsterjusterat innehåll */
+  gap: 20px;
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;             /* centrerar horisontellt */
+  border: 1px solid #ccc;
+  padding: 24px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Rubriker */
+.form-content h2 {
+  font-size: 1.8rem;
+}
+
+.form-content p {
+  font-size: 1rem;
+}
+
+/* Formulär */
+.form-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-content form div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-content label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.form-content input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-content button {
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #9236ca;
+  color: white;
+  cursor: pointer;
+}
+
+.form-content button:hover {
+  background: #555;
+}
+
+/* --- Höger sida --- */
+.art-side {
+  
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+.art-side img {
+  max-width: 80%;
+  height: auto;
+}
+
+/* --- INDEX --- */
+
+/* Hela layouten: två kolumner */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr; /* vänstermeny + innehåll */
+  height: calc(100vh - 200px); /* 200px = din headerhöjd */
+}
+
+/* --- SIDOMENY --- */
+.sidebar {
+  background: white;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+    height: 100vh;
+
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  padding: 10px 12px;
+  border-radius: 6px;
+  display: block;
+}
+
+.sidebar a:hover {
+  background: #b3b3b3;
+}
+
+/* --- MAIN-FÖNSTER --- */
+.main-content {
+  padding: 40px;
+  overflow-y: auto; /* om innehållet blir långt */
+}
+/* Header högst upp */
+.top-header {
+  width: 100%;
+  display: flex;
+  justify-content:left; /* placerar loggan till höger */
+  align-items: center;
+
+  background: white;
+}
+
+/* Loggans storlek */
+.top-logo {
+  height: 200px; /* justera efter smak */
+  width: auto;
+}
+
+.sidebar nav ul {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar nav ul li:last-child {
+  margin-top: auto;
+}
+
+
+
