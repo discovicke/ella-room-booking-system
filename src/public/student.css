@@ -1,0 +1,73 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+/* --- HEADER --- */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid #9b9b9b;
+  padding: 10px;
+}
+
+.top-logo {
+  height: auto;
+  width: 150px;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.logout-btn {
+  background: #9236cb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #6a6a6a;
+}
+
+/* --- DASHBOARD --- */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+  height: calc(100vh - 120px); /* minus headerhöjd */
+  box-sizing: border-box;
+  background: #f0e7f6;
+
+}
+
+/* Vänsterpanel */
+.left-panel {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* Högerpanel */
+.right-panel {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}

@@ -13,18 +13,13 @@
 
 import { db } from "../db/db.js";
 
-const query = db.prepare("SELECT * FROM bookings");
-const users = query.all();
-
-console.log(users);
-
 /**
  * Finds all bookings made by the user with the given ID.
  * @param {number} userId The ID of the user.
  * @returns {object} An object containing the booking data.
  */
-export const getBookingsByUser = (userId) => {
-  return db.prepare("SELECT * FROM bookings WHERE userId = ?").get(userId);
+export const getAllBookingsByUser = (userId) => {
+  return db.prepare("SELECT * FROM bookings WHERE userId = ?").all(userId);
 };
 
 /**
@@ -32,8 +27,8 @@ export const getBookingsByUser = (userId) => {
  * @param {number} roomId The ID of the room.
  * @returns {object} An object containing the booking data.
  */
-export const getBookingsByRoom = (roomId) => {
-  return db.prepare("SELECT * FROM bookings WHERE roomId = ?").get(roomId);
+export const getAllBookingsByRoom = (roomId) => {
+  return db.prepare("SELECT * FROM bookings WHERE roomId = ?").all(roomId);
 };
 
 /**
