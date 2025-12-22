@@ -3,9 +3,6 @@
  * PURPOSE: The main "Rulebook" for the Express application.
  */
 
-// ==========================
-// 1. IMPORTS
-// ==========================
 import express from "express";
 import bookingsRouter from "./routes/booking.routes.js";
 import roomsRouter from "./routes/room.routes.js";
@@ -14,14 +11,11 @@ import userRouter from "./routes/user.routes.js";
 
 const app = express();
 
-// ==========================
-// 2. CORE MIDDLEWARE
-// ==========================
 // Allows the app to understand JSON data sent in requests
 app.use(express.json());
 
 // ==========================
-// 3. FRONTEND SERVING
+// FRONTEND SERVING
 // ==========================
 
 // A. Specific Page Routes (Clean URLs)
@@ -49,8 +43,8 @@ app.get("/", (req, res) => {
 app.use(express.static("src/public"));
 
 // ==========================
-// 4. API ROUTES
-// ==========================
+
+// API ROUTES
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/rooms", roomsRouter);
