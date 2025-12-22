@@ -97,6 +97,3 @@ export const changeBookingStatusById = (id, status) => {
 export const deleteBookingById = (id) => {
   return db.prepare("DELETE FROM bookings WHERE id = ?").run(id);
 };
-
-console.log(getAllBookingsByUser(1));
-console.log(getBookingById(3));
