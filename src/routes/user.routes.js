@@ -1,13 +1,12 @@
-
 import express from "express";
 
 const userRouter = express.Router();
 
-authRouter.get("/", (req, res) => {
+userRouter.get("/", (req, res) => {
   res.send("Get all users");
 });
 
-authRouter.post("/", (req, res) => {
+userRouter.post("/", (req, res) => {
   res.send("Create a new user");
 });
 
