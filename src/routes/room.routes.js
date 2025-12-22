@@ -10,12 +10,11 @@
  */
 
 import express from "express";
+import { listRooms } from "../controllers/rooms.controller.js";
 
 const roomsRouter = express.Router();
 
-roomsRouter.get("/", (req, res) => {
-  res.send("Get all rooms");
-});
+roomsRouter.get("/", listRooms);
 
 roomsRouter.post("/", (req, res) => {
   res.send("Create a new room");
