@@ -1,15 +1,7 @@
 /**
  * 📚 BOOKING REPOSITORY
- * * PURPOSE:
- * Handles access to the "bookings" table.
- * * SCOPE:
- * - Create: createBooking
- * - Read: getBookingById, getAllBookingsByUser, getAllBookingsByRoom, getAllBookingsByDate
- * - Update: changeBookingStatusById
- * - Delete: deleteBookingById
- * * RELATION:
- * - Imports: '../db/db.js'
- * - Imported by: 'src/controllers/bookings.controller.js'
+ * * PURPOSE: Handles access to the "bookings" table.
+ * * SCOPE: Create, Read, Update, Delete
  */
 
 import { db } from "../db/db.js";
@@ -27,12 +19,16 @@ export const createBooking = (bookingData) => {
     bookingData.user_id,
     bookingData.start_time,
     bookingData.end_time,
-    bookingData.status ?? "active",
-    bookingData.notes ?? null
+    bookingData.status,
+    bookingData.notes // Cleaned by controller, safe to insert
   );
 };
 
 // --- READ ---
+
+export const getAllBookings = () => {
+  return db.prepare("SELECT * FROM bookings").all();
+};
 
 export const getBookingById = (bookingId) => {
   return db.prepare("SELECT * FROM bookings WHERE id = ?").get(bookingId);
@@ -46,10 +42,12 @@ export const getAllBookingsByRoom = (roomId) => {
   return db.prepare("SELECT * FROM bookings WHERE room_id = ?").all(roomId);
 };
 
-export const getAllBookingsByDate = (start_time, end_time) => {
+export const getAllBookingsByDate = (searchStart, searchEnd) => {
+  // Finds ANY overlap.
+  // Logic: Booking starts before search ends AND Booking ends after search starts.
   return db
-    .prepare("SELECT * FROM bookings WHERE start_time >= ? AND end_time <= ?")
-    .all(start_time, end_time);
+    .prepare("SELECT * FROM bookings WHERE start_time < ? AND end_time > ?")
+    .all(searchEnd, searchStart);
 };
 
 // --- UPDATE ---

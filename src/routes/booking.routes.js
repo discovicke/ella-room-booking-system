@@ -1,21 +1,16 @@
 /**
  * 📜 BOOKING ROUTES
- * * PURPOSE:
- * Maps URL paths to Controller functions for Bookings.
- * * SCOPE:
- * - POST /  ->  bookingController.createBooking
- * - GET /user/:id  ->  bookingController.getUserBookings
- * * RELATION:
- * - Imports: 'src/controllers/bookings.controller.js'
- * - Imported by: 'src/app.js'
+ * * PURPOSE: Maps URL paths to Controller functions.
  */
 
 import express from "express";
+import * as bookingController from "../controllers/booking.controller.js";
 
 const bookingsRouter = express.Router();
 
-bookingsRouter.post("/", (req, res) => {
-  res.send("Create a new booking");
-});
+// Route directs traffic to the Controller
+bookingsRouter.post("/", bookingController.createBooking);
+
+bookingsRouter.get("/", bookingController.listBookings);
 
 export default bookingsRouter;
