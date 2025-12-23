@@ -29,14 +29,5 @@ export function findUserByEmail(email) {
   return user;
 }
 
-const argId = process.argv[2];
-if (argId) {
-    const user =getUserById(Number(argId));
-    console.log(JSON.stringify(user, null, 2));
-}else {
-        console.log(JSON.stringify(getAllUsers(), null, 2));
-}
 
-console.log(findUserByEmail(""));
-
-
+console.log(getAllUsers());
