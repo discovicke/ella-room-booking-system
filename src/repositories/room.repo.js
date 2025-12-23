@@ -41,16 +41,19 @@ export const getRoomsByLocation = (location) => {
 
 export const createRoom = (roomData) => {
     const stmt = db.prepare(`
-        INSERT INTO rooms (room_number, type, capacity, location)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO rooms (room_number, type, capacity, location, floor_number)
+        VALUES (?, ?, ?, ?, ?)
     `);
 
-    return stmt.run(
+    const info = stmt.run(
         roomData.room_number,
         roomData.type,
         roomData.capacity,
-        roomData.location
+        roomData.location,
+        roomData.floor_number
     );
+
+    return getRoomById(info.lastInsertRowid);
 };
 
 export const updateRoom = (roomId, roomData) => {
@@ -59,7 +62,8 @@ export const updateRoom = (roomId, roomData) => {
         SET room_number = ?,
             type = ?,
             capacity = ?,
-            location = ?
+            location = ?,
+            floor_number = ?
         WHERE id = ?
     `);
 
@@ -68,6 +72,7 @@ export const updateRoom = (roomId, roomData) => {
         roomData.type,
         roomData.capacity,
         roomData.location,
+        roomData.floor_number,
         roomId
     );
 };
@@ -85,11 +90,15 @@ export const deleteRoom = (roomId) => {
  **/
 
 export const getAssetsByRoomId = (roomId) => {
-    return db.prepare("SELECT * FROM room_assets WHERE room_id = ?").all(roomId);
+    const assets = db.prepare("SELECT * FROM room_assets WHERE room_id = ?").all(roomId);
+    return assets.map(a => ({ ...a }));
 };
 
 export const getAssetById = (assetId) => {
-    return db.prepare("SELECT * FROM room_assets WHERE id = ?").get(assetId);
+    const row = db.prepare("SELECT * FROM room_assets WHERE id = ?").get(assetId);
+    return row
+        ? { ...row }
+        : row;
 };
 
 export const createRoomAsset = (assetData) => {
@@ -98,7 +107,8 @@ export const createRoomAsset = (assetData) => {
         VALUES (?, ?)
     `);
 
-    return stmt.run(assetData.room_id, assetData.asset);
+    const info = stmt.run(assetData.room_id, assetData.asset);
+    return getAssetById(info.lastInsertRowid);
 };
 
 export const updateRoomAsset = (assetId, assetData) => {
@@ -109,7 +119,8 @@ export const updateRoomAsset = (assetId, assetData) => {
         WHERE id = ?
     `);
 
-    return stmt.run(assetData.room_id, assetData.asset, assetId);
+    stmt.run(assetData.room_id, assetData.asset, assetId);
+    return getAssetById(assetId);
 };
 
 export const deleteRoomAsset = (assetId) => {
