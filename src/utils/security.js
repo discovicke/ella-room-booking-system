@@ -69,6 +69,7 @@ export const verifyPassword = async (inputPassword, storedHash) => {
 
     return crypto.timingSafeEqual(storedHashBuffer, derivedKey);
   } catch (error) {
+    console.error("Error verifying password:", error);
     return false;
   }
 };
