@@ -116,3 +116,28 @@ export const deleteRoom = (req, res) => {
     return res.sendStatus(500);
   }
 };
+
+export const createRoomAsset = (req, res) => {
+  try {
+    const roomId = Number(req.params.id);
+    if (!Number.isInteger(roomId) || roomId <= 0) {
+      return res.sendStatus(400);
+    }
+
+    const { asset } = req.body || {};
+    if (!asset) {
+      return res.sendStatus(400);
+    }
+
+    const room = roomRepo.getRoomById(roomId);
+    if (!room) return res.sendStatus(404);
+
+    roomRepo.createRoomAsset({ room_id: roomId, asset });
+
+    return res.sendStatus(201);
+  } catch (err) {
+    console.error("Error creating room asset:", err);
+    return res.sendStatus(500);
+  }
+};
+
