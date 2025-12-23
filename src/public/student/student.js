@@ -11,10 +11,9 @@ function renderStudentRooms(rooms) {
   const container = document.getElementById("student-room-list");
   container.innerHTML = rooms.map(r => `
     <div class="room-card">
-      <h3>${r.room_number}</h3>
+      <h3>Nr ${r.room_number} - ${r.location}</h3>
     <p>Typ: ${r.type}</p>
-    <p>Kapacitet: ${r.capacity}</p>
-    <p>Plats: ${r.location}</p>
+    <p>Antal platser: ${r.capacity}</p>
     <button>Boka</button>
   </div>
   `).join('');
