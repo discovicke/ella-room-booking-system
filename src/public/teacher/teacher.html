@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="teacher.css" />
-  <title>ella | Edugrade Location & Logistics Assistant</title>
+  <title>ella | Teacher</title>
 </head>
+
 <body>
 
   <!-- Header med logga och logga ut-knapp -->
   <header class="top-header">
     <img class="top-logo" src="../assets/ELLA header.png" alt="Logo small" />
     <div class="user-actions">
-      <span class="user-label">"Inloggning + användartyp"</span>
+      <div class="user-box">
+        <span class="user-icon">👤</span>
+        <span class="user-label" id="username">discovicke</span>
+        <span class="user-role teacher" id="user-role">Teacher</span>
+      </div>
       <button class="logout-btn">Logga ut</button>
-    </div>
-  </header>
 
-<!-- MOCKUP -->
+
+  </header>
 
   <div class="teacher-layout">
 
-  <!-- Vänsterkolumn: Mina bokningar -->
-  <section class="left-panel">
-    <h2>Mina bokningar</h2>
-    <div class="booking-card">
-      <h3>"Inser booking here"</h3>
-      <p>"Event: Department Meeting"</p>
-      <p>"Datum: 2025-12-20"</p>
-      <p>"Tid: 10:00 (3 timmar)"</p>
-      <p>"Deltagare: 8"</p>
-      <button class="cancel-btn">Avboka</button>
-    </div>
-  </section>
-
-  <!-- Högerkolumn: Snabbinfo + tillgängliga rum -->
-  <section class="right-panel">
-
-    <div class="quick-info">
-      <div class="stats-box">
-        <h3>Snabbinfo</h3>
-        <p>Aktiva bokningar: <strong>1</strong></p>
-        <p>Lediga rum: <strong>5</strong></p>
+    <!-- Vänsterkolumn: Mina bokningar -->
+    <section class="left-panel">
+      <div class="booking-header">
+        <h2>Mina bokningar</h2>
+        <p>Kommande bokningar</p>
       </div>
-
-      <div class="benefits-box">
-        <h3>Förmåner för lärare</h3>
-        <ul>
-          <li>Förlängd bokningstid</li>
-          <li>Prioriterad tillgång till rum</li>
-          <li>Åtkomst till lärarrum</li>
-        </ul>
+      <div class="booking-scroll">
+        <div class="booking-card">
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="room-list">
-      <h2>Tillgängliga rum</h2>
-      <div id="student-room-list"></div>
-      
-      <div class="room-card occupied">
-        <h3>"Upptaget rum 1"</h3>
-        <p>"Kapacitet: 8 personer"</p>
-        <p>"Utrustning: Whiteboard, TV-skärm"</p>
-        <button disabled>Upptaget</button>
+    <!-- Mittenkolumn: Tillgängliga rum -->
+    <section class="right-panel">
+      <div class="room-header">
+        <h2>Tillgängliga rum</h2>
+        <p>Bläddra och boka studierum</p>
       </div>
-    </div>
+      <div class="room-scroll" id="student-room-list">
 
-  </section>
-</div>
-<script type="module" src="./teacher.js"></script>
+      </div>
+    </section>
+
+    <!-- Högerkolumn: Snabbinfo + förmåner -->
+    <section class="info-panel">
+      <div class="quick-info">
+        <div class="stats-box">
+          <h3>Snabbinfo</h3>
+          <p>Aktiva bokningar: <strong id="active-bookings">0</strong></p>
+          <p>Lediga rum: <strong id="available-rooms">0</strong>/<strong id="total-rooms">0</strong></p>
+
+
+        </div>
+        <div class="benefits-box">
+          <h3>Förmåner för lärare</h3>
+          <ul>
+            <li>Förlängd bokningstid</li>
+            <li>Prioriterad tillgång till rum</li>
+            <li>Åtkomst till lärarrum</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="./teacher.js"></script>
 </body>
+
 </html>

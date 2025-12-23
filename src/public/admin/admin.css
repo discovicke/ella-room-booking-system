@@ -122,3 +122,16 @@ body {
   padding: 20px;
   overflow-y: auto;
 }
+
+.room-actions button:hover {
+  background: #d5d5d5;
+}
+
+.room-actions .danger:hover {
+  background: #b71c1c;
+}
+
+.add-room-btn:hover {
+  background: #1b5e20;
+}
+

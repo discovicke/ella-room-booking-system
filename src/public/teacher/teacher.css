@@ -1,166 +1,39 @@
-body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-}
-
-/* --- HEADER --- */
-.top-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  border-bottom: 1px solid #9b9b9b;
-  padding: 10px;
-}
-
-.top-logo {
-  height: auto;
-  width: 150px;
-}
-
-.user-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.user-label {
-  font-weight: 500;
-  color: #333;
-}
-
-.logout-btn {
-  background: #9236cb;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.logout-btn:hover {
-  background: #6a6a6a;
-}
-
-
-/* --- Övrigt --- */
+/* --- TEACHER LAYOUT (3 kolumner) --- */
 .teacher-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1.5fr 1fr;
   gap: 40px;
   padding: 40px;
   box-sizing: border-box;
 }
 
-/* Vänsterkolumn */
-.left-panel {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-}
-
-.room-card {
-    background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
-  margin-top: 16px;
-}
-
-.booking-card {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
-  margin-top: 16px;
-}
-
-.cancel-btn {
-  background: #c62828;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background: #b71c1c;
-}
-
-/* Högerkolumn */
-.right-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-/* Snabbinfo + förmåner */
+/* --- QUICK INFO & FÖRMÅNER (höger panel) --- */
 .quick-info {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .stats-box,
 .benefits-box {
-  flex: 1;
-  background: #f3f3f3;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
+  background: #f6f4fb;
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.stats-box h3,
+.benefits-box h3 {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.stats-box p,
+.benefits-box li {
+  margin: 2px 0;
 }
 
 .benefits-box ul {
-  padding-left: 20px;
+  padding-left: 16px;
   margin: 0;
-}
-
-/* Rumskort */
-.room-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.room-card {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
-}
-
-.room-card.available button {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.room-card.available button:hover {
-  background: #1b5e20;
-}
-
-.room-list button {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.room-list button:hover {
-  background: #1b5e20;
-}
-
-.room-card.occupied button {
-  background: #aaa;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: not-allowed;
 }

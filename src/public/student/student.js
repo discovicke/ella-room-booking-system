@@ -20,3 +20,17 @@ function renderStudentRooms(rooms) {
 }
 
 window.addEventListener("DOMContentLoaded", loadRooms);
+
+// Get user (utkast)
+/*
+fetch("/api/user")
+  .then(res => res.json())
+  .then(user => {
+    document.getElementById("username").textContent = user.username;
+    const roleEl = document.getElementById("user-role");
+    roleEl.textContent = capitalize(user.role);
+    roleEl.className = `user-role ${user.role}`;
+  });
+
+  */
+

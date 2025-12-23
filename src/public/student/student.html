@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="student.css" />
-  <title>ella | Edugrade Location & Logistics Assistant</title>
+  <title>ella | Student</title>
 </head>
 <body>
 
@@ -12,20 +13,36 @@
   <header class="top-header">
     <img class="top-logo" src="../assets/ELLA header.png" alt="Logo small" />
     <div class="user-actions">
-      <span class="user-label">"Inloggning + användartyp"</span>
-      <button class="logout-btn">Logga ut</button>
-    </div>
+  <div class="user-box">
+    <span class="user-icon">👤</span>
+  <span class="user-label" id="username">heatonlover</span>
+  <span class="user-role student" id="user-role">Student</span>
+  </div>
+  <button class="logout-btn">Logga ut</button>
+
+
   </header>
 
   <!-- Dashboard-layout -->
   <div class="dashboard-layout">
     <section class="left-panel">
-      <h2>Mina bokningar</h2>
-    </section>
-    <section class="right-panel">
-      <h2>Tillgängliga rum</h2>
-      <div id="student-room-list"></div>
-    </section>
+  <div class="booking-header">
+    <h2>Mina bokningar</h2>
+    <p>Kommande bokningar</p>
+  </div>
+  <div class="booking-scroll">
+    <!-- framtida bokningskort -->
+  </div>
+</section>
+
+<section class="right-panel">
+  <div class="room-header">
+    <h2>Tillgängliga rum</h2>
+    <p>Bläddra och boka studierum</p>
+  </div>
+  <div class="room-scroll" id="student-room-list"></div>
+</section>
+
   </div>
 <script type="module" src="./student.js"></script>
 

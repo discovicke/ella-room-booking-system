@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="admin.css" />
-  <title>ella | Edugrade Location & Logistics Assistant</title>
+  <title>ella | Admin</title>
 </head>
 <body>
 
   <!-- Header med logga och logga ut-knapp -->
   <header class="top-header">
     <img class="top-logo" src="../assets/ELLA header.png" alt="Logo small" />
-    <div class="user-actions">
-      <span class="user-label">"Inloggning + användartyp"</span>
-      <button class="logout-btn">Logga ut</button>
-    </div>
+<div class="user-actions">
+  <div class="user-box">
+    <span class="user-icon">👤</span>
+  <span class="user-label" id="username">scalar</span>
+  <span class="user-role admin" id="user-role">Admin</span>
+  </div>
+  <button class="logout-btn">Logga ut</button>
   </header>
 
   <!-- Adminlayout -->
