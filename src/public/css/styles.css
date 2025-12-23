@@ -180,3 +180,47 @@ body {
   color: #777;
 }
 
+/* --- MOBILANPASSNING (GLOBAL) --- */
+@media (max-width: 768px) {
+
+  /* Alla dashboards ska bli 1 kolumn */
+  .dashboard-layout,
+  .teacher-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* Paneler får lite mindre padding på mobil */
+  .left-panel,
+  .right-panel,
+  .info-panel {
+    padding: 16px;
+  }
+
+  /* Rumskort och bookingkort blir mer kompakta */
+  .room-card,
+  .booking-card {
+    padding: 14px;
+  }
+
+  /* Sticky headers får lite mindre padding */
+  .room-header,
+  .booking-header {
+    padding-bottom: 8px;
+  }
+
+  /* Quick-info rutorna i teacher ska också staplas */
+  .quick-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* För att undvika att scroll-yta blir för liten på mobil */
+  .room-scroll,
+  .booking-scroll {
+    max-height: none;
+    padding-right: 0;
+  }
+}
+
