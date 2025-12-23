@@ -19,7 +19,10 @@ import * as roomRepo from "../repositories/room.repo.js";
  */
 export const listRooms = (req, res) => {
   try {
-    const rooms = roomRepo.getAllRooms();
+    const includeAssets = req.query.includeAssets === 'true';
+    const rooms = includeAssets
+        ? roomRepo.getAllRoomsWithAssets()
+        : roomRepo.getAllRooms();
     return res.json(rooms);
   } catch (err) {
     console.error("Error fetching rooms:", err);

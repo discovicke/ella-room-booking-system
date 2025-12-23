@@ -85,11 +85,15 @@ export const deleteRoom = (roomId) => {
  **/
 
 export const getAssetsByRoomId = (roomId) => {
-    return db.prepare("SELECT * FROM room_assets WHERE room_id = ?").all(roomId);
+    const assets = db.prepare("SELECT * FROM room_assets WHERE room_id = ?").all(roomId);
+    return assets.map(a => ({ ...a }));
 };
 
 export const getAssetById = (assetId) => {
-    return db.prepare("SELECT * FROM room_assets WHERE id = ?").get(assetId);
+    const row = db.prepare("SELECT * FROM room_assets WHERE id = ?").get(assetId);
+    return row
+        ? { ...row }
+        : row;
 };
 
 export const createRoomAsset = (assetData) => {
