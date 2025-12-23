@@ -1,6 +1,8 @@
+/* --- GLOBALT --- */
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f8f9fc;
 }
 
 /* --- HEADER --- */
@@ -39,128 +41,177 @@ body {
 }
 
 .logout-btn:hover {
-  background: #6a6a6a;
+  background: #6f289b;
 }
 
-
-/* --- Övrigt --- */
+/* --- LAYOUT (3 kolumner) --- */
 .teacher-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1.5fr 1fr;
   gap: 40px;
   padding: 40px;
   box-sizing: border-box;
 }
 
-/* Vänsterkolumn */
-.left-panel {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+/* --- PANELER --- */
+.left-panel,
+.right-panel,
+.info-panel {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 24px 24px;
+  box-shadow: 0 2px 6px #0000000a;
 }
 
-.room-card {
-    background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
-  margin-top: 16px;
+/* Rubriker */
+.left-panel h2,
+.right-panel h2,
+.info-panel h3 {
+  font-size: 22px;
+  color: #5e35b1;
+  margin-bottom: 16px;
 }
 
+/* --- BOOKING CARD (vänster) --- */
 .booking-card {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
   padding: 16px;
-  margin-top: 16px;
+  margin-bottom: 20px;
+  background: #f6f4fb;
+}
+
+.booking-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+.booking-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
 }
 
 .cancel-btn {
   background: #c62828;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 10px 16px;
+  border-radius: 6px;
   cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s ease;
 }
 
 .cancel-btn:hover {
   background: #b71c1c;
 }
 
-/* Högerkolumn */
-.right-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-/* Snabbinfo + förmåner */
+/* --- QUICK INFO (höger panel) --- */
 .quick-info {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px; /* mindre spacing mellan boxarna */
 }
 
 .stats-box,
 .benefits-box {
-  flex: 1;
-  background: #f3f3f3;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 16px;
+  background: #f6f4fb;
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
+  padding: 10px 14px; /* mindre padding */
+}
+
+.stats-box h3,
+.benefits-box h3 {
+  margin-top: 0;
+  margin-bottom: 6px; /* mindre spacing */
+}
+
+.stats-box p,
+.benefits-box li {
+  margin: 2px 0; /* tightare text */
 }
 
 .benefits-box ul {
-  padding-left: 20px;
+  padding-left: 16px; /* mindre indent */
   margin: 0;
 }
 
-/* Rumskort */
-.room-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
+/* --- RUMSKORT (mitten) --- */
 .room-card {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
   padding: 16px;
+  margin-bottom: 20px;
+  background: #f6f4fb;
+  transition: box-shadow 0.2s ease;
 }
 
-.room-card.available button {
+.room-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.room-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+.room-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.room-card button {
   background: #2e7d32;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 10px 16px;
+  border-radius: 6px;
   cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s ease;
 }
 
-.room-card.available button:hover {
-  background: #1b5e20;
-}
-
-.room-list button {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.room-list button:hover {
+.room-card button:hover {
   background: #1b5e20;
 }
 
 .room-card.occupied button {
   background: #aaa;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
   cursor: not-allowed;
+}
+
+/* --- Scrollbara innehåll --- */
+.room-scroll,
+.booking-scroll {
+  max-height: calc(100vh - 240px);
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* --- Sticky rubriker --- */
+.room-header,
+.booking-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+  padding-bottom: 12px;
+}
+
+.room-header h2,
+.booking-header h2 {
+  margin-bottom: 4px;
+}
+
+.room-header p,
+.booking-header p {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #777;
 }
