@@ -18,8 +18,8 @@ import { db } from "../db/db.js";
 
 export const createBooking = (bookingData) => {
   const stmt = db.prepare(`
-    INSERT INTO bookings (room_id, user_id, start_time, end_time, status)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO bookings (room_id, user_id, start_time, end_time, status, notes)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
 
   return stmt.run(
@@ -27,7 +27,8 @@ export const createBooking = (bookingData) => {
     bookingData.user_id,
     bookingData.start_time,
     bookingData.end_time,
-    bookingData.status || "active"
+    bookingData.status ?? "active",
+    bookingData.notes ?? null
   );
 };
 
@@ -45,10 +46,10 @@ export const getAllBookingsByRoom = (roomId) => {
   return db.prepare("SELECT * FROM bookings WHERE room_id = ?").all(roomId);
 };
 
-export const getAllBookingsByDate = (start, end) => {
+export const getAllBookingsByDate = (start_time, end_time) => {
   return db
     .prepare("SELECT * FROM bookings WHERE start_time >= ? AND end_time <= ?")
-    .all(start, end);
+    .all(start_time, end_time);
 };
 
 // --- UPDATE ---
