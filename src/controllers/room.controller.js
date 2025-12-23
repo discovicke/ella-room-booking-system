@@ -44,6 +44,28 @@ export const createRoom = (req, res) => {
   }
 };
 
+export const getRoom = (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.sendStatus(400);
+    }
+
+    const includeAssets = req.query.includeAssets === 'true';
+    const room = includeAssets
+        ? roomRepo.getRoomWithAssets(id)
+        : roomRepo.getRoomById(id);
+
+    if (!room) return res.sendStatus(404);
+
+    return res.status(200).json(room);
+  } catch (err) {
+    console.error("Error fetching room:", err);
+    return res.sendStatus(500);
+  }
+};
+
+
 export const updateRoom = (req, res) => {
   try {
     const id = Number(req.params.id);

@@ -18,7 +18,7 @@ roomsRouter.get("/", roomController.listRooms);
 roomsRouter.post("/", roomController.createRoom);
 
 // Room-specific
-//roomsRouter.get("/:id", roomController.getRoom);
+roomsRouter.get("/:id", roomController.getRoom);
 roomsRouter.put("/:id", roomController.updateRoom);
 //roomsRouter.delete("/:id", roomController.deleteRoom);
 //
