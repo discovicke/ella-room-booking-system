@@ -23,9 +23,22 @@ export const listRooms = (req, res) => {
     const rooms = includeAssets
         ? roomRepo.getAllRoomsWithAssets()
         : roomRepo.getAllRooms();
-    return res.json(rooms);
+    return res.status(200).json(rooms);
   } catch (err) {
     console.error("Error fetching rooms:", err);
-    return res.status(500).json({ error: "Could not fetch rooms" });
+    return res.status(500)
+  }
+};
+
+export const createRoom = (req, res) => {
+  try {
+    const { room_number, type, capacity, location, floor_number } = req.body || {};
+    if (!room_number || !type) {
+      return res.status(400)
+    }
+    return res.status(201)
+  } catch (err) {
+    console.error('Error creating room:', err);
+    return res.status(500)
   }
 };

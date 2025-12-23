@@ -16,8 +16,6 @@ const roomsRouter = express.Router();
 
 roomsRouter.get("/", roomController.listRooms);
 
-roomsRouter.post("/", (req, res) => {
-  res.send("Create a new room");
-});
+roomsRouter.post("/", roomController.createRoom);
 
 export default roomsRouter;

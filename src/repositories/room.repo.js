@@ -41,16 +41,19 @@ export const getRoomsByLocation = (location) => {
 
 export const createRoom = (roomData) => {
     const stmt = db.prepare(`
-        INSERT INTO rooms (room_number, type, capacity, location)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO rooms (room_number, type, capacity, location, floor_number)
+        VALUES (?, ?, ?, ?, ?)
     `);
 
-    return stmt.run(
+    const info = stmt.run(
         roomData.room_number,
         roomData.type,
         roomData.capacity,
-        roomData.location
+        roomData.location,
+        roomData.floor_number
     );
+
+    return getRoomById(info.lastInsertRowid);
 };
 
 export const updateRoom = (roomId, roomData) => {
