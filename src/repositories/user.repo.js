@@ -9,7 +9,7 @@
  * - Imports: 'src/db/query.js'
  * - Imported by: 'src/controllers/auth.controller.js'
  */
-import db from "../db/db.js";
+import {db} from "../db/db.js";
 
 export function getAllUsers() {
   const query = `SELECT * FROM users`;
