@@ -1,12 +1,18 @@
 /* Purpose: Functions to hash passwords (using crypto.scrypt) and helpers to decode Basic Authentication headers. */
 
+import crypto from "crypto";
+import { promisify } from "util";
+
+const scrypt = promisify(crypto.scrypt);
+
 /**
- * 🔐 SECURITY UTILS (SIMPLE VERSION, MIGHT ADD HASHING, SALTING AND PEPPERING LATER IF TIME ALLOWS)
- * * CURRENT PURPOSE:
- * Handle Basic Auth decoding.
+ * 🔐 SECURITY UTILS
+ * * PURPOSE:
+ * Handle password hashing with scrypt and Basic Auth decoding.
  * * SCOPE:
+ * - hashPassword(password) -> Returns hashed password with salt
+ * - verifyPassword(inputPassword, storedHash) -> Returns true/false
  * - decodeBasicAuth(header) -> Returns { email, password }
- * - verifyPassword(inputPassword, storedPassword) -> Returns true/false
  */
 
 /**
@@ -34,11 +40,35 @@ export const decodeBasicAuth = (authHeader) => {
 };
 
 /**
- * Verifies if the input password matches the stored password.
- * @param {string} inputPassword - The password the user provided.
- * @param {string} storedPassword - The password stored in the database.
- * @returns {boolean} True if the input password matches the stored password, false otherwise.
+ * Hashes a password using scrypt with a random salt.
+ * @param {string} password - The plain text password to hash.
+ * @returns {Promise<string>} The hashed password in format "salt:hash" (both base64 encoded).
  */
-export const verifyPassword = (inputPassword, storedPassword) => {
-  return inputPassword === storedPassword;
+export const hashPassword = async (password) => {
+  const salt = crypto.randomBytes(16);
+  const derivedKey = await scrypt(password, salt, 64);
+  return `${salt.toString("base64")}:${derivedKey.toString("base64")}`;
+};
+
+/**
+ * Verifies if the input password matches the stored hashed password.
+ * Uses timing-safe comparison to prevent timing attacks.
+ * @param {string} inputPassword - The password the user provided.
+ * @param {string} storedHash - The hashed password stored in the database (format: "salt:hash").
+ * @returns {Promise<boolean>} True if the input password matches the stored hash, false otherwise.
+ */
+export const verifyPassword = async (inputPassword, storedHash) => {
+  try {
+    const [saltBase64, hashBase64] = storedHash.split(":");
+    if (!saltBase64 || !hashBase64) return false;
+
+    const salt = Buffer.from(saltBase64, "base64");
+    const storedHashBuffer = Buffer.from(hashBase64, "base64");
+
+    const derivedKey = await scrypt(inputPassword, salt, 64);
+
+    return crypto.timingSafeEqual(storedHashBuffer, derivedKey);
+  } catch (error) {
+    return false;
+  }
 };
