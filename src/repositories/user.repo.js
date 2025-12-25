@@ -34,12 +34,12 @@ export function findUserByClass(classId) {
   const users = db.prepare(query).all(classId);
   return users;
 }
-export function findeUserByRole(role) {
+export function findUserByRole(role) {
   const query = `SELECT * FROM users WHERE role = ?`;
   const users = db.prepare(query).all(role);
   return users;
 }
-export function finderUserByName(name) {
+export function findUserByName(name) {
   const query = `SELECT * FROM users WHERE Display_name = ?`;
   const users = db.prepare(query).all(name);
   return users;
