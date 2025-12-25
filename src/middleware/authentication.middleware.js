@@ -15,7 +15,7 @@ import { getUserById } from "../repositories/user.repo.js";
  * 5. Block with 401 if any step fails
  */
 
-export const authMiddleware = (req, res, next) => {
+export const authenticationMiddleware = (req, res, next) => {
   try {
     // Extract Authorization header
     const authHeader = req.headers.authorization;
