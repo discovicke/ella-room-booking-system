@@ -38,9 +38,9 @@ export const db = new DatabaseSync(dbPath);
 // Enable Write-Ahead Logging (WAL) mode for better concurrency.
 // WAL allows multiple readers to access the database simultaneously while a writer is active,
 // improving performance for applications with concurrent read/write operations.
-db.pragma("journal_mode = WAL");
+db.exec("PRAGMA journal_mode = WAL;");
 
 // Enable foreign key constraints enforcement.
 // By default, SQLite does NOT enforce foreign key relationships even if they're defined in the schema.
 // This pragma ensures referential integrity is maintained (prevents orphaned records, enforces CASCADE rules).
-db.pragma("foreign_keys = ON");
+db.exec("PRAGMA foreign_keys = ON;");
