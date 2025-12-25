@@ -10,11 +10,14 @@
  */
 
 import express from "express";
-import { login } from "../controllers/auth.controller.js";
+import { login, logout } from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 
 // POST /api/auth/login - Validate user credentials
 authRouter.post("/login", login);
+
+// DELETE /api/auth/logout - Invalidate session token
+authRouter.delete("/logout", logout);
 
 export default authRouter;

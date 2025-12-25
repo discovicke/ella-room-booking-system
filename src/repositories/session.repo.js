@@ -10,7 +10,7 @@
  * - Function: cleanupExpiredSessions() -> DELETE expired sessions (automatic cleanup)
  * * RELATION:
  * - Imports: 'src/db/db.js'
- * - Imported by: 'src/controllers/auth.controller.js', 'src/middleware/auth.middleware.js', 'src/server.js'
+ * - Imported by: 'src/controllers/auth.controller.js', 'src/middleware/authentication.middleware.js', 'src/server.js'
  */
 
 import { db } from "../db/db.js";

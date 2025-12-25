@@ -16,7 +16,7 @@
 
 import { findUserByEmail } from "../repositories/user.repo.js";
 import { verifyPassword, generateToken } from "../utils/security.js";
-import { createSession } from "../repositories/session.repo.js";
+import { createSession, deleteSession } from "../repositories/session.repo.js";
 
 /**
  * Handles user login by verifying credentials and generating a session token.
@@ -64,6 +64,32 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+/**
+ * Handles user logout by invalidating the session token.
+ * @param {Object} req - Express request object with token in Authorization header.
+ * @param {Object} res - Express response object.
+ * @returns {Object} JSON response confirming logout.
+ */
+export const logout = (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(400).json({ error: "No token provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    // Delete session from database
+    deleteSession(token);
+
+    return res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
