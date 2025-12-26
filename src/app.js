@@ -9,6 +9,7 @@ import userRouter from "./routes/user.routes.js";
 import { cookieParser } from "./middleware/cookieParser.middleware.js";
 import { authenticate } from "./middleware/authentication.middleware.js";
 import { authorize } from "./middleware/authorization.middleware.js";
+import { ROLES } from "./constants/roles.js";
 
 const app = express();
 
@@ -37,19 +38,19 @@ app.get("/404", (req, res) => res.sendFile("404.html", { root: "src/public" }));
 app.use(
   "/student",
   authenticate,
-  authorize("student"),
+  authorize(ROLES.STUDENT),
   express.static("src/public/student", { index: "student.html" })
 );
 app.use(
   "/teacher",
   authenticate,
-  authorize("teacher"),
+  authorize(ROLES.TEACHER),
   express.static("src/public/teacher", { index: "teacher.html" })
 );
 app.use(
   "/admin",
   authenticate,
-  authorize("admin"),
+  authorize(ROLES.ADMIN),
   express.static("src/public/admin", { index: "admin.html" })
 );
 
