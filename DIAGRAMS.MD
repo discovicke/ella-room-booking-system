@@ -4,28 +4,30 @@
 sequenceDiagram
     autonumber
     participant User as 👤 User
-    participant Frontend as 🖥️ Frontend (public/js)
+    participant Frontend as 🖥️ Frontend (Browser)
     participant Auth as 🛡️ Authentication (The Bouncer)
     participant AuthZ as 🔐 Authorization (The Gatekeeper)
     participant Controller as 🤵 Controller (The Waiter)
     participant Repo as 📚 Repository (The Librarian)
     participant DB as 💽 Database (SQLite)
 
-    Note right of Auth: 🛡️ Bearer Token Auth: The Bouncer validates the token<br/>against the sessions table and attaches the user to the request.
-    Note right of AuthZ: 🔐 Role Check: Ensures the authenticated user has the right role.<br/>Returns 403 Forbidden on insufficient permissions.
+    Note right of Auth: 🛡️ Hybrid Auth: Checks HttpOnly Cookie first.<br/>Fallbacks to Authorization Header (for API testing).
 
     Note over User, Frontend: Phase 1: The Order
     User->>Frontend: Clicks "Book Room"
-    Frontend->>Frontend: Retrieves token from localStorage<br/>(Stored after successful login)
-    Frontend->>Auth: POST /api/bookings Headers: { Authorization: "Bearer abc123..." }
-    Frontend->>Auth: DELETE /api/auth/logout Headers: { Authorization: "Bearer abc123..." } // Added logout functionality
-    Note over User, Frontend: Phase 2: Logout
-    User->>Frontend: Clicks "Logout"
+    Frontend->>Auth: GET /api/bookings (Browser automatically sends Cookie)
 
     Note over Auth, Controller: Phase 2: Authentication
-    Auth->>DB: SELECT * FROM sessions WHERE token = "..." AND expires_at > NOW
-    alt Invalid or Expired Token?
-        Auth-->>Frontend: 401 Unauthorized ⛔
+    Auth->>Auth: 1. Check req.cookies.auth_token
+    Auth->>Auth: 2. Check Header (Fallback)
+    Auth->>DB: SELECT * FROM sessions WHERE token = "..."
+
+    alt Invalid/No Token?
+        alt Is API Request?
+            Auth-->>Frontend: 401 Unauthorized ⛔
+        else Is HTML Page Request?
+            Auth-->>Frontend: Redirect to /login ↩️
+        end
     else Valid Token
         Auth->>DB: SELECT * FROM users WHERE id = session.user_id
         Auth->>AuthZ: next() (User attached to req.user) ✅
@@ -48,6 +50,12 @@ sequenceDiagram
     Controller-->>Frontend: 201 Created (JSON)
     Frontend->>User: Alert("Booking Confirmed! 🎉")
     Frontend->>Frontend: Reloads Room List
+
+    Note over User, Frontend: Phase 6: Logout
+    User->>Frontend: Clicks "Logout"
+    Frontend->>Auth: DELETE /api/auth/logout
+    Auth->>DB: DELETE session
+    Auth-->>Frontend: 200 OK + Set-Cookie: auth_token=; Max-Age=0
 ```
 
 # The Architecture Diagram (Physical Structure)
@@ -57,16 +65,16 @@ graph TD
     subgraph Client ["🍽️ Dining Room (Frontend)"]
         User((👤 User))
         Browser["🖥️ Browser / public/"]
-        LS[("Token / localStorage")]
+        Cookie[("🍪 HttpOnly Cookie (Auth Token)")]
+        LS[("User Data / localStorage")]
     end
 
     subgraph Server ["The Kitchen (Backend)"]
-        App["⚙️ App.js / Server.js"]
+        App["⚙️ App.js"]
 
         subgraph Logic ["The Staff"]
-            MW["🛡️ Middleware"]
-            AuthB["Authentication (Bouncer)"]
-            Gate["Authorization (Gatekeeper)"]
+            CP["🍪 CookieParser"]
+            MW["🛡️ Middleware (Auth + AuthZ)"]
             Route["📜 Routes"]
             Ctrl["🤵 Controllers"]
             Repo["📚 Repositories"]
@@ -78,14 +86,13 @@ graph TD
 
     %% Connections
     User -- Clicks Button --> Browser
-    Browser -- 1. Reads Token --> LS
-    Browser -- 2. Sends HTTP Request with Bearer Token --> App
+    Browser -- 1. Auto-includes Cookie --> CP
+    CP -- Parses req.cookies --> App
 
     App --> Route
-    Route --> AuthB
-    AuthB -- Validates Token in Sessions Table --> DB
-    AuthB -- If Valid --> Gate
-    Gate -- If Role Allowed --> Ctrl
+    Route --> MW
+    MW -- Validates Session in DB --> DB
+    MW -- If Valid & Authorized --> Ctrl
 
     Ctrl -- Asks for Data --> Repo
     Repo -- SQL Query --> DB

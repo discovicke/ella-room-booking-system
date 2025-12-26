@@ -1,7 +1,3 @@
-This guide reflects the current Token-based Sessions + Role-based Authorization implementation, including logout functionality.
-
----
-
 # 🗺️ Project Map Cheat Sheet
 
 ## Backend (src/) — The Kitchen
@@ -12,12 +8,13 @@ Purpose: Server logic, data, rules.
 - repositories/ 📚 Librarian: All SQL lives here.
 - controllers/ 🤵 Waiter: Accepts requests, returns JSON.
 - middleware/ 🛡️ Security Staff:
-  - authentication.middleware.js: Verifies Bearer token, attaches req.user.
+  - cookieParser.middleware.js: Parses cookie headers into `req.cookies`.
+  - authentication.middleware.js: Hybrid strategy. Checks `auth_token` cookie first, then Bearer header.
   - authorization.middleware.js: Checks `req.user.role` against allowed roles.
 - constants/ 🔖 Shared Truths: roles.js with ROLES.
 - utils/ 🧰 Tool Belt: hashing, token generation, etc.
 - routes/ 📜 Menu: Maps URLs to controllers.
-- app.js 📘 Rulebook: Registers middleware and routes.
+- app.js 📘 Rulebook: Registers middleware, static asset protection, and routes.
 - server.js ▶️ Start Button: Boots the server.
 
 ## Frontend (public/) — The Dining Room
@@ -26,14 +23,13 @@ Purpose: Browser-facing pages and scripts.
 
 - HTML 🖼️ Structure per page (login, student, teacher, admin)
 - css/ 🎨 Styles
-- api/api.js 🌐 API layer: attaches Authorization header automatically
-- login/login.js 🔑 Handles login, stores token+user, role-based redirect
-- js/guard.js 🛡️ Client guard: requireRole(...roles) uses localStorage token+user.role and redirects to /login/
-- Clean URLs are served via Express: /login, /student, /teacher, /admin before the general static handler
+- api/api.js 🌐 API layer: Uses `credentials: "include"` to send cookies. Handles 401 redirects.
+- login/login.js 🔑 Handles login. Stores **User object** in localStorage, but **Token** is handled via Cookie.
+- Protected Routes: The server (`app.js`) protects `/student`, `/teacher`, and `/admin` HTML files directly.
 
 ## Data Flow
 
-Browser → Route → authentication.middleware → authorization.middleware → Controller → Repository → DB → Controller → Browser
+Browser (Cookie) → CookieParser → authentication.middleware → authorization.middleware → Controller → Repository → DB → Controller → Browser
 
 ---
 
@@ -43,40 +39,33 @@ Our codebase is split into two worlds: The Kitchen (Backend) and The Dining Room
 
 ## 📂 src/
 
-### db/ 🔌
-
-Opens the SQLite database and provides helpers.
-
-### repositories/ 📚
-
-Only SQL. No HTTP, no auth logic. Example: users, sessions, rooms, bookings.
-
 ### middleware/ 🛡️
 
-- authentication.middleware.js (the Bouncer):
-  - Reads Authorization: Bearer <token>
-  - validateSession(token) against sessions table
-  - Loads user by user_id, assigns `req.user` (without password)
-  - Sends 401 if missing/invalid/expired
-- authorization.middleware.js (the Gatekeeper):
-  - `authorize(...roles)` allows only if `req.user.role` is in roles
-  - Sends 403 if role not permitted
+- **cookieParser.middleware.js**:
+  - Manually parses the `Cookie` header string into a usable object `req.cookies`.
+- **authentication.middleware.js** (The Bouncer):
 
-### constants/ 🔖
+  - **Strategy**: Hybrid.
+    1. **Priority**: Checks `req.cookies.auth_token` (Secure, HttpOnly).
+    2. **Fallback**: Checks `Authorization: Bearer <token>` (For Postman/Testing).
+  - **Behavior**:
+    - If API request fails: Returns `401 Unauthorized`.
+    - If HTML page request (e.g., /student) fails: **Redirects** to `/login`.
 
-roles.js exports ROLES = { STUDENT: 'student', TEACHER: 'teacher', ADMIN: 'admin' } for both backend and frontend.
+- **authorization.middleware.js** (The Gatekeeper):
+  - `authorize(...roles)` allows only if `req.user.role` is in roles.
+  - Sends 403 if role not permitted.
 
 ### controllers/ 🤵
 
-Pure request/response orchestration. Call repositories, return JSON.
+- **auth.controller.js**:
+  - `login`: Validates credentials, creates DB session, and sets `res.cookie('auth_token', ...)` (HttpOnly).
+  - `logout`: Deletes DB session and calls `res.clearCookie('auth_token')`.
 
-### routes/ 📜
+### app.js 📘
 
-Wires URLs to controllers and applies middlewares. Examples:
-
-- Bookings: All authenticated users
-- Rooms: Create/Update = Teacher/Admin, Delete = Admin
-- Users: Admin only
+Configures server-side protection for static HTML files.
+_Example:_ `app.use("/admin", authenticate, authorize("admin"), express.static(...))`
 
 ---
 
@@ -84,11 +73,11 @@ Wires URLs to controllers and applies middlewares. Examples:
 
 ### api/api.js 🌐
 
-`apiFetch()` attaches Authorization header when token exists; handles 401 (clear+redirect) and 403 (access denied).
+`apiFetch()` sets `credentials: "include"`. This tells the browser to include the HttpOnly cookie in the request. It relies on the browser's cookie jar, not localStorage.
 
 ### login/login.js 🔑
 
-Submits credentials, stores `{ token, user }` in localStorage, redirects by role to /admin, /teacher, or /student.
+Submits credentials. On success, the **browser** saves the cookie automatically. The JS only saves non-sensitive user data to localStorage for UI convenience and redirects.
 
 ---
 
@@ -97,65 +86,42 @@ Submits credentials, stores `{ token, user }` in localStorage, redirects by role
 ### Login
 
 1. POST /api/auth/login with email/password
-2. Server verifies password, creates session (token, user_id, expiresAt)
-3. Returns `{ token, user }` (no password)
-4. Frontend stores token+user, redirects based on `user.role`
+2. Server verifies password, creates session.
+3. Server sends response: `Set-Cookie: auth_token=xyz; HttpOnly` + JSON User Data.
+4. Browser saves cookie (JS cannot read this).
+5. Frontend stores User JSON in localStorage and redirects.
 
-### Authenticated request
+### Authenticated Request (API & Pages)
 
-1. apiFetch adds `Authorization: Bearer <token>`
-2. authentication.middleware validates session and attaches `req.user`
-3. authorization.middleware optionally checks roles; 403 if not allowed
-4. Controller executes and returns JSON
+1. Browser automatically attaches `Cookie: auth_token=xyz` to the request.
+2. `cookieParser` reads the header.
+3. `authentication.middleware` validates session and attaches `req.user`.
+4. If accessing a protected HTML page without a cookie, the server redirects to `/login`. If accessing with a cookie but the wrong role, it redirects to `/403` (Authorization).
 
 ### Logout
 
-DELETE /api/auth/logout removes the session; frontend clears storage on 401 automatically.
+1. DELETE /api/auth/logout.
+2. Server deletes session from DB.
+3. Server sends `Set-Cookie: auth_token=; Max-Age=0` to clear it.
 
 ---
 
-## 🔐 Semantics
+## 🧪 Quick Tests (Postman / Curl)
 
-- 401 Unauthorized: Not logged in / token invalid/expired (authentication)
-- 403 Forbidden: Logged in but not allowed (authorization)
+Since we use a **Hybrid** approach, you can still test endpoints easily using headers without needing to manage cookies in your terminal.
 
----
-
-## 🧪 Quick Tests (PowerShell)
-
-Login
+Login (Browser/Client simulation)
 
 ```powershell
-curl -X POST http://localhost:80/api/auth/login `
-  -H "Content-Type: application/json" `
-  -d '{"email":"admin@example.com","password":"secret"}'
-```
+# Browser handles the cookie automatically
+Manual Testing (Developer Mode) The middleware accepts the Bearer header as a fallback!
 
-Authenticated request
-
-```powershell
 curl http://localhost:80/api/rooms `
-  -H "Authorization: Bearer <TOKEN>"
-```
+  -H "Authorization: Bearer <YOUR_TOKEN_HERE>"
 
-Admin-only
 
-```powershell
+Admin-only Test
+
 curl -X DELETE http://localhost:80/api/rooms/123 `
-  -H "Authorization: Bearer <TOKEN>"
+  -H "Authorization: Bearer <YOUR_TOKEN_HERE>"
 ```
-
-Logout
-
-```powershell
-curl -X DELETE http://localhost:80/api/auth/logout `
-  -H "Authorization: Bearer <TOKEN>"
-```
-
----
-
-## ⚠️ Notes for the Team
-
-- Dates: Use ISO 8601 `YYYY-MM-DD HH:MM:SS` with SQLite text columns
-- Don’t hardcode roles; always import from ROLES
-- Protect mutating routes consistently with `auth → authorize`

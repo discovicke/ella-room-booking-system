@@ -9,7 +9,7 @@
 - Boka en sal ett visst tidsintervall
 - Undvika dubbelbokningar
 - Kunna ändra eller avboka
-- Kunna logga in/ut med tokenbaserade sessioner
+- Kunna logga in/ut med tokenbaserade sessioner (via Cookies)
 
 ## Användartyper
 
@@ -123,19 +123,20 @@ Express
 
 SQL
 
-### Auth
+### Auth & Security
 
-Token-Based Authentication
+**Hybrid Authentication**
 
-- Login generates session tokens
-- Tokens stored in sessions table
-- Bearer token authentication for API requests
+- **Primary**: HttpOnly Cookies (`auth_token`). Säkrar mot XSS-attacker och hanteras automatiskt av webbläsaren.
+- **Fallback**: Bearer Token i Header. Underlättar testning via Postman/Curl.
+- `cookieParser.middleware.js` hanterar inkommande cookies.
 
-Role-Based Authorization
+**Role-Based Authorization**
 
 - Separat middleware för roller: `authorization.middleware.js`
-- Endpoints skyddas med `authentication.middleware.js` (token) följt av `authorize(...roller)`
-- 401 = ej inloggad/ogiltig token, 403 = inloggad men saknar behörighet
+- **Server-Side Protection**: Statiska filer för `/student`, `/teacher`, och `/admin` skyddas direkt i `app.js` innan de levereras.
+- 401 = Saknar token (Redirect till /login om det är en sidvisning).
+- 403 = Inloggad men saknar behörighet.
 
 Praktisk tillämpning (MVP):
 
