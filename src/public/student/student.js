@@ -1,10 +1,6 @@
 // Get all rooms
 import API from "../api/api.js";
-import { ROLES } from "../../constants/roles.js";
-import { requireRole } from "../js/guard.js";
 
-// Auth guard: ADMIN, TEACHER, and STUDENT allowed
-requireRole(ROLES.ADMIN, ROLES.TEACHER, ROLES.STUDENT);
 
 async function loadRooms() {
   const rooms = await API.getRooms();

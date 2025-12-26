@@ -1,9 +1,5 @@
 import API from "../api/api.js";
-import { ROLES } from "../../constants/roles.js";
-import { requireRole } from "../js/guard.js";
 
-// Auth guard: Only TEACHER and ADMIN allowed
-requireRole(ROLES.TEACHER, ROLES.ADMIN);
 
 async function loadRooms() {
   // Hämta alla rum från API
