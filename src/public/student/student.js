@@ -2,34 +2,33 @@
 import API from "../api/api.js";
 
 // --- Hämta inloggad användare ---
-async function loadUser() {
-  try {
-    const res = await fetch("/api/auth/me", {
-      credentials: "include"
-    });
+function loadUserFromLocalStorage() {
+  const user = localStorage.getItem("user");
 
-    if (!res.ok) throw new Error("Not logged in");
 
-    const data = await res.json();
-    const user = data.user;
-
-    // Visa display_name (fallback till email/username)
-    document.getElementById("username").textContent =
-      user.Display_name || user.username || user.email;
-
-    // Visa roll
-    const roleEl = document.getElementById("user-role");
-    roleEl.textContent = capitalize(user.role);
-    roleEl.className = `user-role ${user.role}`;
-  } catch (err) {
-    console.error(err);
+  if (!user) {
+    // Ingen user sparad → skicka till login
     window.location.href = "/login/";
+    return;
   }
+
+  const userobject = JSON.parse(user);
+  const displayname = userobject.display_name; 
+
+  document.getElementById("username").textContent = displayname;
+
+  console.log(displayname);
+  
+
+  const roleEl = document.getElementById("user-role");
+  roleEl.textContent = capitalize(user.role);
+  roleEl.className = `user-role ${user.role}`;
 }
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
 
 // --- Hämta rum ---
 async function loadRooms() {
@@ -54,8 +53,8 @@ function renderStudentRooms(rooms) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  loadUser();
-  loadRooms();
+  loadUserFromLocalStorage();
+  loadRooms(); // eller loadTeacherData(), loadAdminData()
+});
 
-  });
 

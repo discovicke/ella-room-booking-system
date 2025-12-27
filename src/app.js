@@ -33,19 +33,7 @@ app.get("/403", (req, res) => res.sendFile("403.html", { root: "src/public" }));
 app.get("/404", (req, res) => res.sendFile("404.html", { root: "src/public" }));
 
 // ==========================
-// 🛡️ 3. API ROUTES
-// ==========================
-// /api/auth stays public so users can hit /login
-app.use("/api/auth", authRouter);
-
-// 🔒 These require a valid cookie/token
-app.use("/api/users", authenticate, userRouter);
-app.use("/api/rooms", authenticate, roomsRouter);
-app.use("/api/bookings", authenticate, bookingsRouter);
-
-
-// ==========================
-// 🛡️ 4. PROTECTED PAGES (HTML VIEWS)
+// 🛡️ 3. PROTECTED PAGES (HTML VIEWS)
 // ==========================
 app.use(
   "/student",
@@ -65,6 +53,18 @@ app.use(
   authorize(ROLES.ADMIN),
   express.static("src/public/admin", { index: "admin.html" })
 );
+
+// ==========================
+// 🛡️ 4. API ROUTES
+// ==========================
+// /api/auth stays public so users can hit /login
+app.use("/api/auth", authRouter);
+
+// 🔒 These require a valid cookie/token
+app.use("/api/users", authenticate, userRouter);
+app.use("/api/rooms", authenticate, roomsRouter);
+app.use("/api/bookings", authenticate, bookingsRouter);
+
 
 
 // ==========================
