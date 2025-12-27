@@ -15,7 +15,7 @@
  */
 
 import { findUserByEmail } from "../repositories/user.repo.js";
-import { verifyPassword, generateToken } from "../utils/security.js";
+import { verifyPassword, generateToken } from "../utils/security.utils.js";
 import { createSession, deleteSession } from "../repositories/session.repo.js";
 
 /**

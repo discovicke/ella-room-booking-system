@@ -11,7 +11,7 @@
  */
 
 import * as userRepo from "../repositories/user.repo.js";
-import { hashPassword } from "../utils/security.js";
+import { hashPassword } from "../utils/security.utils.js";
 
 export const createUser = async (req, res) => {
   try {
