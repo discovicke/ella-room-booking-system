@@ -35,17 +35,6 @@
         color: #666;
         margin-bottom: 20px;
       }
-      .btn {
-        background-color: #3498db;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        display: inline-block;
-      }
-      .btn:hover {
-        background-color: #2980b9;
-      }
     </style>
   </head>
   <body>
@@ -53,7 +42,7 @@
       <h1>403</h1>
       <h2>Access Denied</h2>
       <p>You don't have permission to view this page.</p>
-      <a href="/login" class="btn">Go Back to Login</a>
+      <button onclick="history.back()">Go Back</button>
     </div>
   </body>
 </html>
