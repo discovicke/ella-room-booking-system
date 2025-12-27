@@ -31,19 +31,23 @@ function capitalize(str) {
 
 // --- Get rooms ---
 async function loadRooms() {
-  const rooms = await API.getRooms();
+  const rooms = await API.getRooms(true);
   renderStudentRooms(rooms);
 }
 
 function renderStudentRooms(rooms) {
   const container = document.getElementById("student-room-list");
   container.innerHTML = rooms
-    .map(
-      (r) => `
+      .map((r) => {
+        const assets = (r.assets || [])
+            .map((a) => `<span class="asset-chip">${a.asset}</span>`)
+            .join("");
+        return `
     <div class="room-card">
       <h3>Nr ${r.room_number} - ${r.location}</h3>
       <p>Typ: ${r.display_type}</p>
       <p>Antal platser: ${r.capacity}</p>
+      <div class="asset-chips">${assets}</div>
 
       <div class="room-actions">
         <button>Markera som upptaget</button>
@@ -51,9 +55,9 @@ function renderStudentRooms(rooms) {
         <button class="danger">Ta bort</button>
       </div>
     </div>
-  `
-    )
-    .join("");
+    `;
+      })
+      .join("");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
