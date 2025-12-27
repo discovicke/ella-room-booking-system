@@ -16,12 +16,18 @@
         text-align: center;
       }
       .error-container {
-        background: white;
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px #0000001a;
-        max-width: 400px;
-      }
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px #0000001a;
+      display: flex;
+      /* lägg till */
+      flex-direction: column;
+      /* lägg till */
+      align-items: center;
+      /* lägg till */
+      gap: 16px;
+    }
       h1 {
         font-size: 80px;
         margin: 0;
@@ -33,16 +39,29 @@
       }
       p {
         color: #666;
-        margin-bottom: 20px;
+        
       }
+
+      button {
+      background: #9236cb;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #6f289b;
+    }
     </style>
   </head>
   <body>
     <div class="error-container">
       <h1>403</h1>
-      <h2>Access Denied</h2>
-      <p>You don't have permission to view this page.</p>
-      <img src="assets/ELLA header.png" alt="Logo small" />
+      <h2>Åtkomst nekad!</h2>
+      <p>VIP-område, tyvärr står du inte på listan :(</p>
+      <img src="assets/ella-403.png" alt="Logo small" />
       <button onclick="history.back()">Go Back</button>
     </div>
   </body>
