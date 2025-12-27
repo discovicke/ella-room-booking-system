@@ -57,7 +57,7 @@ function renderStudentRooms(rooms) {
         return `
       <div class="room-card">
         <h3># ${r.room_number} - ${r.location}</h3>
-        <p>Typ: ${r.display_type}</p>
+        <p>${r.display_type}</p>
         <p>Antal platser: ${r.capacity}</p>
         <div class="asset-chips">${assets}</div>
         <button class="book-btn" data-room-id="${r.id}">Boka</button>
