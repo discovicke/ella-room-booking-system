@@ -153,6 +153,34 @@ body {
   cursor: not-allowed;
 }
 
+.asset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.asset-chip {
+  display: inline-block;
+  background: #efe6ff;
+  color: #3f2b6f;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  border: 1px solid #3f2b6fe6;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.room-card .asset-chips {
+  margin-top: 12px;
+}
+
 /* --- SCROLLYTOR --- */
 .room-scroll,
 .booking-scroll {
@@ -262,6 +290,11 @@ body {
   .room-card,
   .booking-card {
     padding: 14px;
+  }
+
+  .asset-chip {
+    font-size: 12px;
+    padding: 5px 8px;
   }
 
   /* Sticky headers får lite mindre padding */

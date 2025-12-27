@@ -43,30 +43,33 @@ if (logoutBtn) {
 
 // --- Hämta rum ---
 async function loadRooms() {
-  const rooms = await API.getRooms();
+  const rooms = await API.getRooms(true);
   renderStudentRooms(rooms);
 }
 
 function renderStudentRooms(rooms) {
   const container = document.getElementById("student-room-list");
   container.innerHTML = rooms
-    .map(
-      (r) => `
-    <div class="room-card">
-    <h3>Nr ${r.room_number} - ${r.location}</h3>
-    <p>Typ: ${r.type}</p>
-    <p>Antal platser: ${r.capacity}</p>
-    <button class="book-btn" data-room-id="${r.id}">Boka</button>
-  </div>
-  `
-    )
-    .join("");
-   container.querySelectorAll(".book-btn").forEach((btn) => {
+      .map((r) => {
+        const assets = (r.assets || [])
+            .map((a) => `<span class="asset-chip">${a.asset}</span>`)
+            .join("");
+        return `
+      <div class="room-card">
+        <h3>Nr ${r.room_number} - ${r.location}</h3>
+        <p>Typ: ${r.type}</p>
+        <p>Antal platser: ${r.capacity}</p>
+        <div class="asset-chips">${assets}</div>
+        <button class="book-btn" data-room-id="${r.id}">Boka</button>
+      </div>
+    `;
+      })
+      .join("");
+
+  container.querySelectorAll(".book-btn").forEach((btn) => {
     btn.addEventListener("click", () => onclickBookRoom(btn.dataset.roomId));
   });
-
 }
-
 function onclickBookRoom(btn) {
   
   alert(`Bokar rum: ${btn}`);

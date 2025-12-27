@@ -35,7 +35,9 @@ async function apiFetch(url, options = {}) {
     throw new Error(error.error || "Request failed");
   }
 
-  return response.status === 204 ? null : response.json();
+  return response.status === 204
+      ? null
+      : response.json();
 }
 
 const API = {
@@ -50,8 +52,11 @@ const API = {
     return await apiFetch("/api/auth/logout", { method: "DELETE" });
   },
 
-  async getRooms() {
-    return await apiFetch("/api/rooms");
+  async getRooms(includeAssets = false) {
+    const url = includeAssets
+        ? "/api/rooms?includeAssets=true"
+        : "/api/rooms";
+    return await apiFetch(url);
   },
 
   // TODO: Implement getRoom(id) - GET /api/rooms/:id
