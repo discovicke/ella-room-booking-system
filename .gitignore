@@ -142,3 +142,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 identifier.sqlite-wal
 identifier.sqlite-wal
+identifier.sqlite-shm
+identifier.sqlite-wal
