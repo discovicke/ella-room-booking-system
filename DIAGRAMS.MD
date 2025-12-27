@@ -22,7 +22,7 @@ sequenceDiagram
     Auth->>Auth: 2. Check Header (Fallback)
     Auth->>DB: SELECT * FROM sessions WHERE token = "..."
 
-    alt Invalid/No Token?
+    alt Invalid or No Token?
         alt Is API Request?
             Auth-->>Frontend: 401 Unauthorized ⛔
         else Is HTML Page Request?
@@ -55,7 +55,7 @@ sequenceDiagram
     User->>Frontend: Clicks "Logout"
     Frontend->>Auth: DELETE /api/auth/logout
     Auth->>DB: DELETE session
-    Auth-->>Frontend: 200 OK + Set-Cookie: auth_token=; Max-Age=0
+    Auth-->>Frontend: 200 OK + Set-Cookie: auth_token= (Max-Age=0)
 ```
 
 # The Architecture Diagram (Physical Structure)
