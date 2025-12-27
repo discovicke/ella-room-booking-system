@@ -79,6 +79,51 @@
   cursor: pointer;
 }
 
+.inputGroup{
+  position: relative;
+
+}
+.inputGroup input{
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  outline: none;
+  background: none;
+}
+
+.labelline {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  transform-origin: left top;
+  transform: translateY(0) scale(1);
+  transition: 0.2s ease;
+  pointer-events: none;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0 4px;
+  color: #94a3b8;
+}
+
+input:focus
+{
+  border-color: #9136C8FF;
+  box-shadow: 0 5px 15px rgba(0,123,255,0.1);
+}
+
+input:focus + .labelline,
+input:focus:valid + .labelline
+{
+  transform: translateY(-22px) scale(.88);
+  color: #9136C8FF;
+}
+
+input:valid + .labelline{
+  transform: translateY(-22px) scale(.88);
+  border-color: #A9A9A9FF;
+  color: #A9A9A9FF;
+}
+
 .form-content button:hover {
   background: #6f289b;
 }

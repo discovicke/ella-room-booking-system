@@ -25,15 +25,16 @@
                 <h2>Välkommen till ELLA</h2>
                 <p>Logga in för att börja boka</p>
 
-                <form>
-                    <div>
-                        <label for="username">Användarnamn</label>
-                        <input id="username" type="text" placeholder="exempel@email.com">
+
+                <form class="form">
+                    <div class="inputGroup">
+                        <input id="username" type="text" required autocomplete="off">
+                        <div class="labelline">Email-address</div>
                     </div>
 
-                    <div>
-                        <label for="password">Lösenord</label>
-                        <input id="password" type="password" placeholder="Lösenord">
+                    <div class="inputGroup">
+                        <input id="password" type="password" required autocomplete="off">
+                        <div class="labelline">Lösenord</div>
                     </div>
 
                     <button type="submit">Logga in</button>
