@@ -5,7 +5,6 @@ import API from "../api/api.js";
 function loadUserFromLocalStorage() {
   const user = localStorage.getItem("user");
 
-
   if (!user) {
     // Ingen user sparad → skicka till login
     window.location.href = "/login/";
@@ -13,35 +12,34 @@ function loadUserFromLocalStorage() {
   }
 
   const userobject = JSON.parse(user);
-  const displayname = userobject.display_name; 
+  const displayname = userobject.display_name;
 
   document.getElementById("username").textContent = displayname;
 
   console.log(displayname);
-  
 
   const roleEl = document.getElementById("user-role");
   roleEl.textContent = capitalize(userobject.role);
   roleEl.className = `user-role ${userobject.role}`;
 }
- 
+
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 const logoutBtn = document.getElementById("logout-btn");
-if (logoutBtn){
-
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    
-    window.location.href = "/login/";
-
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await API.logout(); // calls /api/auth/logout with credentials included
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      window.location.href = "/login/";
+    }
   });
 }
-
-  
-
 
 // --- Hämta rum ---
 async function loadRooms() {
@@ -79,7 +77,3 @@ window.addEventListener("DOMContentLoaded", () => {
   loadUserFromLocalStorage();
   loadRooms(); // eller loadTeacherData(), loadAdminData()
 });
-
-
-
-
