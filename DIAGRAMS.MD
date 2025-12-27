@@ -99,6 +99,6 @@ graph TD
 
     DB -- Raw Data --> Repo
     Repo -- Data --> Ctrl
-    Ctrl -- JSON Response --> Browser
+    Ctrl -- JSON Response (user data, excluding password) --> Browser
     Browser -- Updates UI --> User
 ```
