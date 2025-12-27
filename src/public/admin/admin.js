@@ -42,7 +42,7 @@ function renderStudentRooms(rooms) {
       (r) => `
     <div class="room-card">
       <h3>Nr ${r.room_number} - ${r.location}</h3>
-      <p>Typ: ${r.type}</p>
+      <p>Typ: ${r.display_type}</p>
       <p>Antal platser: ${r.capacity}</p>
 
       <div class="room-actions">
