@@ -19,17 +19,22 @@ sequenceDiagram
 
     Note over Auth, Controller: Phase 2: Authentication
     Auth->>Auth: Check req.cookies.auth_token
-    Auth->>DB: SELECT * FROM sessions WHERE token = "..."
 
-    alt Invalid or No Token?
+    alt No Cookie Found?
         alt Is API Request?
             Auth-->>Frontend: 401 Unauthorized ⛔
         else Is HTML Page Request?
             Auth-->>Frontend: Redirect to /login ↩️
         end
-    else Valid Token
-        Auth->>DB: SELECT * FROM users WHERE id = session.user_id
-        Auth->>AuthZ: next() (User attached to req.user) ✅
+    else Cookie Found
+        Auth->>DB: SELECT * FROM sessions WHERE token = "..."
+
+        alt Session Invalid/Expired?
+             Auth-->>Frontend: 401 / Redirect
+        else Session Valid
+             Auth->>DB: SELECT * FROM users WHERE id = session.user_id
+             Auth->>AuthZ: next() (User attached to req.user) ✅
+        end
     end
 
     Note over AuthZ, Controller: Phase 3: Authorization
@@ -39,32 +44,29 @@ sequenceDiagram
         AuthZ-->>Frontend: 403 Forbidden ⛔
     end
 
-    Note over Controller, DB: Phase 4: Processing & Validation
-    Controller->>Repo: checkRoomExists(id)
+    Note over Controller, DB: Phase 4: Processing
+    Note right of Controller: ⚠️ No Conflict Check in Code
+    Controller->>Controller: Validate Input Fields (User, Room, Time)
 
-    Note right of Controller: 🛑 CRITICAL CHECK
-    Controller->>Repo: findConflictingBookings(room, start, end)
-    Repo->>DB: SELECT * FROM bookings WHERE ...
-    DB-->>Repo: Returns Array of Conflicts
-
-    alt Booking Overlaps?
-        Controller-->>Frontend: 409 Conflict ("Room already booked!") ❌
-        Frontend->>User: Alert("Rummet är upptaget!")
-    else Room Free
-        Controller->>Repo: createBooking(...)
+    alt Missing Fields?
+        Controller-->>Frontend: 400 Bad Request ❌
+    else Valid Input
+        Controller->>Repo: createBooking(data)
         Repo->>DB: INSERT INTO bookings...
         DB-->>Repo: Success
         Repo-->>Controller: Returns Result
-        Controller-->>Frontend: 201 Created (JSON)
-        Frontend->>User: Alert("Bokning Bekräftad! 🎉")
+        Controller-->>Frontend: 201 Created (Empty Body)
+        Frontend->>User: Alert("Bokning Skapad!")
         Frontend->>Frontend: Reload Room List
     end
 
     Note over User, Frontend: Phase 6: Logout
     User->>Frontend: Clicks "Logout"
-    Frontend->>Auth: POST /api/auth/logout
+    Frontend->>Frontend: Remove User from localStorage 🗑️
+    Frontend->>Auth: POST /api/auth/logout (Cookie sent automatically)
     Auth->>DB: DELETE session (Using cookie token)
     Auth-->>Frontend: 200 OK + Set-Cookie: auth_token= (Max-Age=0)
+    Frontend->>User: Redirect to Login
 ```
 
 # The Architecture Diagram (Physical Structure)
@@ -75,7 +77,7 @@ graph TD
         User((👤 User))
         Browser["🖥️ Browser / public/"]
         Cookie[("🍪 HttpOnly Cookie (Auth Token)")]
-        LS[("User Data / localStorage")]
+        LS[("💾 localStorage (User Profile Data: Name, Role etc.)")]
     end
 
     subgraph Server ["The Kitchen (Backend)"]
@@ -87,7 +89,6 @@ graph TD
             Route["📜 Routes"]
             Ctrl["🤵 Controllers"]
             Repo["📚 Repositories"]
-            Utils["🧰 Utils"]
         end
 
         DB[("💽 SQLite Database")]
@@ -95,7 +96,8 @@ graph TD
 
     %% Connections
     User -- Clicks Button --> Browser
-    Browser -- 1. Auto-includes Cookie --> CP
+    Browser -- 1. Reads User Info --> LS
+    Browser -- 2. Auto-includes Cookie --> CP
     CP -- Parses req.cookies --> App
 
     App --> Route
@@ -103,12 +105,12 @@ graph TD
     MW -- Validates Session in DB --> DB
     MW -- If Valid & Authorized --> Ctrl
 
-    Ctrl -- 1. Checks Room Exists --> Repo
-    Ctrl -- 2. Checks Overlaps --> Repo
-    Repo -- SQL Query --> DB
+    Ctrl -- 1. Validates Input --> Ctrl
+    Ctrl -- 2. Inserts Data --> Repo
+    Repo -- SQL Query (INSERT) --> DB
 
     DB -- Raw Data --> Repo
     Repo -- Data --> Ctrl
-    Ctrl -- JSON Response (or 409 Conflict) --> Browser
+    Ctrl -- JSON Response (201 or 400) --> Browser
     Browser -- Updates UI --> User
 ```

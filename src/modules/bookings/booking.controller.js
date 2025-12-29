@@ -6,15 +6,14 @@
 import * as bookingRepo from "./booking.repo.js";
 
 /**
- * /**
- *  GET /api/bookings
- *  - Students: only their own bookings
- *  - Teachers/Admins: all bookings, or can filter with ?userId=
+ * GET /api/bookings
+ * - Students: only their own bookings
+ * - Teachers/Admins: all bookings, or can filter with ?userId=
  *
  * Retrieves all bookings from the database.
  *
  * @returns {Response} a response with a 200 status and a JSON body containing all bookings.
- * @throws {Error} if an error occurs while fetching bookings, returns a response with a 500 status and an error message.
+ * @throws {Error} if an error occurs while fetching bookings, returns a response with a 500 status.
  */
 export const listBookings = (req, res) => {
   try {
@@ -42,7 +41,7 @@ export const listBookings = (req, res) => {
     return res.status(200).json(bookings);
   } catch (err) {
     console.error("Error fetching bookings:", err);
-    return res.status(500).send({ error: "Could not fetch bookings" });
+    return res.sendStatus(500);
   }
 };
 
@@ -50,12 +49,12 @@ export const listBookings = (req, res) => {
  * Creates a new booking with the given data.
  * @param {Object} req.body object containing booking data in snake_case.
  * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 201 status and no body or a 400/500 status with an error message.
+ * @returns {Response} a response with either a 201 status and no body or a 400/500 status.
  * @throws {Error} if an error occurs while creating the booking.
  */
 export const createBooking = (req, res) => {
   try {
-    // 1. Validation (Expecting snake_case from client now)
+    // 1. Validation (Expecting snake_case from client)
     const { room_id, user_id, start_time, end_time, status, notes } = req.body;
 
     if (!room_id || !user_id || !start_time || !end_time) {
@@ -78,15 +77,15 @@ export const createBooking = (req, res) => {
     return res.status(201).send();
   } catch (error) {
     console.error("Error creating booking:", error);
-    return res.status(500).json({ error: "Failed to create booking" });
+    return res.sendStatus(500);
   }
 };
 
 /**
  * Updates a booking with the given ID.
- * @param {Request} req request containing the booking data to update in req.body and the ID of the booking to update in req.params.id.
+ * @param {Request} req request containing the booking data to update in req.body and the ID in req.params.id.
  * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 200 status and a success message or a 404/500 status with an error message.
+ * @returns {Response} a response with either a 200 status and a success message or a 404/500 status.
  * @throws {Error} if an error occurs while updating the booking.
  */
 export const updateBooking = (req, res) => {
@@ -111,7 +110,7 @@ export const updateBooking = (req, res) => {
     res.status(200).send(`Updated booking with ID ${id}`);
   } catch (error) {
     console.error("Error updating booking:", error);
-    res.status(500).json({ error: "Failed to update booking" });
+    res.sendStatus(500);
   }
 };
 
@@ -119,7 +118,7 @@ export const updateBooking = (req, res) => {
  * Deletes a booking with the given ID.
  * @param {Request} req request containing the ID of the booking to delete in req.params.id.
  * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 200 status and a success message or a 404/500 status with an error message.
+ * @returns {Response} a response with either a 200 status and a success message or a 404/500 status.
  * @throws {Error} if an error occurs while deleting the booking.
  */
 export const deleteBooking = (req, res) => {
@@ -132,7 +131,8 @@ export const deleteBooking = (req, res) => {
     res.status(200).send(`Deleted booking with ID ${id}`);
   } catch (error) {
     console.error("Error deleting booking:", error);
-    res.status(500).json({ error: "Failed to delete booking" });
+    // Security: Do not leak error details to client
+    res.sendStatus(500);
   }
 };
 

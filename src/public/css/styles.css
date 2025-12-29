@@ -102,8 +102,78 @@ body {
 .info-panel h2,
 .info-panel h3 {
   font-size: 22px;
-  color: #5e35b1;
+  color: #9036c8;
   margin-bottom: 16px;
+}
+
+/* --- BOOKING LAYOUT (student) --- */
+.booking-card {
+  border: 1px solid #d1c4e9;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: #f6f4fb;
+  transition: box-shadow 0.2s ease;
+  position: relative;
+}
+
+.booking-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  min-width: 86px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Active = green */
+.status.active {
+  background: #e5fde4;
+  color: #1b6b2b;
+  border: 1px solid #cfead3;
+}
+
+/* Cancelled = red/neutral */
+.status.cancelled {
+  background: #fff0f0;
+  color: #9b1e1e;
+  border: 1px solid #f2c6c6;
+}
+
+.booking-card button {
+  position: absolute;
+  right: 16px;
+  top: 55%;
+  bottom: auto;
+  transform: translateY(-50%);
+  margin-top: 0;
+  background: #941e1e;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.booking-card button:hover {
+  background: #5e1b1b;
+}
+
+.booking-card button:active {
+    background: #3a1212;
 }
 
 /* --- RUMSKORT (delas av student + teacher) --- */
@@ -114,19 +184,23 @@ body {
   margin-bottom: 20px;
   background: #f6f4fb;
   transition: box-shadow 0.2s ease;
+  position: relative;
 }
 
-.room-card:hover {
+.room-card:hover,
+.booking-card:hover {
   box-shadow: 0 4px 12px #00000014;
 }
 
-.room-card h3 {
+.room-card h3,
+.booking-card h3 {
   margin: 0 0 8px;
   font-size: 18px;
   color: #333;
 }
 
-.room-card p {
+.room-card p,
+.booking-card p {
   margin: 4px 0;
   font-size: 14px;
   color: #555;
@@ -134,18 +208,27 @@ body {
 
 /* --- KNAPPAR I RUMSKORT --- */
 .room-card button {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  margin-top: 0;
   background: #2e7d32;
   color: white;
   border: none;
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
-  margin-top: 12px;
   transition: background 0.2s ease;
 }
 
 .room-card button:hover {
-  background: #1b5e20;
+  background: #246527;
+}
+
+.room-card button:active {
+    background: #0f3f0f;
 }
 
 .room-card.occupied button {

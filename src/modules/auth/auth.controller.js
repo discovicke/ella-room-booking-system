@@ -39,6 +39,8 @@ export const login = async (req, res) => {
     // Find user by email
     const user = findUserByEmail(email);
 
+    // Security: We use the exact same error message for "User Not Found"
+    // and "Wrong Password" to prevent User Enumeration.
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
@@ -78,37 +80,35 @@ export const login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+
+    return res.sendStatus(500);
   }
 };
 
 /**
  * Handles user logout by invalidating the session token.
- * @param {Object} req - Express request object with token in Authorization header.
+ * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @returns {Object} JSON response confirming logout.
  */
 export const logout = (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
+    // We strictly use the cookie for logout
+    const token = req.cookies ? req.cookies.auth_token : null;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      // Clear cookie even if header missing to ensure browser loses session
-      res.clearCookie("auth_token", { path: "/" });
-      return res.status(400).json({ error: "No token provided" });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    // Delete session from database
-    deleteSession(token);
-
-    // Clear auth cookie in browser
+    // Security: Always clear the cookie in the browser, regardless of DB state
     res.clearCookie("auth_token", { path: "/" });
+
+    // If a token existed, remove it from DB.
+    // If no token existed, we still return 200 to avoid leaking information about whether the user was actually logged in.
+    if (token) {
+      deleteSession(token);
+    }
 
     return res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.error("Logout error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+
+    return res.sendStatus(500);
   }
 };

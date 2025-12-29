@@ -7,30 +7,16 @@ import { getUserById } from "../modules/users/user.repo.js";
  * * PURPOSE:
  * Verifies the identity of the user for protected routes.
  *
- * * HYBRID AUTH STRATEGY (Cookie + Header):
- * 1. 🍪 Cookies (Priority): Checks for 'auth_token' in HTTP-Only cookies first.
- * - Why? Best for Browsers. It renders the app immune to XSS attacks because
- * JavaScript cannot read the token. It also simplifies the frontend code, which is the real reason we want this.
- *
- * 2. 🔑 Headers (Fallback): Checks for 'Authorization: Bearer <token>' second.
- * - Why? Because cookies are not handled automatically by API clients like Postman or cURL. This fallback allows us developers to test the API easily by
- * manually setting the Authorization header.
+ * * STRATEGY: Cookies Only
+ * 1. 🍪 Cookies: Checks for 'auth_token' in HTTP-Only cookies.
+ * - Why? Best for Browsers. Secure against XSS (if HttpOnly).
+ * - No Header Fallback: We strictly enforce cookies for better security consistency.
  */
 
 export const authenticate = (req, res, next) => {
   try {
-    let token = null;
-
-    // 1. Check Cookie (Priority)
-    if (req.cookies && req.cookies.auth_token) {
-      token = req.cookies.auth_token;
-    }
-
-    // 2. Check Header (Fallback for Postman)
-    const authHeader = req.headers.authorization;
-    if (!token && authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.split(" ")[1];
-    }
+    // 1. Check Cookie
+    const token = req.cookies ? req.cookies.auth_token : null;
 
     // 🛑 No token found
     if (!token) {
