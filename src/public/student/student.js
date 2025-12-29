@@ -203,7 +203,9 @@ async function loadBookings() {
 
     if (stored) {
       const user = JSON.parse(stored);
-      const userId = user && user.id ? user.id : null;
+      const userId = user && user.id
+          ? user.id
+          : null;
       bookings = userId
           ? await API.getBookingsByUser(userId)
           : await API.getBookings();

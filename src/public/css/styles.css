@@ -36,15 +36,22 @@
 */
 
 /* --- GLOBALT --- */
-body {
+html, body {
+  display: flex;
+  flex-direction: column;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   background: #f8f9fc;
+  height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* --- HEADER --- */
 .top-header {
   display: flex;
+  flex: 0 0 auto;
   justify-content: space-between;
   align-items: center;
   background: white;
@@ -84,16 +91,31 @@ body {
   background: #6f289b;
 }
 
+.dashboard-layout {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 40px;
+  gap: 24px;
+  padding: 20px 20px 40px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 /* --- PANELER (grundstil) --- */
 .panel,
 .left-panel,
 .right-panel,
 .info-panel {
   background: #fff;
+  display: flex;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
+  flex-direction: column;
   padding: 12px 24px 24px;
   box-shadow: 0 2px 6px #0000000a;
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
 }
 
 /* --- RUBRIKER I PANELER --- */
@@ -267,9 +289,10 @@ body {
 /* --- SCROLLYTOR --- */
 .room-scroll,
 .booking-scroll {
-  max-height: calc(100vh - 240px);
+  flex: 1 1 auto;
   overflow-y: auto;
-  padding-right: 10px;
+  padding-bottom: 40px; /* leave the requested space to viewport bottom */
+  box-sizing: border-box;
 }
 
 /* --- STICKY RUBRIKER --- */
