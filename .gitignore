@@ -144,3 +144,14 @@ identifier.sqlite-wal
 identifier.sqlite-wal
 identifier.sqlite-shm
 identifier.sqlite-wal
+
+# SQLite tempfiler
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite-journal
+
+identifier.sqlite-shm
+identifier.sqlite-wal
