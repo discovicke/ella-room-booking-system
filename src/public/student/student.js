@@ -66,16 +66,15 @@ function renderStudentRooms(rooms) {
     })
     .join("");
 
-  container.querySelectorAll(".book-btn").forEach((btn) => {
-    btn.addEventListener("click", () => onclickBookRoom(btn.dataset.roomId));
+  container.querySelectorAll(".book-btn").forEach((bookButton) => {
+    bookButton.addEventListener("click", () => onclickBookRoom(bookButton.dataset.roomId));
   });
 }
-function onclickBookRoom(btn) {
+function onclickBookRoom(bookButton){
 
-  // alert(`Bokar rum: ${btn}`);
+  alert(`Bokar rum: ${bookButton}`);
 
 }
-// oklart !"!!"
 function formatDateTime(value) {
   if (!value) return "-";
   return new Date(value).toLocaleString("sv-SE", {
@@ -85,13 +84,13 @@ function formatDateTime(value) {
 }
 
 function renderBookings(bookings = []) {
-  const list = document.querySelector(".booking-scroll");
-  if (!list) return;
+  const roomContainer = document.querySelector(".booking-scroll");
+  if (!roomContainer) return;
   if (!bookings.length) {
-    list.innerHTML = "<p>Inga bokningar hittades.</p>";
+    roomContainer.innerHTML = "<p>Inga bokningar hittades.</p>";
     return;
   }
-  list.innerHTML = bookings
+  roomContainer.innerHTML = bookings
   .map((booking) => {
     const roomLabel = booking.room_number
     ? `Rum ${booking.room_id}`
@@ -106,12 +105,19 @@ function renderBookings(bookings = []) {
     <p><strong>Slut:</strong> ${endTime}</p>
     <p><strong>Note:</strong><em> ${booking.notes || "-"}</em></p>
     <span class ="status ${status.toLowerCase()}">${status}</span>
-    <Button class="unbook" id="r${booking.id}">Avboka</Button>
+    <Button class="unbook" data-booking-id="${booking.id}">Avboka</Button>
     </article>
     `;
   })
   .join("");
+  roomContainer.querySelectorAll(".unbook").forEach((btn) => {
+    btn.addEventListener("click", () => onclickUnBook(btn.dataset.bookingId));
+  });
   console.log("Rendered bookings");
+}
+function onclickUnBook(bookingId){
+  alert(`Avboka bokning ${bookingId}`);
+
 }
 
 async function loadBookings() {
