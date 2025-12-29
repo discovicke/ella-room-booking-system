@@ -41,6 +41,25 @@ export const getAllBookingsByDate = (searchStart, searchEnd) => {
     .all(searchEnd, searchStart);
 };
 
+/**
+ * Checks for any existing active bookings that overlap with the requested time slot.
+ * Logic: Two time periods overlap if (StartA < EndB) and (EndA > StartB).
+ * @param {number} roomId
+ * @param {string} startTime
+ * @param {string} endTime
+ * @returns {Array} An array of conflicting booking objects (empty if none).
+ */
+export const findConflictingBookings = (roomId, startTime, endTime) => {
+  const stmt = db.prepare(`
+    SELECT * FROM bookings 
+    WHERE room_id = ? 
+    AND status = 'active'
+    AND start_time < ? 
+    AND end_time > ?
+  `);
+  return stmt.all(roomId, endTime, startTime);
+};
+
 // --- UPDATE ---
 
 export const updateBookingById = (bookingId, bookingData) => {

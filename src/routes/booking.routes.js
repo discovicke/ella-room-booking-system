@@ -10,7 +10,7 @@ import { authenticate } from "../middleware/authentication.middleware.js";
 const bookingsRouter = express.Router();
 
 // GET /api/bookings - Get all bookings (All authenticated users)
-bookingsRouter.get("/", authenticate, bookingController.listBookings);
+bookingsRouter.get("/", authenticate, bookingController.listAllBookings);
 
 // POST /api/bookings - Create a new booking (All authenticated users)
 bookingsRouter.post("/", authenticate, bookingController.createBooking);
