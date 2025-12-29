@@ -100,11 +100,11 @@ function renderBookings(bookings = []) {
     const status = (booking.status || "väntar").toUpperCase();
     return `
     <article class="booking-card">
-    <h3>${roomLabel}</h3>
+    <h3>${roomLabel} - ${booking.room_location}</h3>
     <p><strong>Start:</strong> ${startTime}</p>
     <p><strong>Slut:</strong> ${endTime}</p>
-    <p><strong>Note:</strong><em> ${booking.notes || "-"}</em></p>
-    <span class ="status ${status.toLowerCase()}">${status}</span>
+    <p class="note"><strong>Anteckning:</strong><em> ${booking.notes || "-"}</em></p>
+    <span class="status ${status.toLowerCase()}">${status}</span>
     <Button class="unbook" data-booking-id="${booking.id}">Avboka</Button>
     </article>
     `;
