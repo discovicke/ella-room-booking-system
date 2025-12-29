@@ -11,15 +11,14 @@ sequenceDiagram
     participant Repo as 📚 Repository (The Librarian)
     participant DB as 💽 Database (SQLite)
 
-    Note right of Auth: 🛡️ Hybrid Auth: Checks HttpOnly Cookie first.<br/>Fallbacks to Authorization Header (for API testing).
+    Note right of Auth: 🛡️ Strict Auth: Checks HttpOnly Cookie ONLY.
 
     Note over User, Frontend: Phase 1: The Order
     User->>Frontend: Clicks "Book Room"
-    Frontend->>Auth: GET /api/bookings (Browser automatically sends Cookie)
+    Frontend->>Auth: POST /api/bookings (Browser sends Cookie automatically)
 
     Note over Auth, Controller: Phase 2: Authentication
-    Auth->>Auth: 1. Check req.cookies.auth_token
-    Auth->>Auth: 2. Check Header (Fallback)
+    Auth->>Auth: Check req.cookies.auth_token
     Auth->>DB: SELECT * FROM sessions WHERE token = "..."
 
     alt Invalid or No Token?
@@ -40,21 +39,31 @@ sequenceDiagram
         AuthZ-->>Frontend: 403 Forbidden ⛔
     end
 
-    Note over Controller, DB: Phase 4: Processing
-    Controller->>Repo: createBooking(roomId, userId...)
-    Repo->>DB: INSERT INTO bookings...
-    DB-->>Repo: Success (Row ID: 42)
-    Repo-->>Controller: Returns Result
+    Note over Controller, DB: Phase 4: Processing & Validation
+    Controller->>Repo: checkRoomExists(id)
 
-    Note over Controller, User: Phase 5: Response
-    Controller-->>Frontend: 201 Created (JSON)
-    Frontend->>User: Alert("Booking Confirmed! 🎉")
-    Frontend->>Frontend: Reloads Room List
+    Note right of Controller: 🛑 CRITICAL CHECK
+    Controller->>Repo: findConflictingBookings(room, start, end)
+    Repo->>DB: SELECT * FROM bookings WHERE ...
+    DB-->>Repo: Returns Array of Conflicts
+
+    alt Booking Overlaps?
+        Controller-->>Frontend: 409 Conflict ("Room already booked!") ❌
+        Frontend->>User: Alert("Rummet är upptaget!")
+    else Room Free
+        Controller->>Repo: createBooking(...)
+        Repo->>DB: INSERT INTO bookings...
+        DB-->>Repo: Success
+        Repo-->>Controller: Returns Result
+        Controller-->>Frontend: 201 Created (JSON)
+        Frontend->>User: Alert("Bokning Bekräftad! 🎉")
+        Frontend->>Frontend: Reload Room List
+    end
 
     Note over User, Frontend: Phase 6: Logout
     User->>Frontend: Clicks "Logout"
-    Frontend->>Auth: DELETE /api/auth/logout
-    Auth->>DB: DELETE session
+    Frontend->>Auth: POST /api/auth/logout
+    Auth->>DB: DELETE session (Using cookie token)
     Auth-->>Frontend: 200 OK + Set-Cookie: auth_token= (Max-Age=0)
 ```
 
@@ -94,11 +103,12 @@ graph TD
     MW -- Validates Session in DB --> DB
     MW -- If Valid & Authorized --> Ctrl
 
-    Ctrl -- Asks for Data --> Repo
+    Ctrl -- 1. Checks Room Exists --> Repo
+    Ctrl -- 2. Checks Overlaps --> Repo
     Repo -- SQL Query --> DB
 
     DB -- Raw Data --> Repo
     Repo -- Data --> Ctrl
-    Ctrl -- JSON Response (user data, excluding password) --> Browser
+    Ctrl -- JSON Response (or 409 Conflict) --> Browser
     Browser -- Updates UI --> User
 ```
