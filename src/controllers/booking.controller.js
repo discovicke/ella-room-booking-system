@@ -6,6 +6,11 @@
 import * as bookingRepo from "../repositories/booking.repo.js";
 
 /**
+ * /**
+ *  GET /api/bookings
+ *  - Students: only their own bookings
+ *  - Teachers/Admins: all bookings, or can filter with ?userId=
+ *
  * Retrieves all bookings from the database.
  *
  * @returns {Response} a response with a 200 status and a JSON body containing all bookings.
@@ -13,7 +18,27 @@ import * as bookingRepo from "../repositories/booking.repo.js";
  */
 export const listBookings = (req, res) => {
   try {
-    const bookings = bookingRepo.getAllBookings();
+    const authUser = req.user;
+    if (!authUser) return res.sendStatus(401);
+
+    // If student -> only their bookings
+    if (authUser.role === "student") {
+      const bookings = bookingRepo.getAllBookingsByUserWithRoom(authUser.id);
+      return res.status(200).json(bookings);
+    }
+
+    // Teachers/Admins can optionally filter by query param
+    if (req.query.userId) {
+      const userId = Number(req.query.userId);
+      if (!Number.isInteger(userId) || userId <= 0) {
+        return res.status(400).json({ error: "Invalid userId" });
+      }
+      const bookings = bookingRepo.getAllBookingsByUserWithRoom(userId);
+      return res.status(200).json(bookings);
+    }
+
+    // Default: return all bookings (for teachers/admins)
+    const bookings = bookingRepo.getAllBookingsWithRoom();
     return res.status(200).json(bookings);
   } catch (err) {
     console.error("Error fetching bookings:", err);
@@ -111,15 +136,27 @@ export const deleteBooking = (req, res) => {
   }
 };
 
+/**
+ * GET /api/bookings/user/:userId
+ * - Students: may only fetch their own bookings (403 otherwise)
+ * - Teachers/Admins: may fetch any user's bookings
+ */
 export const listBookingsByUser = (req, res) => {
   try {
+    const authUser = req.user;
+    if (!authUser) return res.sendStatus(401);
+
     const userId = Number(req.params.userId);
-    if (!userId) {
-      console.error("Missing or invalid userId")
-      return res.sendStatus(400);
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(400).json({ error: "Missing or invalid userId" });
     }
 
-    const bookings = bookingRepo.getAllBookingsByUser(userId);
+    // Prevent students from viewing others' bookings
+    if (authUser.role === "student" && authUser.id !== userId) {
+      return res.status(403).json({ error: "Access denied." });
+    }
+
+    const bookings = bookingRepo.getAllBookingsByUserWithRoom(userId);
     return res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching bookings by user:", error);

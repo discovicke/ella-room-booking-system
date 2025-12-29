@@ -122,10 +122,21 @@ function onclickUnBook(bookingId){
 
 async function loadBookings() {
   try {
-    const bookings = await API.getBookings();
+    const stored = localStorage.getItem("user");
+    let bookings;
+
+    if (stored) {
+      const user = JSON.parse(stored);
+      const userId = user && user.id ? user.id : null;
+      bookings = userId
+          ? await API.getBookingsByUser(userId)
+          : await API.getBookings();
+    } else {
+      bookings = await API.getBookings();
+    }
+
     renderBookings(bookings);
     console.log("Användarens bokningar:", bookings);
-
   } catch (err) {
     console.error("Failed to load bookings:", err);
   }
