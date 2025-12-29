@@ -92,19 +92,22 @@ function renderBookings(bookings = []) {
   }
   roomContainer.innerHTML = bookings
   .map((booking) => {
-    const roomLabel = booking.room_number
-    ? `Rum ${booking.room_id}`
-    : `Rum #${booking.room_id}`;
     const startTime = formatDateTime(booking.start_time);
     const endTime = formatDateTime(booking.end_time);
     const status = (booking.status || "väntar").toUpperCase();
+    const statusSwe = status === "CANCELLED" ? "AVBOKAD" : "AKTIV BOKNING";
+    const statusClass = status === "CANCELLED"
+        ? "cancelled"
+        : "active";
     return `
     <article class="booking-card">
-    <h3>${roomLabel} - ${booking.room_location}</h3>
+      <div class="card-header">
+        <h3># ${booking.room_number} - ${booking.room_location}</h3>
+        <span class="status ${statusClass}">${statusSwe}</span>
+      </div>
     <p><strong>Start:</strong> ${startTime}</p>
     <p><strong>Slut:</strong> ${endTime}</p>
     <p class="note"><strong>Anteckning:</strong><em> ${booking.notes || "-"}</em></p>
-    <span class="status ${status.toLowerCase()}">${status}</span>
     <Button class="unbook" data-booking-id="${booking.id}">Avboka</Button>
     </article>
     `;
