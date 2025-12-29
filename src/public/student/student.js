@@ -43,8 +43,8 @@ if (logoutBtn) {
 
 // --- Hämta rum ---
 async function loadRooms() {
-  const rooms = await API.getRooms(true);
-  renderStudentRooms(rooms);
+  cachedRooms = await API.getRooms(true);
+  renderStudentRooms(cachedRooms);
 }
 
 function renderStudentRooms(rooms) {
@@ -70,11 +70,84 @@ function renderStudentRooms(rooms) {
     bookButton.addEventListener("click", () => onclickBookRoom(bookButton.dataset.roomId));
   });
 }
-function onclickBookRoom(bookButton){
 
-  alert(`Bokar rum: ${bookButton}`);
+// modla bokningsfunktion
+const bookModal = document.getElementById("booking-modal");
+const closeModalButton = document.getElementById("modal-close");
+const modalRoomLabel = document.getElementById("modal-room-label");
+const bookingForm = document.getElementById("booking-form");
+let selectedRoomId = null;
+
+function openbookingModal(room) {
+  selectedRoomId = room.id;
+  modalRoomLabel.textContent = `Rum ID: ${room.room_number} - ${room.room_location}`;
+  bookModal.hidden = false;
+  bookModal.style.display = "block";
+}
+
+function closebookingModal() {
+  bookModal.hidden = true;
+  bookingForm.reset();
+  selectedRoomId = null;
+}
+
+closeModalButton?.addEventListener("click", closebookingModal);
+bookModal?.addEventListener("click", (event) => {
+  if (event.target === bookModal) {
+    closebookingModal();
+  }
+});
+bookingForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!selectedRoomId) return;
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.id) {
+    alert("Användare inte inloggad.");
+    return;
+  }
+  const formData = new FormData(bookingForm);
+  const bookingTime = {
+    room_id: selectedRoomId,
+    user_id: user.id,
+    start_time: formData.get("start_time"),
+    end_time: formData.get("end_time"),
+    notes: formData.get("notes"),
+    
+  };
+  if (!bookingTime.start_time || !bookingTime.end_time) {
+    alert("Vänligen fyll i både start- och sluttid för bokningen.");
+    return;
+  }
+  
+  try {
+    await API.createBooking(bookingTime);
+    await loadBookings();
+  }catch (err) {
+    console.error("Booking failed:", err);
+    alert("Bokningen misslyckades. Försök igen.");
+  }
+  closebookingModal();
+});
+let cachedRooms = [];
+
+function onclickBookRoom(room_id){
+  const room =  cachedRooms.find((r) => String(r.id) === String(room_id));
+  if (room) {openbookingModal(room);
+  }
 
 }
+
+
+
+
+
+
+
+// function onclickBookRoom(bookButton){
+  
+//   alert(`Bokar rum: ${bookButton}`);
+
+// }
 function formatDateTime(value) {
   if (!value) return "-";
   return new Date(value).toLocaleString("sv-SE", {
