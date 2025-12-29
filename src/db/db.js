@@ -6,8 +6,6 @@
  * - Initialize the connection to 'identifier.sqlite'.
  * - Enable Foreign Key enforcement (PRAGMA foreign_keys = ON).
  * - Handle connection errors (log error and exit).
- * * RELATION:
- * - Imported by: 'src/db/query.js'
  */
 
 import { DatabaseSync } from "node:sqlite";
