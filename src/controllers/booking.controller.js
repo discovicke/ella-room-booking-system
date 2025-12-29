@@ -138,3 +138,19 @@ export const deleteBooking = (req, res) => {
     res.status(500).json({ error: "Failed to delete booking" });
   }
 };
+
+export const listBookingsByUser = (req, res) => {
+  try {
+    const userId = Number(req.params.userId);
+    if (!userId) {
+      console.error("Missing or invalid userId")
+      return res.sendStatus(400);
+    }
+
+    const bookings = bookingRepo.getAllBookingsByUser(userId);
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching bookings by user:", error);
+    return res.sendStatus(500);
+  }
+};

@@ -59,6 +59,10 @@ const API = {
     return await apiFetch(url);
   },
 
+  async getBookingsByUser(userId) {
+    return await apiFetch(`/api/bookings/user/${userId}`);
+  }
+
   // TODO: Implement getRoom(id) - GET /api/rooms/:id
   // TODO: Implement createRoom(roomData) - POST /api/rooms
   // TODO: Implement updateRoom(id, roomData) - PUT /api/rooms/:id
