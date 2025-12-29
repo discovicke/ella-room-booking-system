@@ -3,7 +3,7 @@
  * PURPOSE: The "Start Button" for the application.
  */
 import app from "./app.js";
-import { cleanupExpiredSessions } from "./repositories/session.repo.js";
+import { cleanupExpiredSessions } from "./modules/auth/session.repo.js";
 
 const PORT = 80;
 

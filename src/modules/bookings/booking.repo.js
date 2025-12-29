@@ -3,7 +3,7 @@
  * * PURPOSE: Handles access to the "bookings" table.
  */
 
-import { db } from "../db/db.js";
+import { db } from "../../db/db.js";
 
 // --- CREATE ---
 
@@ -67,21 +67,25 @@ export const deleteBookingById = (bookingId) => {
 
 export const getAllBookingsWithRoom = () => {
   return db
-    .prepare(`
+    .prepare(
+      `
       SELECT b.*, r.room_number AS room_number, r.location AS room_location
       FROM bookings b
       LEFT JOIN rooms r ON b.room_id = r.id
-    `)
+    `
+    )
     .all();
 };
 
 export const getAllBookingsByUserWithRoom = (userId) => {
   return db
-    .prepare(`
+    .prepare(
+      `
       SELECT b.*, r.room_number AS room_number, r.location AS room_location
       FROM bookings b
       LEFT JOIN rooms r ON b.room_id = r.id
       WHERE b.user_id = ?
-    `)
+    `
+    )
     .all(userId);
 };

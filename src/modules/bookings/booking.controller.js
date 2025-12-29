@@ -3,7 +3,7 @@
  * * PURPOSE: Handles requests to create or view bookings.
  */
 
-import * as bookingRepo from "../repositories/booking.repo.js";
+import * as bookingRepo from "./booking.repo.js";
 
 /**
  * /**

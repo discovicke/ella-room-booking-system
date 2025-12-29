@@ -2,10 +2,10 @@
  * ⚙️ APP CONFIGURATION
  */
 import express from "express";
-import bookingsRouter from "./routes/booking.routes.js";
-import roomsRouter from "./routes/room.routes.js";
-import authRouter from "./routes/auth.routes.js";
-import userRouter from "./routes/user.routes.js";
+import authRouter from "./modules/auth/auth.routes.js";
+import userRouter from "./modules/users/user.routes.js";
+import roomsRouter from "./modules/rooms/room.routes.js";
+import bookingsRouter from "./modules/bookings/booking.routes.js";
 import { cookieParser } from "./middleware/cookieParser.middleware.js";
 import { authenticate } from "./middleware/authentication.middleware.js";
 import { authorize } from "./middleware/authorization.middleware.js";
@@ -64,8 +64,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", authenticate, userRouter);
 app.use("/api/rooms", authenticate, roomsRouter);
 app.use("/api/bookings", authenticate, bookingsRouter);
-
-
 
 // ==========================
 // 🔀 5. REDIRECTS & ERRORS

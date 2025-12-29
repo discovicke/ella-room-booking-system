@@ -11,9 +11,8 @@
  * - Imported by: 'src/routes/rooms.routes.js'
  */
 
-import * as roomRepo from "../repositories/room.repo.js";
-import { mapRoomTypeToDisplay } from "../utils/room.utils.js";
-
+import * as roomRepo from "./room.repo.js";
+import { mapRoomTypeToDisplay } from "./room.utils.js";
 
 /**
  * GET /rooms
@@ -21,11 +20,14 @@ import { mapRoomTypeToDisplay } from "../utils/room.utils.js";
  */
 export const listRooms = (req, res) => {
   try {
-    const includeAssets = req.query.includeAssets === 'true';
+    const includeAssets = req.query.includeAssets === "true";
     const rooms = includeAssets
-        ? roomRepo.getAllRoomsWithAssets()
-        : roomRepo.getAllRooms();
-    const mapped = rooms.map(r => ({ ...r, display_type: mapRoomTypeToDisplay(r.type) }));
+      ? roomRepo.getAllRoomsWithAssets()
+      : roomRepo.getAllRooms();
+    const mapped = rooms.map((r) => ({
+      ...r,
+      display_type: mapRoomTypeToDisplay(r.type),
+    }));
     return res.status(200).json(mapped);
   } catch (err) {
     console.error("Error fetching rooms:", err);
@@ -35,14 +37,21 @@ export const listRooms = (req, res) => {
 
 export const createRoom = (req, res) => {
   try {
-    const { room_number, type, capacity, location, floor_number } = req.body || {};
+    const { room_number, type, capacity, location, floor_number } =
+      req.body || {};
     if (!room_number || !type) {
       return res.status(400).send();
     }
-    roomRepo.createRoom({ room_number, type, capacity, location, floor_number });
+    roomRepo.createRoom({
+      room_number,
+      type,
+      capacity,
+      location,
+      floor_number,
+    });
     return res.status(201).send();
   } catch (err) {
-    console.error('Error creating room:', err);
+    console.error("Error creating room:", err);
     return res.sendStatus(500);
   }
 };
@@ -54,10 +63,10 @@ export const getRoom = (req, res) => {
       return res.sendStatus(400);
     }
 
-    const includeAssets = req.query.includeAssets === 'true';
+    const includeAssets = req.query.includeAssets === "true";
     const room = includeAssets
-        ? roomRepo.getRoomWithAssets(id)
-        : roomRepo.getRoomById(id);
+      ? roomRepo.getRoomWithAssets(id)
+      : roomRepo.getRoomById(id);
 
     if (!room) return res.sendStatus(404);
 
@@ -69,22 +78,22 @@ export const getRoom = (req, res) => {
   }
 };
 
-
 export const updateRoom = (req, res) => {
   try {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0) {
-      return res.sendStatus(400)
+      return res.sendStatus(400);
     }
 
-    const { room_number, type, capacity, location, floor_number } = req.body || {};
+    const { room_number, type, capacity, location, floor_number } =
+      req.body || {};
 
     if (
-        room_number === undefined &&
-        type === undefined &&
-        capacity === undefined &&
-        location === undefined &&
-        floor_number === undefined
+      room_number === undefined &&
+      type === undefined &&
+      capacity === undefined &&
+      location === undefined &&
+      floor_number === undefined
     ) {
       return res.sendStatus(400);
     }
@@ -174,9 +183,7 @@ export const updateRoomAsset = (req, res) => {
 
     roomRepo.updateRoomAsset(assetId, {
       room_id: newRoomId,
-      asset: asset !== undefined
-          ? asset
-          : existing.asset
+      asset: asset !== undefined ? asset : existing.asset,
     });
 
     return res.sendStatus(200);
@@ -207,6 +214,3 @@ export const deleteRoomAsset = (req, res) => {
     return res.sendStatus(500);
   }
 };
-
-
-

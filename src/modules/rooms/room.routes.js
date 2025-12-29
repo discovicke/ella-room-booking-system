@@ -18,10 +18,10 @@
 // =======================================
 
 import express from "express";
-import * as roomController from "../controllers/room.controller.js";
-import { authenticate } from "../middleware/authentication.middleware.js";
-import { authorize } from "../middleware/authorization.middleware.js";
-import { ROLES } from "../constants/roles.js";
+import * as roomController from "./room.controller.js";
+import { authenticate } from "../../middleware/authentication.middleware.js";
+import { authorize } from "../../middleware/authorization.middleware.js";
+import { ROLES } from "../../constants/roles.js";
 
 const roomsRouter = express.Router();
 

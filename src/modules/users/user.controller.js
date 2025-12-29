@@ -10,8 +10,8 @@
  * - Imports: 'src/repositories/user.repo.js', 'src/utils/security.utils.js'
  */
 
-import * as userRepo from "../repositories/user.repo.js";
-import { hashPassword } from "../utils/security.utils.js";
+import * as userRepo from "../../modules/users/user.repo.js";
+import { hashPassword } from "../../utils/security.utils.js";
 
 export const createUser = async (req, res) => {
   try {

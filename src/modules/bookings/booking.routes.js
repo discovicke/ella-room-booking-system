@@ -4,8 +4,8 @@
  */
 
 import express from "express";
-import * as bookingController from "../controllers/booking.controller.js";
-import { authenticate } from "../middleware/authentication.middleware.js";
+import * as bookingController from "./booking.controller.js";
+import { authenticate } from "../../middleware/authentication.middleware.js";
 
 const bookingsRouter = express.Router();
 
@@ -13,7 +13,11 @@ const bookingsRouter = express.Router();
 bookingsRouter.get("/", authenticate, bookingController.listBookings);
 
 // GET /api/bookings/user/:userId - Get bookings for a specific user
-bookingsRouter.get("/user/:userId", authenticate, bookingController.listBookingsByUser);
+bookingsRouter.get(
+  "/user/:userId",
+  authenticate,
+  bookingController.listBookingsByUser
+);
 
 // POST /api/bookings - Create a new booking (All authenticated users)
 bookingsRouter.post("/", authenticate, bookingController.createBooking);

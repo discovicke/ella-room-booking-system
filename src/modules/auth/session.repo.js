@@ -13,7 +13,7 @@
  * - Imported by: 'src/controllers/auth.controller.js', 'src/middleware/authentication.middleware.js', 'src/server.js'
  */
 
-import { db } from "../db/db.js";
+import { db } from "../../db/db.js";
 
 /**
  * Creates a new session in the database.

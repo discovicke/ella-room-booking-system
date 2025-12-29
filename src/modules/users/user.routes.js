@@ -1,12 +1,8 @@
 import express from "express";
-import {
-  createUser,
-  getAllUsers,
-  getUserById,
-} from "../controllers/user.controller.js";
-import { authenticate } from "../middleware/authentication.middleware.js";
-import { authorize } from "../middleware/authorization.middleware.js";
-import { ROLES } from "../constants/roles.js";
+import { createUser, getAllUsers, getUserById } from "./user.controller.js";
+import { authenticate } from "../../middleware/authentication.middleware.js";
+import { authorize } from "../../middleware/authorization.middleware.js";
+import { ROLES } from "../../constants/roles.js";
 
 const userRouter = express.Router();
 

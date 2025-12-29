@@ -9,7 +9,7 @@
  * - Imports: 'src/db/query.js'
  * - Imported by: 'src/controllers/auth.controller.js'
  */
-import {db} from "../db/db.js";
+import { db } from "../../db/db.js";
 
 export function getAllUsers() {
   const query = `SELECT * FROM users`;
@@ -49,13 +49,15 @@ export function createUser(user) {
     INSERT INTO users (email, password_hash, role, Display_name, class)
     VALUES (?, ?, ?, ?, ?)
   `;
-  const result = db.prepare(query).run(
-    user.email,
-    user.password_hash,
-    user.role,
-    user.Display_name,
-    user.class
-  );
+  const result = db
+    .prepare(query)
+    .run(
+      user.email,
+      user.password_hash,
+      user.role,
+      user.Display_name,
+      user.class
+    );
   return result.lastInsertRowid;
 }
 export function updateUser(id, user) {
@@ -64,14 +66,16 @@ export function updateUser(id, user) {
     SET email = ?, password_hash = ?, role = ?, Display_name = ?, class = ?
     WHERE id = ?
   `;
-  const result = db.prepare(query).run(
-    user.email,
-    user.password_hash,
-    user.role,
-    user.Display_name,
-    user.class,
-    id
-  );
+  const result = db
+    .prepare(query)
+    .run(
+      user.email,
+      user.password_hash,
+      user.role,
+      user.Display_name,
+      user.class,
+      id
+    );
   return result.changes;
 }
 
@@ -82,8 +86,8 @@ export function deleteUser(id) {
 }
 // console.log(deleteUser(7))
 
-console.log('TESTING USER OPERATIONS\n');
-console.log('='.repeat(50));
+console.log("TESTING USER OPERATIONS\n");
+console.log("=".repeat(50));
 
 // // ==================
 // // TEST 1: CREATE USER
@@ -97,11 +101,11 @@ console.log('='.repeat(50));
 //         Display_name: 'Test User 99',
 //         class: 'TE4'
 //     };
-    
+
 //     const userId = createUser(newUser);
 //     console.log('User created successfully');
 //     console.log('Created user ID:', userId);
-    
+
 //     if (userId !== 99) {
 //         console.log('WARNING: User ID is', userId, 'not 99. Adjusting test to use actual ID.');
 //     }
@@ -116,7 +120,7 @@ console.log('='.repeat(50));
 // try {
 //     const selectStmt = db.prepare('SELECT * FROM users WHERE email = ?');
 //     const user = selectStmt.get('testuser99@example.com');
-    
+
 //     if (user) {
 //         console.log('User found:', user);
 //         console.log('Email:', user.email);
@@ -139,7 +143,7 @@ console.log('='.repeat(50));
 //     const selectStmt = db.prepare('SELECT id FROM users WHERE email = ?');
 //     const user = selectStmt.get('testuser99@example.com');
 //     const userId = user.id;
-    
+
 //     const updatedUser = {
 //         email: 'updated99@example.com',
 //         password: 'new_hashed_password_456',
@@ -147,7 +151,7 @@ console.log('='.repeat(50));
 //         Display_name: 'Updated Test User 99',
 //         class: 'Staff'
 //     };
-    
+
 //     const changes = updateUser(userId, updatedUser);
 //     console.log('User updated successfully');
 //     console.log('Rows changed:', changes);
@@ -162,7 +166,7 @@ console.log('='.repeat(50));
 // try {
 //     const selectStmt = db.prepare('SELECT * FROM users WHERE email = ?');
 //     const user = selectStmt.get('updated99@example.com');
-    
+
 //     if (user) {
 //         console.log('Updated user:', user);
 //         console.log('Email changed:', user.email === 'updated99@example.com' ? 'YES' : 'NO');
@@ -185,10 +189,10 @@ console.log('='.repeat(50));
 //     const selectStmt = db.prepare('SELECT id FROM users WHERE email = ?');
 //     const user = selectStmt.get('updated99@example.com');
 //     const userId = user.id;
-    
+
 //     const deleteStmt = db.prepare('DELETE FROM users WHERE id = ?');
 //     const result = deleteStmt.run(userId);
-    
+
 //     console.log('User deleted successfully');
 //     console.log('Rows deleted:', result.changes);
 // } catch (error) {
@@ -202,7 +206,7 @@ console.log('='.repeat(50));
 // try {
 //     const selectStmt = db.prepare('SELECT * FROM users WHERE email = ?');
 //     const user = selectStmt.get('updated99@example.com');
-    
+
 //     if (user) {
 //         console.log('FAIL: User still exists:', user);
 //     } else {
@@ -212,7 +216,6 @@ console.log('='.repeat(50));
 // } catch (error) {
 //     console.log('ERROR verifying deletion:', error.message);
 // }
- 
 
 // console.log(finderUserByName('Marcus Lööv'));
 // console.log(findUserByClass('net25'));

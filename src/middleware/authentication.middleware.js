@@ -1,5 +1,5 @@
-import { validateSession } from "../repositories/session.repo.js";
-import { getUserById } from "../repositories/user.repo.js";
+import { validateSession } from "../modules/auth/session.repo.js";
+import { getUserById } from "../modules/users/user.repo.js";
 
 /**
  * 🛡️ AUTHENTICATION MIDDLEWARE

@@ -14,9 +14,12 @@
  * - Used by: auth routes
  */
 
-import { findUserByEmail } from "../repositories/user.repo.js";
-import { verifyPassword, generateToken } from "../utils/security.utils.js";
-import { createSession, deleteSession } from "../repositories/session.repo.js";
+import { findUserByEmail } from "../../modules/users/user.repo.js";
+import { verifyPassword, generateToken } from "../../utils/security.utils.js";
+import {
+  createSession,
+  deleteSession,
+} from "../../modules/auth/session.repo.js";
 
 /**
  * Handles user login by verifying credentials and generating a session token.
