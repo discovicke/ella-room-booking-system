@@ -1,5 +1,6 @@
 // Frontend API layer
 
+
 /**
  * Helper to make authenticated API calls.
  * Browser automatically sends the 'auth_token' cookie.
@@ -30,14 +31,18 @@ async function apiFetch(url, options = {}) {
     if (response.status === 403) throw new Error("Access denied.");
 
     const error = await response
-      .json()
-      .catch(() => ({ error: "Request failed" }));
+        .json()
+        .catch(() => ({ error: "Request failed" }));
     throw new Error(error.error || "Request failed");
   }
 
-  return response.status === 204
-    ? null
-    : response.json();
+  // If response is empty (204 No Content, 201 Created without body) or not JSON, return null
+  const contentType = response.headers.get("content-type") || "";
+  if (response.status === 204 || response.status === 201 || !contentType.includes("application/json")) {
+    return null;
+  }
+
+  return response.json();
 }
 
 const API = {
@@ -54,13 +59,11 @@ const API = {
 
   async getRooms(includeAssets = false) {
     const url = includeAssets
-      ? "/api/rooms?includeAssets=true"
-      : "/api/rooms";
+        ? "/api/rooms?includeAssets=true"
+        : "/api/rooms";
     return await apiFetch(url);
   },
   async getBookings() {
-
-
     return await apiFetch("/api/bookings");
   },
 
@@ -68,18 +71,14 @@ const API = {
     return await apiFetch(`/api/bookings/user/${userId}`);
   },
 
-  async getRooms(includeAssets = false) {
-    const url = includeAssets ? "/api/rooms?includeAssets=true" : "/api/rooms";
-    return await apiFetch(url);
-  },
-
   async createBooking(bookingData) {
-    console.log ("Creating booking", bookingData);
+    console.log("Creating booking", bookingData);
     return await apiFetch("/api/bookings", {
       method: "POST",
       body: JSON.stringify(bookingData),
     });
   },
+
 
 
     // TODO: Implement getRoom(id) - GET /api/rooms/:id
