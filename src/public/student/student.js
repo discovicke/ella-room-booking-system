@@ -76,29 +76,52 @@ function renderStudentRooms(rooms) {
 }
 
 // --- Modal bokningsfunktion ---
-const bookModal = document.getElementById("booking-modal");
+const modal = document.getElementById("booking-modal");
 const closeModalButton = document.getElementById("modal-close");
 const modalRoomLabel = document.getElementById("modal-room-label");
 const bookingForm = document.getElementById("booking-form");
+const modalContent = modal?.querySelector('.modal-content');
 let selectedRoomId = null;
 
 function openbookingModal(room) {
-  selectedRoomId = room.id;
-  modalRoomLabel.textContent = `Rum ${room.room_number} - ${room.location}`;
-  bookModal.hidden = false;
+    selectedRoomId = room.id;
+    modalRoomLabel.textContent = `Rum ${room.room_number} - ${room.location}`;
+    if (!modal) return;
+    modal.removeAttribute('hidden');
+    modal.classList.add('open');
+
+    if (modalContent) {
+        modalContent.classList.remove('pop-in');
+        void modalContent.offsetWidth;
+        modalContent.classList.add('pop-in');
+        setTimeout(() => modalContent.classList.remove('pop-in'), 350);
+    }
 }
 
 function closebookingModal() {
-  bookModal.hidden = true;
-  bookingForm.reset();
-  selectedRoomId = null;
+    if (!modal) return;
+    modal.setAttribute('hidden', '');
+    modal.classList.remove('open');
+    bookingForm?.reset();
+    selectedRoomId = null;
 }
 
-closeModalButton.addEventListener("click", closebookingModal);
-bookModal.addEventListener("click", (event) => {
-  if (event.target === bookModal) {
-    closebookingModal();
-  }
+modal?.addEventListener("click", (event) => {
+    if (event.target !== modal) return;
+    if (!modalContent) return;
+
+    // restart nudge animation to draw attention
+    modalContent.classList.remove('nudge');
+    void modalContent.offsetWidth;
+    modalContent.classList.add('nudge');
+    setTimeout(() => modalContent.classList.remove('nudge'), 300);
+});
+
+closeModalButton?.addEventListener("click", closebookingModal);
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        if (modal && !modal.hidden) closebookingModal();
+    }
 });
 
 
@@ -236,7 +259,7 @@ async function loadBookings() {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    if (bookModal && !bookModal.hidden) {
+    if (modal && !modal.hidden) {
       closebookingModal();
     }
   }
