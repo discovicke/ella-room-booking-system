@@ -513,3 +513,95 @@ html, body {
   }
 }
 
+/* --- Mörkt tema --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* --- Bakgrunder --- */
+    --color-bg-body: #111827;      /* mörk slate */
+    --color-bg-panel: #1F2937;     /* paneler */
+    --color-bg-card: #1E2530;      /* kort */
+    --color-border: #374151;       /* mörkare border */
+
+    /* --- Text --- */
+    --color-text-main: #F3F4F6;    /* ljus text */
+    --color-text-muted: #9CA3AF;   /* ljus-muted */
+    --color-text-on-primary: #F5F5F5;
+
+    /* --- Asset chips --- */
+    --color-asset-bg: #1F2937;
+    --color-asset-text: #E5E7EB;
+    --color-asset-border: #4B5563;
+
+    /* --- Primärfärger (behålls men mörkare surface) --- */
+    --color-primary-surface: #2D1B3A;
+
+    /* --- Statusfärger (behåller dina, men mörkare bakgrunder) --- */
+    --color-success-bg: #064E3B;
+    --color-warning-bg: #78350F;
+    --color-danger-bg: #7F1D1D;
+
+    /* --- Roller --- */
+    --role-student-bg: #064E3B;
+    --role-student-text: #A7F3D0;
+
+    --role-teacher-bg: #3B0764;
+    --role-teacher-text: #E9D5FF;
+
+    --role-admin-bg: #7C2D12;
+    --role-admin-text: #FED7AA;
+  }
+  
+
+  /* Header får mörk bakgrund */
+  .top-header {
+    background-color: var(--color-bg-panel);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Kort & paneler */
+  .panel,
+  .left-panel,
+  .right-panel,
+  .info-panel,
+  .booking-card {
+    background: var(--color-bg-panel);
+    border-color: var(--color-border);
+    box-shadow: 0 2px 6px #00000033;
+    color: var(--color-text-muted);
+  }
+
+  /* Text i kort */
+  .room-card h3,
+  .booking-card h3 {
+    color: var(--color-text-main);
+  }
+
+  .room-card p,
+  .booking-card p {
+    color: var(--color-text-muted);
+  }
+
+  .user-name {
+        color: var(--color-text-muted);
+  }
+  
+  
+  .user-box {
+    background: var(--color-text-muted);
+    color: var(--color-text-on-primary) !important;
+  }
+    
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-active);
+  }
+
+  .stats-box,
+  .benefits-box {
+    background: var(--color-text-muted) !important;
+    color: var(--color-bg-panel) !important;
+
+  }
+
+}
