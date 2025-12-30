@@ -1,5 +1,7 @@
 // Frontend API layer
 
+import { response } from "express";
+
 
 /**
  * Helper to make authenticated API calls.
@@ -31,8 +33,8 @@ async function apiFetch(url, options = {}) {
     if (response.status === 403) throw new Error("Access denied.");
 
     const error = await response
-        .json()
-        .catch(() => ({ error: "Request failed" }));
+      .json()
+      .catch(() => ({ error: "Request failed" }));
     throw new Error(error.error || "Request failed");
   }
 
@@ -59,8 +61,8 @@ const API = {
 
   async getRooms(includeAssets = false) {
     const url = includeAssets
-        ? "/api/rooms?includeAssets=true"
-        : "/api/rooms";
+      ? "/api/rooms?includeAssets=true"
+      : "/api/rooms";
     return await apiFetch(url);
   },
   async getBookings() {
@@ -79,22 +81,35 @@ const API = {
     });
   },
 
+  async deleteBooking(bookingId) {
+    const response = await apiFetch(`/api/bookings/${bookingId}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+    
+      if (!response.ok) {
+        throw new Error("Kunde inte avboka rummet.");
+      }
+
+      return response.json();
+    },
 
 
-    // TODO: Implement getRoom(id) - GET /api/rooms/:id
-    // TODO: Implement createRoom(roomData) - POST /api/rooms
-    // TODO: Implement updateRoom(id, roomData) - PUT /api/rooms/:id
-    // TODO: Implement deleteRoom(id) - DELETE /api/rooms/:id
+  // TODO: Implement getRoom(id) - GET /api/rooms/:id
+  // TODO: Implement createRoom(roomData) - POST /api/rooms
+  // TODO: Implement updateRoom(id, roomData) - PUT /api/rooms/:id
+  // TODO: Implement deleteRoom(id) - DELETE /api/rooms/:id
 
-    // TODO: Implement getBookings() - GET /api/bookings
-    // TODO: Implement createBooking(bookingData) - POST /api/bookings
-    // TODO: Implement updateBooking(id, bookingData) - PUT /api/bookings/:id
-    // TODO: Implement deleteBooking(id) - DELETE /api/bookings/:id
-    // TODO: Implement getBookingsByUser(userId) - GET /api/users/:id/bookings
+  // TODO: Implement getBookings() - GET /api/bookings
+  // TODO: Implement createBooking(bookingData) - POST /api/bookings
+  // TODO: Implement updateBooking(id, bookingData) - PUT /api/bookings/:id
+  // TODO: Implement deleteBooking(id) - DELETE /api/bookings/:id
+  // TODO: Implement getBookingsByUser(userId) - GET /api/users/:id/bookings
 
-    // TODO: Implement getUsers() - GET /api/users
-    // TODO: Implement getUser(id) - GET /api/users/:id
-    // TODO: Implement createUser(userData) - POST /api/users
-  };
+  // TODO: Implement getUsers() - GET /api/users
+  // TODO: Implement getUser(id) - GET /api/users/:id
+  // TODO: Implement createUser(userData) - POST /api/users
+};
 
-  export default API;
+export default API;
