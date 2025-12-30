@@ -183,8 +183,18 @@ function renderBookings(bookings = []) {
     console.log("Rendered bookings");
 }
 
-function onclickUnBook(bookingId) {
-    alert(`Avboka bokning ${bookingId}`);
+async function onclickUnBook(bookingId) {
+    // alert(`Avboka bokning ${bookingId}`);
+    if(!bookingId) return;
+    const confirmed = window.confirm("vill du avboka bokningen?");
+    if(!confirmed) return;
+    try{
+        await API.updateBooking(bookingId, { status: "CANCELLED" });
+        await loadBookings();
+    } catch (err) {
+        console.error("Failed to unbook:", err);
+        alert("Avbokningen misslyckades. Försök igen.");
+    }
 }
 
 async function loadBookings() {
