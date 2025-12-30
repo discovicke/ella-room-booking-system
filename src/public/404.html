@@ -5,32 +5,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>404 - Not Found</title>
-  <link rel="stylesheet" href="/css/styles.css" />
+
   <style>
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      margin-top: 40px;
       background-color: #f4f4f9;
       font-family: sans-serif;
       text-align: center;
-      margin: 0;
     }
 
     .error-container {
       background: white;
-      padding: 40px;
+      padding: 40px; 
       border-radius: 8px;
       box-shadow: 0 4px 6px #0000001a;
       display: flex;
-      /* lägg till */
       flex-direction: column;
-      /* lägg till */
       align-items: center;
-      /* lägg till */
-      gap: 16px;
     }
+
+    .error-container img {
+      width: 300px;
+      height: auto;
+    }
+
 
     h1 {
       font-size: 80px;
@@ -45,7 +46,7 @@
 
     p {
       color: #666;
-      margin-bottom: 20px;
+
     }
 
     button {
@@ -60,6 +61,41 @@
     button:hover {
       background: #6f289b;
     }
+
+    /* Mobilanpassning */
+    @media (max-width: 600px) {
+
+  body {
+    margin-top: 20px; /* lite mindre luft på små skärmar */
+    padding: 0 16px;  /* så att rutan inte trycks utanför */
+  }
+
+  .error-container {
+    padding: 20px; /* mindre padding */
+    gap: 12px;
+  }
+
+  .error-container img {
+    width: 180px; /* mindre bild */
+  }
+
+  h1 {
+    font-size: 48px; /* från 80px → mer mobilvänligt */
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
   </style>
 </head>
 
@@ -67,7 +103,8 @@
   <div class="error-container">
     <h1>404</h1>
     <h2>Hoppsan!</h2>
-    <p>Vår logistikassisten gick vilse i bokningssystemet, sidan kunde ej hittas :(</p>
+    <p>Vår logistikassisten gick vilse i bokningssystemet..</p> 
+    <p>Sidan kunde ej hittas :(</p>
     <img src="assets/ella-404.png" alt="404 img" />
 
     <button onclick="history.back()">Go Back</button>

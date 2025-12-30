@@ -1,57 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>403 - Forbidden</title>
-    <link rel="stylesheet" href="/css/styles.css" />
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f4f4f9;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        text-align: center;
-      }
-      .error-container {
-        background: white;
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px #0000001a;
-        max-width: 400px;
-      }
-      h1 {
-        font-size: 80px;
-        margin: 0;
-        color: #e74c3c;
-      }
-      h2 {
-        margin-top: 0;
-        color: #333;
-      }
-      p {
-        color: #666;
-        margin-bottom: 20px;
-      }
-      button {
-        background: #9236cb;
-        color: white;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="error-container">
-      <h1>403</h1>
-      <h2>Access Denied</h2>
-      <p>You don't have permission to view this page.</p>
-      <img src="../assets/ella-403.png" alt="403 forbidden" />
-      <button onclick="history.back()">Go Back</button>
-    </div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>403 - Forbidden</title>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+      background-color: #f4f4f9;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .error-container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px #0000001a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .error-container img {
+      width: 300px;
+      height: auto;
+    }
+
+    h1 {
+      font-size: 80px;
+      margin: 0;
+      color: #e74c3c;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #9236cb;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #6f289b;
+    }
+
+    /* Mobilanpassning */
+    @media (max-width: 600px) {
+
+  body {
+    margin-top: 20px; /* lite mindre luft på små skärmar */
+    padding: 0 16px;  /* så att rutan inte trycks utanför */
+  }
+
+  .error-container {
+    padding: 20px; /* mindre padding */
+    gap: 12px;
+  }
+
+  .error-container img {
+    width: 180px; /* mindre bild */
+  }
+
+  h1 {
+    font-size: 48px; /* från 80px → mer mobilvänligt */
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="error-container">
+    <h1>403</h1>
+    <h2>Åtkomst nekad</h2>
+    <p>Du står tyvärr inte på VIP-listan :(</p>
+    <img src="./assets/ella-403.png" alt="403 forbidden" />
+    <button onclick="history.back()">Go Back</button>
+  </div>
+</body>
+
 </html>
