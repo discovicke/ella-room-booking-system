@@ -61,6 +61,42 @@
     button:hover {
       background: #6f289b;
     }
+
+    /* Mobilanpassning */
+    @media (max-width: 600px) {
+
+  body {
+    margin-top: 20px; /* lite mindre luft på små skärmar */
+    padding: 0 16px;  /* så att rutan inte trycks utanför */
+  }
+
+  .error-container {
+    padding: 20px; /* mindre padding */
+    gap: 12px;
+  }
+
+  .error-container img {
+    width: 180px; /* mindre bild */
+  }
+
+  h1 {
+    font-size: 48px; /* från 80px → mer mobilvänligt */
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
   </style>
 </head>
 
