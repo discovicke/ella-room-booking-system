@@ -1,4 +1,3 @@
-// Get all rooms
 import API from "../api/api.js";
 
 // --- Hämta inloggad användare ---
@@ -223,7 +222,7 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("DOMContentLoaded", () => {
     loadUserFromLocalStorage();
-    loadRooms(); // eller loadTeacherData(), loadAdminData()
+    loadRooms(); 
     loadBookings();
 
 });
