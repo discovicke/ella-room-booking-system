@@ -1,4 +1,5 @@
 import API from "../api/api.js";
+import {showError, showSuccess} from "../utils/toast.js";
 
 // --- Hämta inloggad användare ---
 function loadUserFromLocalStorage() {
@@ -15,7 +16,8 @@ function loadUserFromLocalStorage() {
 
   document.getElementById("username").textContent = displayname;
 
-  console.log(displayname);
+    showSuccess("Inloggad som " + displayname, { title: "Välkommen!" })
+    console.log(displayname);
 
   const roleEl = document.getElementById("user-role");
   roleEl.textContent = capitalize(userobject.role);
@@ -99,35 +101,38 @@ bookModal.addEventListener("click", (event) => {
   }
 });
 
-bookingForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!selectedRoomId) return;
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user || !user.id) {
-    alert("Användare inte inloggad.");
-    return;
-  }
-  const formData = new FormData(bookingForm);
-  const bookingTime = {
-    room_id: selectedRoomId,
-    user_id: user.id,
-    start_time: formData.get("start_time"),
-    end_time: formData.get("end_time"),
-    notes: formData.get("notes"),
-  };
-  if (!bookingTime.start_time || !bookingTime.end_time) {
-    alert("Vänligen fyll i både start- och sluttid för bokningen.");
-    return;
-  }
 
-  try {
-    await API.createBooking(bookingTime);
-    await loadBookings();
-  } catch (err) {
-    console.error("Booking failed:", err);
-    alert("Bokningen misslyckades. Försök igen.");
-  }
-  closebookingModal();
+bookingForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!selectedRoomId) return;
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+        showError("Användare inte inloggad.");
+        return;
+    }
+    const formData = new FormData(bookingForm);
+    const bookingTime = {
+        room_id: selectedRoomId,
+        user_id: user.id,
+        start_time: formData.get("start_time"),
+        end_time: formData.get("end_time"),
+        notes: formData.get("notes"),
+
+    };
+    if (!bookingTime.start_time || !bookingTime.end_time) {
+        showError("Vänligen fyll i både start- och sluttid för bokningen.", { title: "Felaktigt tidsintervall" })
+        return;
+    }
+
+    try {
+        await API.createBooking(bookingTime);
+        showSuccess("Du har bokat rum # " + bookingTime.room_id , { title: "Bokningen har skapats!" })
+        await loadBookings();
+    } catch (err) {
+        console.error("Booking failed:", err);
+        showError(err.message, {title: "Bokning misslyckades"})
+    }
+    closebookingModal();
 });
 let cachedRooms = [];
 
@@ -147,20 +152,24 @@ function formatDateTime(value) {
 }
 
 function renderBookings(bookings = []) {
-  const roomContainer = document.querySelector(".booking-scroll");
-  if (!roomContainer) return;
-  if (!bookings.length) {
-    roomContainer.innerHTML = "<p>Inga bokningar hittades.</p>";
-    return;
-  }
-  roomContainer.innerHTML = bookings
-    .map((booking) => {
-      const startTime = formatDateTime(booking.start_time);
-      const endTime = formatDateTime(booking.end_time);
-      const status = (booking.status || "väntar").toUpperCase();
-      const statusSwe = status === "CANCELLED" ? "AVBOKAD" : "AKTIV BOKNING";
-      const statusClass = status === "CANCELLED" ? "cancelled" : "active";
-      return `
+    const roomContainer = document.querySelector(".booking-scroll");
+    if (!roomContainer) return;
+    if (!bookings.length) {
+        roomContainer.innerHTML = "<p>Inga bokningar hittades.</p>";
+        return;
+    }
+    roomContainer.innerHTML = bookings
+        .map((booking) => {
+            const startTime = formatDateTime(booking.start_time);
+            const endTime = formatDateTime(booking.end_time);
+            const status = (booking.status || "väntar").toUpperCase();
+            const statusSwe = status === "CANCELLED"
+                ? "AVBOKAD"
+                : "AKTIV BOKNING";
+            const statusClass = status === "CANCELLED"
+                ? "cancelled"
+                : "active";
+            return `
     <article class="booking-card">
       <div class="card-header">
         <h3># ${booking.room_number} - ${booking.room_location}</h3>
@@ -198,7 +207,7 @@ async function onclickUnBook(bookingId) {
     await loadBookings();
   } catch (err) {
     console.error("Failed to unbook:", err);
-    alert("Avbokningen misslyckades. Försök igen.");
+      showError("Försök igen.", {title: "Avbokning misslyckades"})
   }
 }
 
@@ -231,6 +240,7 @@ document.addEventListener("keydown", (event) => {
     }
   }
 });
+
 
 window.addEventListener("DOMContentLoaded", () => {
   loadUserFromLocalStorage();

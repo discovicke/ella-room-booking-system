@@ -24,6 +24,7 @@ app.use("/js", express.static("src/public/js"));
 app.use("/assets", express.static("src/public/assets"));
 app.use("/constants", express.static("src/constants"));
 app.use("/api", express.static("src/public/api"));
+app.use("/utils", express.static("src/public/utils"))
 
 // ==========================
 // 🔓 2. PUBLIC PAGES

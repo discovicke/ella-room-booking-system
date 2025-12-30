@@ -1,6 +1,6 @@
 import API from "../api/api.js";
 import {ROLES} from "../../constants/roles.js";
-
+import { showToast, showSuccess, showError, showInfo } from '../utils/toast.js';
 
 const loginForm = document.getElementById("loginForm");
 
@@ -34,7 +34,7 @@ if (!loginForm) {
         });
 
         if (hasError) {
-            showError("Ange både email och lösenord");
+            showError("Ange både email och lösenord", { title: "Felaktiga inloggningsuppgifter"} );
             return;
         }
 
@@ -48,7 +48,9 @@ if (!loginForm) {
             // Successful login
             localStorage.removeItem("token");
             localStorage.setItem("user", JSON.stringify(data.user));
+            setTimeout(() => {
             redirectToDashboard(data.user.role);
+            }, 400)
         } catch (error) {
             // Mark both inputs as error and animate
             inputs.forEach((input) => {
@@ -56,7 +58,7 @@ if (!loginForm) {
                 triggerErrorOnGroup(group);
             });
 
-            showError(error?.message || "Inloggning misslyckades");
+            showError(error, {title: "Inloggning misslyckades"});
             submitButton.disabled = false;
             submitButton.textContent = originalText;
             submitButton.style.opacity = "";
