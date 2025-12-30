@@ -562,8 +562,7 @@ html, body {
   .panel,
   .left-panel,
   .right-panel,
-  .info-panel,
-  .booking-card {
+  .info-panel {
     background: var(--color-bg-panel);
     border-color: var(--color-border);
     box-shadow: 0 2px 6px #00000033;
