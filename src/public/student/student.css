@@ -1,6 +1,6 @@
 /* --- STUDENT LAYOUT --- */
 
-.modal {
+.modal-backdrop {
     position: fixed;
     inset: 0;
     margin: 0;
@@ -13,8 +13,25 @@
     box-sizing: border-box;
 }
 
-.modal[hidden] { display: none; }
-.modal:not([hidden]) { display: flex; }
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(31, 41, 55, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
 
 .modal-content {
     background: #fff;
@@ -24,11 +41,33 @@
     padding: 20px;
     max-width: 720px;
     width: 100%;
+    transform: scale(0.9) translateY(-20px);
+    transition: transform 0.4s var(--ease-elastic), opacity 0.3s ease;
+    opacity: 0;
     max-height: calc(100vh - 80px);
     overflow: auto;
     position: relative;
     box-sizing: border-box;
 }
+
+.modal-backdrop.open .modal-content {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.modal-content.nudge {
+    animation: nudge 0.3s ease-in-out;
+}
+
+.modal-content.pop-in {
+    animation: pop-in-modal 0.35s;
+    animation-fill-mode: both;
+}
+
+.modal[hidden] { display: none; }
+.modal:not([hidden]) { display: flex; }
+
+
 
 
 .modal-content h3 {
