@@ -34,8 +34,8 @@
 }
 
 .modal-content {
-    background: #fff;
-    border: 1px solid #e0e0e0;
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     box-shadow: 0 2px 6px #0000000a;
     padding: 20px;
@@ -71,7 +71,7 @@
 
 
 .modal-content h3 {
-    color: #9036c8;
+    color: var(--color-primary);
     margin: 0 0 8px;
     font-size: 18px;
 }
@@ -79,14 +79,14 @@
 .modal-content p {
     margin: 4px 0;
     font-size: 14px;
-    color: #555;
+    color: var(--color-text-muted);
 }
 
 .modal-content form label {
     display: block;
     margin-bottom: 16px;
     font-size: 14px;
-    color: #333;
+    color: var(--color-text-muted);
 }
 
 .modal-content form label > input,
@@ -97,11 +97,11 @@
     box-sizing: border-box;
     margin-top: 8px;
     padding: 10px 12px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: #fff;
+    background: transparent;
     font-size: 14px;
-    color: #222;
+    color: var(--color-text-main);
 }
 
 .modal-content #booking-form{
@@ -142,7 +142,7 @@
 .modal-content form textarea:focus,
 .modal-content form select:focus {
     outline: 2px solid rgba(144,54,200,0.12);
-    border-color: #d0a9ef;
+    border-color: var(--color-primary-hover);
 }
 
 .modal-close {
@@ -160,8 +160,8 @@
 }
 
 .modal-close:hover {
-    background: #f4f4f4;
-    color: #d71f1f;
+    background: var(--color-bg-card);
+    color: var(--color-danger);
     font-weight: bold;
     scale: 1.01;
     transition: color 0.3s, scale 0.3s, font-weight 0.3s;

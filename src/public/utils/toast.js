@@ -26,7 +26,7 @@ function injectStyles() {
 /* Toast card */
 .toast {
   pointer-events: auto;
-  background: #fff;
+  background: var(--color-bg-card);
   border-left: 4px solid #10B981;
   padding: 12px 16px;
   border-radius: 8px;
@@ -42,14 +42,14 @@ function injectStyles() {
 }
 
 /* types */
-.toast.toast-success { border-left-color: #10B981; }
-.toast.toast-error   { border-left-color: #EF4444; }
+.toast.toast-success { border-left-color: var(--color-success); }
+.toast.toast-error   { border-left-color: var(--color-danger); }
 .toast.toast-info    { border-left-color: var(--color-primary); }
 
 .toast .toast-icon { font-size: 18px; }
 .toast .toast-content { flex: 1; }
-.toast .toast-title { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
-.toast .toast-desc { font-size: 13px; color: #666; }
+.toast .toast-title { color: var(--color-text-main); font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+.toast .toast-desc { font-size: 13px; color: var(--color-text-muted); }
 
 /* progress */
 .toast .toast-progress {
@@ -64,8 +64,8 @@ function injectStyles() {
 }
 
 /* default color mapping for progress per type */
-.toast-success .toast-progress { background: #10B981; }
-.toast-error .toast-progress { background: #EF4444; }
+.toast-success .toast-progress { background: var(--color-success); }
+.toast-error .toast-progress { background:var(--color-danger);  }
 .toast-info .toast-progress { background: var(--color-primary); }
 
 /* hover pauses progress (visual; JS also pauses timer) */
@@ -91,7 +91,7 @@ function injectStyles() {
   background: transparent;
   border: none;
   font-size: 16px;
-  color: #888;
+  color: var(--color-danger);
   cursor: pointer;
 }
 `;
