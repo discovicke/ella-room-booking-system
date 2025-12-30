@@ -44,8 +44,9 @@
       <div class="room-scroll" id="student-room-list"></div>
     </section>
   </div>
-  <div class="modal" id="booking-modal" hidden>
-    <div class="modal-content">
+
+  <div class="modal-backdrop" id="booking-modal" hidden>
+    <div class="modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" id="modal-close">×</button>
       <h3>Boka rum</h3>
       <p id="modal-room-label"></p>
@@ -66,6 +67,7 @@
       </form>
     </div>
   </div>
+
   <script type="module" src="./student.js"></script>
 
 </body>
