@@ -58,7 +58,7 @@ if (!loginForm) {
                 triggerErrorOnGroup(group);
             });
 
-            showError(error, {title: "Inloggning misslyckades"});
+            showError(error.message, {title: "Inloggning misslyckades"});
             submitButton.disabled = false;
             submitButton.textContent = originalText;
             submitButton.style.opacity = "";

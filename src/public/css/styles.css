@@ -61,7 +61,7 @@
 html, body {
   display: flex;
   flex-direction: column;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
   margin: 0;
   background-color: var(--color-bg-body);
   color: var(--color-text-main);

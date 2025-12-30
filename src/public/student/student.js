@@ -1,5 +1,5 @@
 import API from "../api/api.js";
-import {showError, showSuccess} from "../utils/toast.js";
+import {showError, showInfo, showSuccess, showToast} from "../utils/toast.js";
 
 // --- Hämta inloggad användare ---
 function loadUserFromLocalStorage() {
@@ -16,7 +16,7 @@ function loadUserFromLocalStorage() {
 
   document.getElementById("username").textContent = displayname;
 
-    showSuccess("Inloggad som " + displayname, { title: "Välkommen!" })
+    showInfo("Inloggad som " + displayname, { title: "Välkommen!" })
     console.log(displayname);
 
   const roleEl = document.getElementById("user-role");
@@ -230,6 +230,7 @@ async function loadBookings() {
     console.log("Användarens bokningar:", bookings);
   } catch (err) {
     console.error("Failed to load bookings:", err);
+    showError(err, {title: "Failed to load bookings:"})
   }
 }
 

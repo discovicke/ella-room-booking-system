@@ -44,7 +44,7 @@ function injectStyles() {
 /* types */
 .toast.toast-success { border-left-color: #10B981; }
 .toast.toast-error   { border-left-color: #EF4444; }
-.toast.toast-info    { border-left-color: #3B82F6; }
+.toast.toast-info    { border-left-color: var(--color-primary); }
 
 .toast .toast-icon { font-size: 18px; }
 .toast .toast-content { flex: 1; }
@@ -66,7 +66,7 @@ function injectStyles() {
 /* default color mapping for progress per type */
 .toast-success .toast-progress { background: #10B981; }
 .toast-error .toast-progress { background: #EF4444; }
-.toast-info .toast-progress { background: #3B82F6; }
+.toast-info .toast-progress { background: var(--color-primary); }
 
 /* hover pauses progress (visual; JS also pauses timer) */
 .toast:hover .toast-progress { animation-play-state: paused; }
@@ -113,8 +113,8 @@ function ensureContainer() {
 }
 
 /* --- Core showToast --- */
-export function showToast(message = 'Ändringar sparade', opts = {}) {
-    const { title = '', type = 'success', duration = DEFAULT_DURATION } = opts;
+export function showToast(message = '', opts = {}) {
+    const { title = '', type = '', duration = DEFAULT_DURATION } = opts;
     const container = ensureContainer();
 
     const toast = document.createElement('div');
@@ -125,7 +125,7 @@ export function showToast(message = 'Ändringar sparade', opts = {}) {
     const icon = {
         success: '✔️',
         error: '⚠️',
-        info: 'ℹ️',
+        info: '🔔',
     }[type] || '🔔';
 
     toast.innerHTML = `
