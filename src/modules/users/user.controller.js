@@ -1,53 +1,36 @@
 /**
  * 👤 USER CONTROLLER
- * * PURPOSE:
- * Handles user management operations.
- * * SCOPE:
- * - createUser(req, res): Create a new user with hashed password
- * - getAllUsers(req, res): Get all users
- * - getUserById(req, res): Get user by ID
- * * RELATION:
- * - Imports: 'src/repositories/user.repo.js', 'src/utils/security.utils.js'
+ * * PURPOSE: Handles user management operations.
  */
 
 import * as userRepo from "../../modules/users/user.repo.js";
 import { hashPassword } from "../../utils/security.utils.js";
+import { CreateUserDTO } from "./user.dto.js";
 
 export const createUser = async (req, res) => {
   try {
-    const { email, password, role, Display_name, class: userClass } = req.body;
+    // 1. Validate & Structure Input (Fail fast if email/pass missing)
+    const userDTO = new CreateUserDTO(req.body);
 
-    // Validate required fields
-    if (!email || !password) {
-      return res.status(400).json({
-        error: "Email and password are required",
-      });
-    }
-
-    // Check if user already exists
-    const existingUser = userRepo.findUserByEmail(email);
+    // 2. Business Logic Checks (Unique Email)
+    // We use the clean email from the DTO
+    const existingUser = userRepo.findUserByEmail(userDTO.email);
     if (existingUser) {
       return res.status(409).json({
         error: "User with this email already exists",
       });
     }
 
-    // Hash the password
-    const password_hash = await hashPassword(password);
+    // 3. Security (Hashing)
+    // The DTO holds the raw password for us to hash here
+    const password_hash = await hashPassword(userDTO.password);
 
-    // Create user
-    const userId = userRepo.createUser({
-      email,
-      password_hash,
-      role: role || "student",
-      Display_name: Display_name || email.split("@")[0],
-      class: userClass || null,
-    });
+    // 4. Persistence
+    // We pass the hash into .toStorage() so it bundles everything for the Repo
+    const userId = userRepo.createUser(userDTO.toStorage(password_hash));
 
-    // Get the created user
+    // 5. Response
     const newUser = userRepo.getUserById(userId);
-
-    // Remove password_hash from response
     const { password_hash: _, ...sanitizedUser } = newUser;
 
     res.status(201).json({
@@ -55,6 +38,13 @@ export const createUser = async (req, res) => {
       user: sanitizedUser,
     });
   } catch (error) {
+    // Handle validation errors from the DTO
+    if (
+      error.message.includes("Missing") ||
+      error.message.includes("Invalid")
+    ) {
+      return res.status(400).json({ error: error.message });
+    }
     console.error("Error creating user:", error);
     res.status(500).json({ error: "Internal server error" });
   }
