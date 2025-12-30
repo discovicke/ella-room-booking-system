@@ -72,8 +72,21 @@ export const updateBookingById = (bookingId, bookingData) => {
         WHERE id = @id
     `);
 
-  // We merge the 'id' into the object so it binds to @id
-  return stmt.run({ ...bookingData, id: bookingId });
+  // FIX:
+  // Explicitly pick ONLY the fields allowed in the SQL statement.
+  // This strips out 'created_at', 'updated_at', or any other junk
+  // from the frontend that would cause an "Unknown named parameter" error.
+  const safeData = {
+    id: bookingId,
+    room_id: bookingData.room_id,
+    user_id: bookingData.user_id,
+    start_time: bookingData.start_time,
+    end_time: bookingData.end_time,
+    status: bookingData.status,
+    notes: bookingData.notes,
+  };
+
+  return stmt.run(safeData);
 };
 
 // --- DELETE ---

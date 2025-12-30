@@ -94,6 +94,13 @@ const API = {
     return response.json();
   },
 
+  async updateBooking(bookingId, bookingData) {
+    return await apiFetch(`/api/bookings/${bookingId}`, {
+      method: "PUT",
+      body: JSON.stringify(bookingData),
+    });
+  },
+
   // TODO: Implement getRoom(id) - GET /api/rooms/:id
   // TODO: Implement createRoom(roomData) - POST /api/rooms
   // TODO: Implement updateRoom(id, roomData) - PUT /api/rooms/:id

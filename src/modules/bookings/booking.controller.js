@@ -9,11 +9,6 @@ import * as bookingRepo from "./booking.repo.js";
  * GET /api/bookings
  * - Students: only their own bookings
  * - Teachers/Admins: all bookings, or can filter with ?userId=
- *
- * Retrieves all bookings from the database.
- *
- * @returns {Response} a response with a 200 status and a JSON body containing all bookings.
- * @throws {Error} if an error occurs while fetching bookings, returns a response with a 500 status.
  */
 export const listBookings = (req, res) => {
   try {
@@ -46,11 +41,7 @@ export const listBookings = (req, res) => {
 };
 
 /**
- * Creates a new booking with the given data.
- * @param {Object} req.body object containing booking data in snake_case.
- * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 201 status and no body or a 400/500 status.
- * @throws {Error} if an error occurs while creating the booking.
+ * POST /api/bookings
  */
 export const createBooking = (req, res) => {
   try {
@@ -77,7 +68,7 @@ export const createBooking = (req, res) => {
       });
     }
 
-    // 3. Prepare Data (Spread body + Add defaults)
+    // 3. Prepare Data
     const bookingData = {
       ...req.body,
       status: status || "active",
@@ -95,64 +86,66 @@ export const createBooking = (req, res) => {
 };
 
 /**
- * Updates a booking with the given ID.
- * @param {Request} req request containing the booking data to update in req.body and the ID in req.params.id.
- * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 200 status and a success message or a 404/500 status.
- * @throws {Error} if an error occurs while updating the booking.
+ * PUT /api/bookings/:id
+ * Updates a booking using a "Fetch -> Merge -> Update" strategy.
  */
 export const updateBooking = (req, res) => {
   try {
     const id = Number(req.params.id);
 
-    // 1. Prepare Data
-    // We strictly use req.body values, defaulting only if they are missing/undefined
-    const bookingData = {
-      ...req.body,
-      status: req.body.status || "active",
-      notes: req.body.notes || null,
-    };
+    // 1. Fetch Existing Booking
+    // Crucial to prevent overwriting missing fields with null!
+    const existingBooking = bookingRepo.getBookingById(id);
 
-    // 2. Perform Update
-    const info = bookingRepo.updateBookingById(id, bookingData);
-
-    if (info.changes === 0) {
+    if (!existingBooking) {
       return res.status(404).json({ error: `Booking with ID ${id} not found` });
     }
 
-    res.status(200).send(`Updated booking with ID ${id}`);
+    // 2. Prepare Data (Merge Strategy)
+    // The repo will strip out extra fields (like created_at), so no need to worry here.
+    const bookingData = {
+      ...existingBooking, // Start with old data
+      ...req.body, // Overwrite with new data (e.g. status)
+    };
+
+    // 3. Perform Update
+    const info = bookingRepo.updateBookingById(id, bookingData);
+
+    if (info.changes === 0) {
+      return res.status(404).json({ error: `Could not update booking ${id}` });
+    }
+
+    res.status(200).json({
+      message: `Updated booking with ID ${id}`,
+      booking: bookingData,
+    });
   } catch (error) {
     console.error("Error updating booking:", error);
-    res.sendStatus(500);
+    res.status(500).json({ error: "Failed to update booking" });
   }
 };
 
 /**
- * Deletes a booking with the given ID.
- * @param {Request} req request containing the ID of the booking to delete in req.params.id.
- * @param {Response} res response to send back to the client.
- * @returns {Response} a response with either a 200 status and a success message or a 404/500 status.
- * @throws {Error} if an error occurs while deleting the booking.
+ * DELETE /api/bookings/:id
  */
 export const deleteBooking = (req, res) => {
   try {
     const id = Number(req.params.id);
     const info = bookingRepo.deleteBookingById(id);
+
     if (info.changes === 0) {
       return res.status(404).json({ error: `Booking with ID ${id} not found` });
     }
+
     res.status(200).send(`Deleted booking with ID ${id}`);
   } catch (error) {
     console.error("Error deleting booking:", error);
-    // Security: Do not leak error details to client
     res.sendStatus(500);
   }
 };
 
 /**
  * GET /api/bookings/user/:userId
- * - Students: may only fetch their own bookings (403 otherwise)
- * - Teachers/Admins: may fetch any user's bookings
  */
 export const listBookingsByUser = (req, res) => {
   try {
