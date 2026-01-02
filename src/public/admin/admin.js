@@ -72,6 +72,51 @@ cancelCreateUser.addEventListener("click", () => {
   createUserForm.reset(); // reset the form
   createUserModal.close(); // close the modal
 });
+createUserForm.addEventListener("submit", async (e) => {
+  e.preventDefault(); // prevent default form submission
+
+  const formData = new FormData(createUserForm);
+  const userData = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    role: formData.get("role"),
+  };
+   if (!userData.name || !userData.email || !userData.password || !userData.role) {
+    alert('⚠️ Alla fält måste fyllas i! ');
+    return;
+  }
+    if (userData.password.length < 6) {
+    alert('⚠️ Lösenordet måste vara minst 6 tecken långt!');
+    return;
+  }
+  try {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    // checks response status
+     if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Något gick fel');
+    }
+    const newUser = await response.json();
+    alert(`✅ Användare skapad: ${newUser.name} (${newUser.role})`);
+    createUserForm.reset(); // reset the form
+    createUserModal.close(); // close the modal
+    // Optionally, refresh the user list here
+    
+  } catch (error) {
+     console.error('Error creating user:', error);
+    alert(`❌ Kunde inte skapa användare: ${error.message}`);
+  }
+});
+
+
 
 
 
