@@ -21,7 +21,81 @@
   <span class="user-role admin" id="user-role">Admin</span>
   </div>
   <button class="logout-btn">Logga ut</button>
-  </header>
+</header>
+
+<!-- Create User Section -->
+<section class="user-management">
+  <div class="section-header">
+    <h2>Användare</h2>
+    <button id="createUserBtn" class="btn-primary">
+      ➕ Skapa ny användare
+    </button>
+  </div>
+  
+  <!-- user list -->
+  <div id="userList"></div>
+</section>
+
+<!-- Modal create user (hidden by default) -->
+<dialog id="createUserModal">
+  <div class="modal-content">
+    <h3>Skapa ny användare</h3>
+    
+    <form id="createUserForm">
+      <div class="form-group">
+        <label for="userName">Namn:</label>
+        <input 
+          type="text" 
+          id="userName" 
+          name="name" 
+          required 
+          placeholder="Ex: Anna Andersson"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="userEmail">E-post:</label>
+        <input 
+          type="email" 
+          id="userEmail" 
+          name="email" 
+          required 
+          placeholder="anna@edu.se"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="userPassword">Lösenord:</label>
+        <input 
+          type="password" 
+          id="userPassword" 
+          name="password" 
+          required 
+          minlength="6"
+          placeholder="Minst 6 tecken"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="userRole">Roll:</label>
+        <select id="userRole" name="role" required>
+          <option value="">-- Välj roll --</option>
+          <option value="student">Student</option>
+          <option value="teacher">Lärare</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Skapa</button>
+        <button type="button" id="cancelCreateUser" class="btn-secondary">Avbryt</button>
+      </div>
+    </form>
+  </div>
+</dialog>  
+
+
+  
 
   <!-- Adminlayout -->
   <div class="admin-layout">
