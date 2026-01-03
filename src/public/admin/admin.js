@@ -1,37 +1,103 @@
 import API from "../api/api.js";
-const creatUserBtn = document.getElementById("createUserBtn");
-const createUserModal = document.getElementById("createUserModal");
-const createUserForm = document.getElementById("createUserForm");
-const cancelCreateUser = document.getElementById("cancelCreateUser");
+
+console.log('🚀 admin.js körs.. .');
+console.log('📦 localStorage vid start:', localStorage.getItem('user'));
+
+
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+console.log(localStorage.getItem('user'));
 
 // --- Hämta inloggad användare ---
+
+
 function loadUserFromLocalStorage() {
   const user = localStorage.getItem("user");
 
-
-  if (!user) {
-    // Ingen user sparad → skicka till login
+  if (! user) {
     window.location.href = "/login/";
     return;
   }
 
   const userobject = JSON.parse(user);
-  const displayname = userobject.display_name; 
+  const displayname = userobject.display_name;
 
-  document.getElementById("username").textContent = displayname;
+  const usernameEl = document.getElementById("username");
+  if (usernameEl) {
+    usernameEl.textContent = displayname;
+  }
 
-  console.log(displayname);
-  
+  console.log('✅ Inloggad som:', displayname);
 
   const roleEl = document.getElementById("user-role");
-  roleEl.textContent = capitalize(userobject.role);
-  roleEl.className = `user-role ${userobject.role}`;
-}
- 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  if (roleEl) {
+    roleEl.textContent = capitalize(userobject.role);
+    roleEl.className = `user-role ${userobject. role}`;
+  }
 }
 
+async function loadUsers() {
+  console.log('📡 Hämtar användare...');
+  
+  try {
+    const users = await API.getUsers();
+    console.log('✅ Användare hämtade:', users);
+    displayUsers(users);
+  } catch (error) {
+    console.error('❌ Fel vid hämtning:', error);
+    const userList = document.getElementById('userList');
+    if (userList) {
+      userList.innerHTML = '<p class="error">Kunde inte ladda användare</p>';
+    }
+  }
+}
+function displayUsers(users) {
+  const userList = document.getElementById('userList');
+  
+  if (!userList) {
+    console.error('❌ #userList finns inte');
+    return;
+  }
+
+  if (! users || users.length === 0) {
+    userList.innerHTML = '<p class="no-data">Inga användare hittades. </p>';
+    return;
+  }
+
+  userList.innerHTML = users.map(user => `
+    <div class="user-card" data-user-id="${user. id}">
+      <div class="user-info">
+        <h4>${user.display_name || user.name}</h4>
+        <p>📧 ${user.email}</p>
+        <span class="role-badge role-${user.role}">${capitalize(user.role)}</span>
+      </div>
+      <div class="user-actions">
+        <button class="btn-edit" data-user-id="${user.id}">✏️ Redigera</button>
+        <button class="btn-delete" data-user-id="${user.id}">🗑️ Ta bort</button>
+      </div>
+    </div>
+  `).join('');
+
+  console.log('✅ Användare visade');
+}
+
+// delete user //
+async function deleteUser(userId) {
+  if (! confirm('⚠️ Är du säker? ')) {
+    return;
+  }
+
+  try {
+    await API. deleteUser(userId);
+    alert('✅ Användare borttagen! ');
+    loadUsers();
+  } catch (error) {
+    console.error('❌ Fel:', error);
+    alert(`Kunde inte ta bort:  ${error.message}`);
+  }
+}
 
 // --- Get rooms ---
 async function loadRooms() {
@@ -42,11 +108,11 @@ async function loadRooms() {
 function renderStudentRooms(rooms) {
   const container = document.getElementById("student-room-list");
   container.innerHTML = rooms
-      .map((r) => {
-        const assets = (r.assets || [])
-            .map((a) => `<span class="asset-chip">${a.asset}</span>`)
-            .join("");
-        return `
+    .map((r) => {
+      const assets = (r.assets || [])
+        .map((a) => `<span class="asset-chip">${a.asset}</span>`)
+        .join("");
+      return `
     <div class="room-card">
       <h3># ${r.room_number} - ${r.location}</h3>
       <p>${r.display_type}</p>
@@ -60,213 +126,194 @@ function renderStudentRooms(rooms) {
       </div>
     </div>
     `;
-      })
-      .join("");
-}
-
-// --- Event listeners create user modal  ---
-creatUserBtn.addEventListener("click", () => {
-  createUserModal.showModal(); // show the modal
-});
-cancelCreateUser.addEventListener("click", () => {
-  createUserForm.reset(); // reset the form
-  createUserModal.close(); // close the modal
-});
-createUserForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // prevent default form submission
-
-  const formData = new FormData(createUserForm);
-  const userData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    role: formData.get("role"),
-  };
-   if (!userData.name || !userData.email || !userData.password || !userData.role) {
-    alert('⚠️ Alla fält måste fyllas i! ');
-    return;
-  }
-    if (userData.password.length < 6) {
-    alert('⚠️ Lösenordet måste vara minst 6 tecken långt!');
-    return;
-  }
-  try {
-    const response = await fetch('/api/users', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-    // checks response status
-     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Något gick fel');
-    }
-    const newUser = await response.json();
-    alert(`✅ Användare skapad: ${newUser.name} (${newUser.role})`);
-    createUserForm.reset(); // reset the form
-    createUserModal.close(); // close the modal
-    
-    LoadUser(); // refresh user list
-
-  } catch (error) {
-     console.error('Error creating user:', error);
-    alert(`❌ Kunde inte skapa användare: ${error.message}`);
-  }
-});
-
-async function LoadUser() {
-  try {
-    const response = await fetch('/api/users', {
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      throw new Error('Något gick fel vid hämtning av användare');
-    }
-    const users = await response.json();
-    displayUsers(users); // function to render users in the DOM
-  
-} catch (error) {
-   console.error('Error loading users:', error);
-    alert('❌ Kunde inte ladda användare');
-  }
-}
-
-function displayUsers(users) {
-  const userList = document.getElementById('userList');
-  if (  users.length === 0) {
-    userList.innerHTML = '<p>Inga användare hittades.</p>';
-    return;
-  }
-  userList.innerHTML = users.map(user => `
-    <div class="user-card">
-      <div class="user-info">
-        <p>📧 ${user.email}</p>
-        <span class="role-badge ${user.role}">${user.role}</span>
-      </div>
-      <div class="user-actions">
-        <button class="btn-edit" data-user-id="${user.id}">Redigera</button>
-        <button class="btn-delete" data-user-id="${user.id}">Ta bort</button>
-      </div>
-    </div>
-  `).join('');
+    })
+    .join("");
 }
 
 
-// delete user //
-async function deleteUser(userId) {
-  if (! confirm('❌ Är du säker på att du vill ta bort denna användare?')) {
-    return;
-  }
-  try {
-    const response = await fetch(`/api/users/${userId}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Något gick fel vid borttagning av användare');
-    }
-    alert('✅ Användaren har tagits bort');
-    LoadUser(); // refresh user list
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    alert(`❌ Kunde inte ta bort användare: ${error.message}`);
-  }
-}
+
+
 // edit user //
+
 async function editUser(userId) {
   try {
-    const response = await fetch(`/api/users/${userId}`, {
-      credentials: 'include'
-    });
-
-    if (!response.ok) {
-      throw new Error('Kunde inte hämta användardata');
-    }
-
-    const user = await response.json();
-    // fill in form with existing data
-    document.getElementById('userName').value = user.name;
+    const user = await API.getUser(userId);
+    //fill form fields
+    
+    document.getElementById('userName').value = user.display_name || user.name;
     document.getElementById('userEmail').value = user.email;
     document.getElementById('userRole').value = user.role;
 
-    // Show the modal
-    createUserModal.showModal();
-    createUserForm.onsubmit = async (e) => {
+    // password field handling
+    const passwordField = document.getElementById('userPassword');
+    passwordField.required = false;
+    passwordField. value = '';
+    passwordField.placeholder = 'Lämna tomt för att behålla';
+
+    // show modal
+    const modal = document.getElementById('createUserModal');
+    modal.querySelector('h3').textContent = 'Redigera användare';
+    modal.showModal();
+
+    // change form submit handler
+    const form = document.getElementById('createUserForm');
+    const newForm = form.cloneNode(true);
+    form.parentNode. replaceChild(newForm, form);
+    
+    newForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(createUserForm);
+      
+      const formData = new FormData(newForm);
       const updatedData = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        role: formData.get("role"),
+        name: formData.get('name'),
+        email: formData.get('email'),
+        role: formData.get('role')
       };
-      const password = formData.get("password");
+
+      // add paassword if changed 
+       const password = formData.get('password');
       if (password && password.length > 0) {
         updatedData.password = password;
       }
+      
       try {
-        const response = await fetch(`/api/users/${userId}`, {
-          method: 'PUT',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedData),
-        });
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Något gick fel vid uppdatering av användare');
-        }
-        alert('✅ Användaren har uppdaterats');
-        createUserForm.reset();
-        createUserModal.close();
-        LoadUser(); // refresh user list
+        await API.updateUser(userId, updatedData);
+        alert('✅ Uppdaterad!');
+        newForm.reset();
+        modal.close();
+        modal.querySelector('h3').textContent = 'Skapa ny användare';
+        passwordField.required = true;
+        passwordField. placeholder = 'Minst 6 tecken';
+        loadUsers();
+        setupCreateUserForm();
       } catch (error) {
-        console.error('Error updating user:', error);
-        alert(`❌ Kunde inte uppdatera användare: ${error.message}`);
+        console.error('❌ Fel:', error);
+        alert(`Kunde inte uppdatera: ${error.message}`);
       }
-    };
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    alert(`❌ Kunde inte hämta användardata: ${error.message}`);
+    });
+
+      }  catch (error) {
+    console.error('❌ Fel:', error);
+    alert('Kunde inte hämta användardata');
+  }
+}
+
+
+function setupCreateUserForm() {
+  const createUserBtn = document.getElementById('createUserBtn');
+  const createUserModal = document.getElementById('createUserModal');
+  const createUserForm = document.getElementById('createUserForm');
+  const cancelBtn = document.getElementById('cancelCreateUser'); 
+  
+  if (! createUserBtn || !createUserModal || !createUserForm || !cancelBtn) {
+    console.warn('⚠️ Saknade element');
+    return;
+  }
+// open modal
+createUserBtn.addEventListener('click', () => {
+    createUserForm.reset();
+    createUserModal.querySelector('h3').textContent = 'Skapa ny användare';
+    document.getElementById('userPassword').required = true;
+    createUserModal.showModal();
+  });
+
+// close modal
+ cancelBtn.addEventListener('click', () => {
+    createUserForm.reset();
+    createUserModal.close();
+  });
+
+//send form
+createUserForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(createUserForm);
+  const userData = {
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+    role: formData.get('role')
+  };
+
+  // validate data
+  if (! userData.name || !userData.email || !userData.password || !userData.role) {
+      alert('⚠️ Fyll i alla fält! ');
+      return;
+    }
+  if (userData.password.length < 6) {
+    alert('⚠️ Lösenordet måste vara minst 6 tecken långt! ');
+    return;
+  }
+  try {
+    const newUser = await API.createUser(userData);
+      alert(`✅ Skapad:  ${newUser.display_name || newUser.name}`);
+      createUserForm.reset();
+      createUserModal.close();
+      loadUsers();
+    } catch (error) {
+      console.error('❌ Fel:', error);
+      alert(`Kunde inte skapa: ${error.message}`);
+    }
+  });
+}
+
+function setupLogout() {
+  const logoutBtn = document.getElementById('logout-btn');
+  
+  if (!logoutBtn) {
+    console.warn('⚠️ Logout-knapp saknas');
+    return;
   }
 
-  // event delegation for edit and delete buttons
-  document.addEventListener('DOMContentLoaded', () => {
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await API.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('user');
+      window.location.href = '/login/';
+    }
+  });
+}
+
+function setupEventListeners() {
   const userList = document.getElementById('userList');
 
-  // listen for clicks on userList
-  userList.addEventListener('click', (e) => {
-    // check if button was clicked
+  if (!userList) {
+    console.error('❌ #userList finns inte');
+    return;
+  }
+
+  userList. addEventListener('click', (e) => {
     const target = e.target;
 
-    // delete user  on click
     if (target.classList.contains('btn-delete')) {
       const userId = target.getAttribute('data-user-id');
       deleteUser(userId);
     }
 
-    // edit user on click
-    if (target.classList.contains('btn-edit')) {
+    if (target.classList. contains('btn-edit')) {
       const userId = target.getAttribute('data-user-id');
       editUser(userId);
     }
   });
 
-  // load users when page loads
-  loadUser();
-});
-
-
-
-
-window.addEventListener("DOMContentLoaded", () => {
-  loadUserFromLocalStorage();
-  loadRooms(); 
-  loadUser();
-});
-
+  console.log('✅ Event listeners tillagda');
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('✅ Admin. js initierad');
+  loadRooms();
+  loadUserFromLocalStorage();
+  loadUsers();
+  setupLogout();
+  setupEventListeners();
+  setupCreateUserForm();
+});
+
+
+
+
+
