@@ -186,14 +186,22 @@ function renderBookings(bookings = []) {
             const startTime = formatDateTime(booking.start_time);
             const endTime = formatDateTime(booking.end_time);
             const status = (booking.status || "väntar").toUpperCase();
+            
             const statusSwe = status === "CANCELLED"
                 ? "AVBOKAD"
                 : "AKTIV BOKNING";
+            
             const statusClass = status === "CANCELLED"
                 ? "cancelled"
                 : "active";
+            
+            // ENDAST VISA KNAPP OM INTE AVBOKAD
+            const actionButton = status === "CANCELLED" 
+                ? "" 
+                : `<Button class="unbook" data-booking-id="${booking.id}">Avboka</Button>`;
+
             return `
-    <article class="booking-card">
+    <article class="booking-card" style="${status === 'CANCELLED' ? 'opacity: 0.7;' : ''}">
       <div class="card-header">
         <h3># ${booking.room_number} - ${booking.room_location}</h3>
         <span class="status ${statusClass}">${statusSwe}</span>
@@ -203,11 +211,13 @@ function renderBookings(bookings = []) {
     <p class="note"><strong>Anteckning:</strong><em> ${
       booking.notes || "-"
     }</em></p>
-    <Button class="unbook" data-booking-id="${booking.id}">Avboka</Button>
+    ${actionButton}
     </article>
     `;
     })
     .join("");
+  
+  // Eventlyssnare läggs bara på de knappar som faktiskt skapas
   roomContainer.querySelectorAll(".unbook").forEach((btn) => {
     btn.addEventListener("click", () => onclickUnBook(btn.dataset.bookingId));
   });
