@@ -83,3 +83,69 @@ export const getUserById = (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const deleteUser = (req, res) => {
+  try {
+    const userId = req.params.id; 
+    
+    console.log(`🗑️ Controller: DELETE användare ${userId}`);
+    console.log(`🔍 userId type: ${typeof userId}, value: ${userId}`);
+
+    const user = userRepo. getUserById(userId);
+    
+    if (!user) {
+      console.log('❌ Användare hittades inte');
+      return res.status(404).json({ error: 'Användare hittades inte' });
+    }
+
+    console.log(`✅ Användare finns:  ${user.Display_name}`);
+
+    const changes = userRepo. deleteUser(userId);
+    
+    console.log(`✅ Raderade ${changes} rad(er)`);
+
+    if (changes === 0) {
+      return res.status(500).json({ error: 'Kunde inte radera' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('❌ Controller error:', error);
+    res.status(500).json({ error: 'Serverfel', message: error.message });
+  }
+};
+
+ export const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name, email, role, password } = req.body;
+
+    const user = userRepo.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Användare hittades inte' });
+    }
+
+    const updates = { 
+      Display_name: name || user.Display_name, 
+      email: email || user.email, 
+      role: role || user. role,
+      class: user.class 
+    };
+
+    if (password && password.length > 0) {
+      updates.password_hash = await hashPassword(password);
+    } else {
+      updates.password_hash = user.password_hash; 
+    }
+
+    userRepo.updateUser(userId, updates);
+
+    const updatedUser = userRepo.getUserById(userId);
+    const { password_hash, ... sanitizedUser } = updatedUser;
+
+    res.json(sanitizedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Serverfel' });
+  }
+};
