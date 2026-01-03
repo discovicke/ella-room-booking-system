@@ -103,6 +103,9 @@ const API = {
   async getUsers() {
     return await apiFetch("/api/users");
   },
+  async getUserById(userId) {
+    return await apiFetch(`/api/users/${userId}`);
+  },
 
   async deleteUser(userId) {
     return await apiFetch(`/api/users/${userId}`, {
@@ -116,7 +119,21 @@ const API = {
       body: JSON.stringify(updatedData),
     });
   },
-  
+  async createUser(userData) {
+    return await apiFetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+  },
+  async updateUser(userId, userData) {
+    return await apiFetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData)
+    });
+  },
+ 
+
+
 
   // TODO: Implement getRoom(id) - GET /api/rooms/:id
   // TODO: Implement createRoom(roomData) - POST /api/rooms
@@ -133,5 +150,6 @@ const API = {
   // TODO: Implement getUser(id) - GET /api/users/:id
   // TODO: Implement createUser(userData) - POST /api/users
 };
+window.API = API; // For debugging
 
 export default API;
