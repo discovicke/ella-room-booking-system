@@ -26,8 +26,13 @@
   <div class="dashboard-layout">
     <section class="left-panel">
       <div class="booking-header">
-        <h2>Mina bokningar</h2>
-        <p>Kommande bokningar</p>
+        <div class="header-top">
+          <h2>Mina bokningar</h2>
+        </div>
+        <div class="booking-tabs">
+          <button class="tab-btn active" id="tab-upcoming">Kommande</button>
+          <button class="tab-btn" id="tab-history">Historik</button>
+        </div>
       </div>
       <div class="booking-scroll"></div>
     </section>
@@ -67,5 +72,4 @@
   <script type="module" src="./student.js"></script>
 
 </body>
-
 </html>
