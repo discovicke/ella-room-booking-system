@@ -71,8 +71,31 @@
         </div>
       </div>
     </section>
-
   </div>
+ <!-- Modal, bokning -->
+  <div class="modal-backdrop" id="booking-modal" hidden>
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" id="modal-close">×</button>
+    <h3>Boka rum</h3>
+    <p id="modal-room-label"></p>
+    <form id="booking-form">
+      <label>
+        Starttid
+        <input type="datetime-local" name="start_time" required />
+      </label>
+      <label>
+        Sluttid
+        <input type="datetime-local" name="end_time" required />
+      </label>
+      <label>
+        Anteckning
+        <textarea name="notes" rows="3"></textarea>
+      </label>
+      <button type="submit">Bekräfta bokning</button>
+    </form>
+  </div>
+</div>
+
 
 </body>
 
