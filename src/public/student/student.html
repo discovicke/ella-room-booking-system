@@ -12,10 +12,10 @@
 <body>
 
   <header class="top-header">
-    <img class="top-logo" src="../assets/ELLA header.png" alt="Logo small" />
+    <img class="top-logo" src="../assets/ELLA header.png" alt="ELLA – rumbokningssystem" />
     <div class="user-actions">
       <div class="user-box">
-        <span class="user-icon">👤</span>
+        <span class="user-icon" aria-hidden="true">👤</span>
         <span class="user-label" id="username"></span>
         <span class="user-role student" id="user-role">Student</span>
       </div>
@@ -23,7 +23,9 @@
     </div>
   </header>
 
-  <div class="dashboard-layout">
+ 
+  <main class="dashboard-layout">
+    <h1 class="visually-hidden">Studentdashboard – bokning av studierum</h1>
     <section class="left-panel">
       <div class="booking-header">
         <div class="header-top">
@@ -44,10 +46,10 @@
       </div>
       <div class="room-scroll" id="student-room-list"></div>
     </section>
-  </div>
+  </main>
 
   <div class="modal-backdrop" id="booking-modal" hidden>
-    <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-content" id="modal-content">
       <button class="modal-close" id="modal-close">×</button>
       <h3>Boka rum</h3>
       <p id="modal-room-label"></p>
@@ -70,6 +72,5 @@
   </div>
 
   <script type="module" src="./student.js"></script>
-
 </body>
 </html>
