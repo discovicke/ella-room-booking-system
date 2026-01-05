@@ -69,8 +69,8 @@ function displayUsers(users) {
   userList.innerHTML = users.map(user => `
     <div class="user-card" data-user-id="${user. id}">
       <div class="user-info">
-        <h4>${user.display_name || user.name}</h4>
-        <p>📧 ${user.email}</p>
+        <h4>Namn: ${user.display_name || user.name}</h4>
+        <p>📧  ${user.email}</p>
         <span class="role-badge role-${user.role}">${capitalize(user.role)}</span>
       </div>
       <div class="user-actions">
