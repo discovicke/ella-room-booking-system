@@ -1,8 +1,8 @@
 import API from "../api/api.js";
 import { showError, showSuccess } from "../utils/toast.js";
 import { loadUser, setupLogout } from "../components/auth.manager.js";
-import { formatDateTime } from "../utils/formatters.utils.js";
 import { renderRooms } from "../components/room.renderer.js";
+import { renderBookings } from "../components/booking.renderer.js";
 import { BookingModal } from "../components/booking.modal.js";
 
 // --- Global State ---
@@ -11,25 +11,22 @@ let cachedRooms = [];
 let currentTab = "upcoming";
 
 // --- Components ---
-// Initialize the modal once
 const bookingModal = new BookingModal("booking-modal", "booking-form");
 
-// --- Initialization Logic ---
+// --- Initialization ---
 const currentUser = loadUser();
 
 if (currentUser) {
   setupLogout("logout-btn");
-  bookingModal.setUser(currentUser); // Tell modal who is booking
+  bookingModal.setUser(currentUser);
 
-  // Load data
   loadRooms();
   loadBookings();
 
-  // When modal finishes a booking, reload the list
   bookingModal.onBookingSuccess = () => loadBookings();
 }
 
-// --- Tab Switching Logic ---
+// --- Tab Logic ---
 const tabUpcoming = document.getElementById("tab-upcoming");
 const tabHistory = document.getElementById("tab-history");
 
@@ -40,7 +37,6 @@ if (tabUpcoming && tabHistory) {
 
 function switchTab(tab) {
   currentTab = tab;
-
   if (tab === "upcoming") {
     tabUpcoming.classList.add("active");
     tabHistory.classList.remove("active");
@@ -48,49 +44,41 @@ function switchTab(tab) {
     tabUpcoming.classList.remove("active");
     tabHistory.classList.add("active");
   }
-
-  renderBookings();
+  updateBookingList();
 }
 
-// --- Room Logic (Refactored) ---
+// --- Room Logic ---
 async function loadRooms() {
   try {
     cachedRooms = await API.getRooms(true);
-
     const container = document.getElementById("student-room-list");
 
-    // We use the shared renderer now!
     renderRooms(cachedRooms, container, (roomId) => {
-      // This callback runs when user clicks "Boka"
       const room = cachedRooms.find((r) => String(r.id) === String(roomId));
-      if (room) {
-        bookingModal.open(room);
-      }
+      if (room) bookingModal.open(room);
     });
   } catch (error) {
     console.error("Could not load rooms", error);
   }
 }
 
-// --- Booking List Logic (Kept mostly as is, just a little bit cleaner) ---
+// --- Booking Logic ---
 async function loadBookings() {
   try {
     if (currentUser && currentUser.id) {
       allBookings = await API.getBookingsByUser(currentUser.id);
     } else {
-      allBookings = await API.getBookings(); // Fallback
+      allBookings = await API.getBookings();
     }
-    renderBookings();
+    updateBookingList();
   } catch (err) {
     console.error("Failed to load bookings:", err);
-    showError(err.message, { title: "Failed to load bookings:" });
+    showError(err.message);
   }
 }
 
-function renderBookings() {
-  const roomContainer = document.querySelector(".booking-scroll");
-  if (!roomContainer) return;
-
+function updateBookingList() {
+  const container = document.querySelector(".booking-scroll");
   const now = new Date();
 
   // 1. Filter
@@ -106,67 +94,14 @@ function renderBookings() {
     return currentTab === "upcoming" ? timeA - timeB : timeB - timeA;
   });
 
-  // 3. Empty State
-  if (!filteredBookings.length) {
-    roomContainer.innerHTML = `<p>Inga ${
-      currentTab === "upcoming" ? "kommande" : "tidigare"
-    } bokningar hittades.</p>`;
-    return;
-  }
+  // 3. Render using the new Component!!
+  // Only passing the unbook callback if we are in the "upcoming" tab
+  const onUnbookCallback = currentTab === "upcoming" ? handleUnbook : null;
 
-  // 4. Render
-  roomContainer.innerHTML = filteredBookings
-    .map((booking) => {
-      const startTime = formatDateTime(booking.start_time);
-      const endTime = formatDateTime(booking.end_time);
-      const rawStatus = (booking.status || "väntar").toLowerCase();
-
-      let statusSwe = "AKTIV";
-      let statusClass = "active";
-      let style = "";
-
-      if (rawStatus === "cancelled") {
-        statusSwe = "AVBOKAD";
-        statusClass = "cancelled";
-        style = "opacity: 0.7;";
-      } else if (currentTab === "history") {
-        statusSwe = "AVSLUTAD";
-        statusClass = "done";
-        style = "opacity: 0.8; filter: grayscale(100%);";
-      }
-
-      const showUnbookBtn =
-        currentTab === "upcoming" && rawStatus !== "cancelled";
-
-      const actionButton = showUnbookBtn
-        ? `<button class="unbook" data-booking-id="${booking.id}">Avboka</button>`
-        : "";
-
-      return `
-    <article class="booking-card" style="${style}">
-      <div class="card-header">
-        <h3># ${booking.room_number} - ${booking.room_location}</h3>
-        <span class="status ${statusClass}">${statusSwe}</span>
-      </div>
-      <p><strong>Start:</strong> ${startTime}</p>
-      <p><strong>Slut:</strong> ${endTime}</p>
-      <p class="note"><strong>Anteckning:</strong><em> ${
-        booking.notes || "-"
-      }</em></p>
-      ${actionButton}
-    </article>
-    `;
-    })
-    .join("");
-
-  // Attach event listeners for Unbook
-  roomContainer.querySelectorAll(".unbook").forEach((btn) => {
-    btn.addEventListener("click", () => onclickUnBook(btn.dataset.bookingId));
-  });
+  renderBookings(filteredBookings, container, onUnbookCallback);
 }
 
-async function onclickUnBook(bookingId) {
-  if (!bookingId) return;
+async function handleUnbook(bookingId) {
   if (!confirm("Vill du avboka bokningen?")) return;
 
   try {
@@ -175,6 +110,6 @@ async function onclickUnBook(bookingId) {
     showSuccess("Bokningen har avbokats.");
   } catch (err) {
     console.error("Failed to unbook:", err);
-    showError("Försök igen.", { title: "Avbokning misslyckades" });
+    showError("Avbokning misslyckades.");
   }
 }
