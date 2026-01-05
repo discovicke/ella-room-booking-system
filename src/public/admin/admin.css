@@ -144,25 +144,130 @@ body {
 
 
 /* Modal styling */
-dialog {
+dialog[open] {
+  display: block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: clamp(300px, 90vw, 540px);
+
+
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 0;
   max-width: 540px;
   background: transparent;
+  border: none;
+  border-radius: 0;
 }
-
-dialog, ::backdrop {
+ 
+dialog::backdrop {
   background-color:  rgba(0, 0, 0, 0.5);
+} 
+
+.user-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: var(--color-bg-card);
+  transition: all 0.3s ease;
+  position: initial;
 }
 
-.modal-content {
+.user-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px #00000014, 0 4px 6px -2px #0000000a;
+  border-color: var(--color-primary-hover);
+}
+
+.user-card .user-info  h4{
+  margin: 0;
+  font-size: 18px;
+  color: var(--color-text-main);
+}
+
+.user-card .user-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
+  border: 1px solid var(--color-border);
+  margin-top: 6px;
+}
+
+.role-badge.role-student {
+  background: var(--role-student-bg);
+  color: var(--role-student-text);
+}
+.role-badge.role-teacher {
+  background: var(--role-teacher-bg);
+  color: var(--role-teacher-text);
+}
+.role-badge.role-admin {
+  background: var(--role-admin-bg);
+  color: var(--role-admin-text);
+}
+
+.user-actions .btn-edit,
+.user-actions .btn-delete {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-on-primary);
+  transition: all 0.2s var(--ease-smooth);
+  user-select: none;
+  margin: 5px 0;
+}
+
+.user-actions .btn-edit {
+  background: var(--color-success);
+  
+}
+
+.user-actions .btn-edit:hover {
+  background: var(--color-success-hover);
+}
+
+.user-actions .btn-edit:active {
+  background: var(--color-success-click);
+  transform: scale(0.98);
+}
+
+.user-actions .btn-delete {
+  background: var(--color-danger);
+}
+
+.user-actions .btn-delete:hover {
+  background: var(--color-danger-hover);
+}
+
+.user-actions .btn-delete:active {
+  background: var(--color-danger-active);
+  transform: scale(0.98);
+}
+
+.modal-content  {
   background: var(--color-bg-panel);
   color: var(--color-text-main);
   border-radius: 10px;
   padding: 24px;
   border: 1px solid var(--color-border);
-  animation: pop-in-modal 280ms var(--ease-elastic);
+  overflow: auto;
+  border: transparent;
+  opacity: 1 ease-in-out 0.3s var(--ease-elastic);
+
 }
 
 .modal-content h3 {
@@ -170,6 +275,8 @@ dialog, ::backdrop {
   margin-bottom: 16px;
   color: var(--color-primary);
 }
+
+/* change style on add user and close buttons */
 
 /* Form styling */
 .form-group {
