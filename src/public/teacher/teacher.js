@@ -137,6 +137,11 @@ async function handleUnbook(bookingId) {
   }
 }
 
+function countTotalSeats(rooms) {
+  return rooms.reduce((sum, r) => sum + (r.capacity || 0), 0);
+}
+
+
 // --- Quick Info ---
 function updateQuickInfo(rooms) {
   const totalRooms = rooms.length;
@@ -144,14 +149,21 @@ function updateQuickInfo(rooms) {
   // Just nu: alla rum är lediga (ingen bokningslogik än)
   const availableRooms = totalRooms;
 
+  // Totalt antal platser
+  const totalSeats = countTotalSeats(rooms);
+
   // Skriv ut värdena i snabbinfo
   const elAvailable = document.getElementById("available-rooms");
   const elTotal = document.getElementById("total-rooms");
   const elActive = document.getElementById("active-bookings");
+  const elSeats = document.getElementById("total-seats");
+
 
   if (elAvailable) elAvailable.textContent = availableRooms;
   if (elTotal) elTotal.textContent = totalRooms;
 
   // Aktiva bokningar är 0 tills backend är klar
   if (elActive) elActive.textContent = 0;
+  if (elSeats) elSeats.textContent = totalSeats;
+
 }
