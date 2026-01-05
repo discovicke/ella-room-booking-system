@@ -7,9 +7,6 @@
   * - Global styles (body, fonts).
   * - Layout classes (.room-grid, .navbar).
   * - Component styles (.room-card, .btn-primary).
-  *
-  * RELATION:
-  * - Loaded by both index.html and login.html.
 */
 
 /* utkast färger */
@@ -145,7 +142,7 @@ body {
   background: transparent;
 }
 
-/* --- PANELER (grundstil) --- */
+/* --- PANELER --- */
 .panel,
 .left-panel,
 .right-panel,
@@ -175,7 +172,95 @@ body {
   margin-bottom: 16px;
 }
 
-/* --- BOOKING LAYOUT (student) --- */
+/* --- STICKY HEADERS & TABS --- */
+/* Combined logic for both student/teacher headers */
+.room-header,
+.booking-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+}
+
+.room-header h2,
+.booking-header h2 {
+  margin-bottom: 4px;
+}
+
+.room-header p,
+.booking-header p {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #777;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.booking-tabs {
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  padding-bottom: 0;
+  align-items: center;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-left: auto;
+  padding-bottom: 8px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.toggle-label:hover {
+  color: var(--color-primary);
+}
+
+.toggle-label input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--color-text-muted, #6b7280);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.tab-btn:hover {
+  color: var(--color-primary, #9036c8);
+}
+
+.tab-btn.active {
+  color: var(--color-primary, #9036c8);
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-primary, #9036c8);
+}
+
+/* --- BOOKING LIST & CARDS --- */
 .room-scroll,
 .booking-scroll {
   padding-top: 6px;
@@ -218,27 +303,24 @@ body {
   user-select: none;
 }
 
-/* Active = green */
 .status.active {
   background: var(--color-success-bg);
   color: var(--color-text-main);
   border: 1px solid #cfead3;
 }
 
-/* Cancelled = red/neutral */
 .status.cancelled {
   background: var(--color-danger-bg);
   color: var(--color-text-main);
   border: 1px solid #f2c6c6;
 }
 
+/* Unbook button inside booking card */
 .booking-card button {
   position: absolute;
   right: 16px;
   top: 55%;
-  bottom: auto;
   transform: translateY(-50%);
-  margin-top: 0;
   background: var(--color-danger);
   color: white;
   border: none;
@@ -257,10 +339,9 @@ body {
   background: var(--color-danger-click);
   transform: scale(0.97) translateY(-49%) !important;
   box-shadow: 0 2px 4px -1px #0000000d;
-  transition: transform 0.1s ease;
 }
 
-/* --- RUMSKORT (delas av student + teacher) --- */
+/* --- RUMSKORT (Room Cards) --- */
 .room-card {
   border: 1px solid var(--color-border);
   border-radius: 8px;
@@ -274,12 +355,9 @@ body {
 
 .room-card:hover,
 .booking-card:hover {
-  position: relative;
   transform: translateY(-1px);
   box-shadow: 0 10px 15px -3px #00000014, 0 4px 6px -2px #0000000a;
   border-color: var(--color-primary-hover);
-  z-index: 600;
-  transition: all 0.3s ease;
 }
 
 .room-card h3,
@@ -296,14 +374,12 @@ body {
   color: var(--color-text-muted);
 }
 
-/* --- KNAPPAR I RUMSKORT --- */
+/* Book button inside room card */
 .room-card button {
   position: absolute;
   right: 16px;
   top: 50%;
-  bottom: auto;
   transform: translateY(-50%);
-  margin-top: 0;
   background: var(--color-success);
   color: white;
   border: none;
@@ -316,14 +392,12 @@ body {
 
 .room-card button:hover {
   background: var(--color-success-hover);
-  transition: background 0.3s ease;
 }
 
 .room-card button:active {
   background: var(--color-success-click);
   transform: scale(0.97) translateY(-48%) !important;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.1s ease;
 }
 
 .room-card.occupied button {
@@ -335,7 +409,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 12px;
   align-items: center;
 }
 
@@ -352,32 +426,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.room-card .asset-chips {
-  margin-top: 12px;
-}
-
-/* --- STICKY RUBRIKER --- */
-.room-header,
-.booking-header {
-  top: 0;
-  padding-bottom: 12px;
-  z-index: 5;
-  background: transparent;
-}
-
-.room-header h2,
-.booking-header h2 {
-  margin-bottom: 4px;
-}
-
-.room-header p,
-.booking-header p {
-  margin-top: 0;
-  margin-bottom: 12px;
-  color: #777;
 }
 
 /* --- KOMPAKT ANVÄNDARRUTA --- */
@@ -392,19 +440,16 @@ body {
   font-weight: 500;
 }
 
-/* Ikon */
 .user-icon {
   font-size: 18px;
   opacity: 0.8;
   margin-right: 2px;
 }
 
-/* Namn */
 .user-name {
   color: var(--color-text-muted);
 }
 
-/* --- ROLL-ID / USER ROLE --- */
 .user-role {
   font-size: 13px;
   font-weight: 600;
@@ -418,17 +463,14 @@ body {
   vertical-align: middle;
 }
 
-/* Färger per roll */
 .user-role.student {
   background: var(--role-student-bg);
   color: var(--role-student-text);
 }
-
 .user-role.teacher {
   background: var(--role-teacher-bg);
   color: var(--role-teacher-text);
 }
-
 .user-role.admin {
   background: var(--role-student-bg);
   color: var(--role-admin-text);
@@ -438,9 +480,6 @@ body {
   background: var(--color-primary-surface);
   color: var(--color-primary-active);
 }
-
-/* TODO: Fokusringar för tillgänglighet med var(--color-primary-hover) */
-/* TODO: Mörkt tema */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -458,10 +497,178 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-primary-hover);
-  transition: background-color 0.3s ease;
 }
 
-/* --- MOBILANPASSNING (GLOBAL) --- */
+/* --- MODAL STYLES --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+  background: #1f293766;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2000;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px #0000000a;
+  padding: 20px;
+  max-width: 720px;
+  width: 100%;
+  transform: scale(0.9) translateY(-20px);
+  transition: transform 0.4s var(--ease-elastic), opacity 0.3s ease;
+  opacity: 0;
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.modal-backdrop.open .modal-content {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Animations connected to classes */
+.modal-content.nudge {
+  animation: nudge 0.3s ease-in-out;
+}
+.modal-content.pop-in {
+  animation: pop-in-modal 0.35s;
+  animation-fill-mode: both;
+}
+
+.modal[hidden] {
+  display: none;
+}
+.modal:not([hidden]) {
+  display: flex;
+}
+
+.modal-content h3 {
+  color: var(--color-primary);
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.modal-content p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Form Styles */
+.modal-content #booking-form {
+  margin-top: 12px;
+}
+
+.modal-content form label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.modal-content form label > input,
+.modal-content form label > textarea,
+.modal-content form label > select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  color: var(--color-text-main);
+}
+
+.modal-content form input:focus,
+.modal-content form textarea:focus,
+.modal-content form select:focus {
+  outline: 2px solid rgba(144, 54, 200, 0.12);
+  border-color: var(--color-primary-hover);
+}
+
+.modal-content form label > textarea {
+  height: 140px;
+  max-height: 300px;
+  overflow: auto;
+  resize: none;
+}
+
+.modal-content form button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+
+.modal-content form button[type="submit"]:hover {
+  background: var(--color-primary-hover);
+}
+.modal-content form button[type="submit"]:active {
+  background: var(--color-primary-active);
+  transform: scale(0.98) translateY(-1px) !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: #6b6b6b;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.modal-close:hover {
+  background: var(--color-bg-card);
+  color: var(--color-danger);
+  scale: 1.01;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- MOBILANPASSNING --- */
 @media (max-width: 825px) {
   .dashboard-layout,
   .teacher-layout,
@@ -471,41 +678,30 @@ body {
     padding: 20px;
     height: calc(100vh - var(--top-header-height));
     max-height: calc(100vh - var(--top-header-height));
-    justify-content: stretch;
   }
 
-  /* Paneler får lite mindre padding på mobil */
   .left-panel,
   .right-panel,
   .info-panel {
     padding: 16px;
     max-width: none;
   }
-
-  /* Rumskort och bookingkort blir mer kompakta */
   .room-card,
   .booking-card {
     padding: 14px;
   }
-
   .asset-chip {
     font-size: 12px;
     padding: 5px 8px;
   }
-
-  /* Sticky headers får lite mindre padding */
   .room-header,
   .booking-header {
     padding-bottom: 8px;
   }
-
-  /* Quick-info rutorna i teacher ska också staplas */
   .quick-info {
     flex-direction: column;
     gap: 12px;
   }
-
-  /* För att undvika att scroll-yta blir för liten på mobil */
   .room-scroll,
   .booking-scroll {
     max-height: none;
@@ -513,66 +709,45 @@ body {
   }
 }
 
-/* Ytterligare mobilanpassning (tar bort loggan i header) för väldigt små skärmar */
 @media (max-width: 440px) {
   .top-logo {
     display: none;
   }
-
-  .user-actions {
-    flex: 1 1 auto;
-  }
-
+  .user-actions,
   .logout-btn {
     flex: 1 1 auto;
   }
 }
 
-/* --- Mörkt tema --- */
+/* --- MÖRKT TEMA --- */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --- Bakgrunder --- */
-    --color-bg-body: #111827; /* mörk slate */
-    --color-bg-panel: #1f2937; /* paneler */
-    --color-bg-card: #1e2530; /* kort */
-    --color-border: #374151; /* mörkare border */
-
-    /* --- Text --- */
-    --color-text-main: #f3f4f6; /* ljus text */
-    --color-text-muted: #9ca3af; /* ljus-muted */
+    --color-bg-body: #111827;
+    --color-bg-panel: #1f2937;
+    --color-bg-card: #1e2530;
+    --color-border: #374151;
+    --color-text-main: #f3f4f6;
+    --color-text-muted: #9ca3af;
     --color-text-on-primary: #f5f5f5;
-
-    /* --- Asset chips --- */
     --color-asset-bg: #1f2937;
     --color-asset-text: #e5e7eb;
     --color-asset-border: #4b5563;
-
-    /* --- Primärfärger (behålls men mörkare surface) --- */
     --color-primary-surface: #2d1b3a;
-
-    /* --- Statusfärger (behåller dina, men mörkare bakgrunder) --- */
     --color-success-bg: #064e3b;
     --color-warning-bg: #78350f;
     --color-danger-bg: #7f1d1d;
-
-    /* --- Roller --- */
     --role-student-bg: #064e3b;
     --role-student-text: #a7f3d0;
-
     --role-teacher-bg: #3b0764;
     --role-teacher-text: #e9d5ff;
-
     --role-admin-bg: #7c2d12;
     --role-admin-text: #fed7aa;
   }
 
-  /* Header får mörk bakgrund */
   .top-header {
     background-color: var(--color-bg-panel);
-    border-bottom: 1px solid var(--color-border);
   }
 
-  /* Kort & paneler */
   .panel,
   .left-panel,
   .right-panel,
@@ -583,41 +758,29 @@ body {
     color: var(--color-text-muted);
   }
 
-  /* Text i kort */
   .room-card h3,
   .booking-card h3 {
     color: var(--color-text-main);
   }
-
   .room-card p,
-  .booking-card p {
-    color: var(--color-text-muted);
-  }
-
+  .booking-card p,
   .user-name {
     color: var(--color-text-muted);
   }
-
   .user-box {
     background: var(--color-text-muted);
     color: var(--color-text-on-primary) !important;
   }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--color-primary-active);
-  }
-
   .stats-box,
   .benefits-box {
     background: var(--color-text-muted) !important;
     color: var(--color-bg-panel) !important;
   }
 }
+
 /* =========================================
    ANIMATION KEYFRAMES
    ========================================= */
-
 @keyframes spin {
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
@@ -707,7 +870,6 @@ body {
     opacity: 0;
   }
 }
-
 @keyframes progress-shrink {
   from {
     width: 100%;
