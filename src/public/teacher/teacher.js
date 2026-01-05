@@ -7,6 +7,7 @@ import { BookingModal } from "../components/booking.modal.js";
 
 // --- Global State ---
 let allBookings = [];
+let userBookings = [];
 let cachedRooms = [];
 let currentTab = "upcoming";
 let showCancelled = false; // Default: hide cancelled bookings
@@ -20,7 +21,7 @@ const currentUser = loadUser();
 if (currentUser) {
   setupLogout("logout-btn");
   bookingModal.setUser(currentUser);
-  
+
   // Refresh list when a new booking is made
   bookingModal.onBookingSuccess = () => {
     loadBookings();
@@ -64,7 +65,7 @@ function switchTab(tab, activeBtn, inactiveBtn) {
 async function loadRooms() {
   try {
     cachedRooms = await API.getRooms(true);
-    
+
     // 1. Render Rooms (using shared component)
     const container = document.getElementById("student-room-list");
     renderRooms(cachedRooms, container, (roomId) => {
@@ -84,10 +85,17 @@ async function loadRooms() {
 // --- Booking Logic ---
 async function loadBookings() {
   try {
+
+    // Alla bokningar för statusfältet
+    allBookings = await API.getBookings();
+
+    // Användarens bokningar
     if (currentUser && currentUser.id) {
-      allBookings = await API.getBookingsByUser(currentUser.id);
+      userBookings = await API.getBookingsByUser(currentUser.id);
     }
     updateBookingList();
+    updateQuickInfo(cachedRooms);
+
   } catch (err) {
     console.error("Failed to load bookings:", err);
     showError("Kunde inte ladda bokningar.");
@@ -99,7 +107,7 @@ function updateBookingList() {
   const now = new Date();
 
   // 1. Filter based on tab & cancellation toggle
-  const filteredBookings = allBookings.filter((booking) => {
+  const filteredBookings = userBookings.filter((booking) => {
     const endTime = new Date(booking.end_time);
     const isCancelled = booking.status === "cancelled";
 
@@ -120,7 +128,7 @@ function updateBookingList() {
   // 3. Render using shared component
   // As usual, we only allow unbooking if in the "Upcoming" tab
   const onUnbookCallback = (currentTab === "upcoming") ? handleUnbook : null;
-  
+
   renderBookingList(filteredBookings, container, onUnbookCallback);
 }
 
@@ -162,6 +170,17 @@ function countAvailableSeatsNow(rooms, bookings) {
     .reduce((sum, r) => sum + (r.capacity || 0), 0);
 }
 
+// Aktiva bokningar (alla)
+function countActiveBookings(bookings) {
+  const now = new Date();
+
+  return bookings.filter(b => {
+    const start = new Date(b.start_time);
+    const end = new Date(b.end_time);
+    return b.status !== "cancelled" && start <= now && end >= now;
+  }).length;
+}
+
 
 // --- Quick Info ---
 function updateQuickInfo(rooms) {
@@ -174,8 +193,10 @@ function updateQuickInfo(rooms) {
   const totalSeats = countTotalSeats(rooms);
   const availableSeats = countAvailableSeatsNow(rooms, allBookings);
 
+  // Aktiva bokningar (alla)
+  const activeBookings = countActiveBookings(allBookings);
 
-  // Skriv ut värdena i snabbinfo
+  // Skriv ut värdena i Aktuell status
   const elAvailable = document.getElementById("available-rooms");
   const elTotal = document.getElementById("total-rooms");
   const elActive = document.getElementById("active-bookings");
@@ -185,9 +206,9 @@ function updateQuickInfo(rooms) {
   if (elAvailable) elAvailable.textContent = availableRooms;
   if (elTotal) elTotal.textContent = totalRooms;
 
-  // Aktiva bokningar är 0 tills backend är klar
-  if (elActive) elActive.textContent = 0;
-  //if (elSeats) elSeats.textContent = totalSeats;
+  // Aktiva bokningar 
+  if (elActive) elActive.textContent = activeBookings;
+  
   if (elSeats) elSeats.textContent = `${availableSeats}/${totalSeats}`;
 
 }
