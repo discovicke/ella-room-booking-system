@@ -9,6 +9,7 @@ import { BookingModal } from "../components/booking.modal.js";
 let allBookings = [];
 let cachedRooms = [];
 let currentTab = "upcoming";
+let showCancelled = false; // Default: hide cancelled bookings
 
 // --- Components ---
 const bookingModal = new BookingModal("booking-modal", "booking-form");
@@ -33,14 +34,22 @@ if (currentUser) {
   });
 }
 
-// --- Tab Logic ---
+// --- Tab & Filter Logic ---
 function setupTabs() {
   const tabUpcoming = document.getElementById("tab-upcoming");
   const tabHistory = document.getElementById("tab-history");
+  const checkboxCancelled = document.getElementById("show-cancelled");
 
   if (tabUpcoming && tabHistory) {
     tabUpcoming.addEventListener("click", () => switchTab("upcoming", tabUpcoming, tabHistory));
     tabHistory.addEventListener("click", () => switchTab("history", tabHistory, tabUpcoming));
+  }
+
+  if (checkboxCancelled) {
+    checkboxCancelled.addEventListener("change", (e) => {
+      showCancelled = e.target.checked;
+      updateBookingList();
+    });
   }
 }
 
@@ -89,9 +98,15 @@ function updateBookingList() {
   const container = document.querySelector(".booking-scroll");
   const now = new Date();
 
-  // 1. Filter based on tab
+  // 1. Filter based on tab & cancellation toggle
   const filteredBookings = allBookings.filter((booking) => {
     const endTime = new Date(booking.end_time);
+    const isCancelled = booking.status === "cancelled";
+
+    // Toggle logic: If unchecked, filter OUT cancelled bookings
+    if (!showCancelled && isCancelled) return false;
+
+    // Tab logic
     return currentTab === "upcoming" ? endTime >= now : endTime < now;
   });
 

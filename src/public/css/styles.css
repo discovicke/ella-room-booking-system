@@ -210,6 +210,32 @@ body {
   gap: 15px;
   border-bottom: 1px solid var(--color-border, #e5e7eb);
   padding-bottom: 0;
+  align-items: center;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-left: auto;
+  padding-bottom: 8px;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.toggle-label:hover {
+  color: var(--color-primary);
+}
+
+.toggle-label input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  margin: 0;
 }
 
 .tab-btn {
@@ -334,13 +360,15 @@ body {
   border-color: var(--color-primary-hover);
 }
 
-.room-card h3, .booking-card h3 {
+.room-card h3,
+.booking-card h3 {
   margin: 0 0 8px;
   font-size: 18px;
   color: var(--color-text-main);
 }
 
-.room-card p, .booking-card p {
+.room-card p,
+.booking-card p {
   margin: 4px 0;
   font-size: 14px;
   color: var(--color-text-muted);
@@ -435,17 +463,31 @@ body {
   vertical-align: middle;
 }
 
-.user-role.student { background: var(--role-student-bg); color: var(--role-student-text); }
-.user-role.teacher { background: var(--role-teacher-bg); color: var(--role-teacher-text); }
-.user-role.admin { background: var(--role-student-bg); color: var(--role-admin-text); }
+.user-role.student {
+  background: var(--role-student-bg);
+  color: var(--role-student-text);
+}
+.user-role.teacher {
+  background: var(--role-teacher-bg);
+  color: var(--role-teacher-text);
+}
+.user-role.admin {
+  background: var(--role-student-bg);
+  color: var(--role-admin-text);
+}
 
 ::selection {
   background: var(--color-primary-surface);
   color: var(--color-primary-active);
 }
 
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
   background-color: #d4a9ef;
   border-radius: 4px;
@@ -453,7 +495,9 @@ body {
   background-clip: content-box;
   transition: background-color 0.3s ease;
 }
-::-webkit-scrollbar-thumb:hover { background-color: var(--color-primary-hover); }
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-hover);
+}
 
 /* --- MODAL STYLES --- */
 .modal-backdrop {
@@ -502,17 +546,36 @@ body {
 }
 
 /* Animations connected to classes */
-.modal-content.nudge { animation: nudge 0.3s ease-in-out; }
-.modal-content.pop-in { animation: pop-in-modal 0.35s; animation-fill-mode: both; }
+.modal-content.nudge {
+  animation: nudge 0.3s ease-in-out;
+}
+.modal-content.pop-in {
+  animation: pop-in-modal 0.35s;
+  animation-fill-mode: both;
+}
 
-.modal[hidden] { display: none; }
-.modal:not([hidden]) { display: flex; }
+.modal[hidden] {
+  display: none;
+}
+.modal:not([hidden]) {
+  display: flex;
+}
 
-.modal-content h3 { color: var(--color-primary); margin: 0 0 8px; font-size: 18px; }
-.modal-content p { margin: 4px 0; font-size: 14px; color: var(--color-text-muted); }
+.modal-content h3 {
+  color: var(--color-primary);
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.modal-content p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
 
 /* Form Styles */
-.modal-content #booking-form { margin-top: 12px; }
+.modal-content #booking-form {
+  margin-top: 12px;
+}
 
 .modal-content form label {
   display: block;
@@ -564,7 +627,9 @@ body {
   transition: 0.3s all;
 }
 
-.modal-content form button[type="submit"]:hover { background: var(--color-primary-hover); }
+.modal-content form button[type="submit"]:hover {
+  background: var(--color-primary-hover);
+}
 .modal-content form button[type="submit"]:active {
   background: var(--color-primary-active);
   transform: scale(0.98) translateY(-1px) !important;
@@ -605,7 +670,9 @@ body {
 
 /* --- MOBILANPASSNING --- */
 @media (max-width: 825px) {
-  .dashboard-layout, .teacher-layout, .admin-layout {
+  .dashboard-layout,
+  .teacher-layout,
+  .admin-layout {
     grid-template-columns: 1fr !important;
     gap: 20px;
     padding: 20px;
@@ -613,17 +680,43 @@ body {
     max-height: calc(100vh - var(--top-header-height));
   }
 
-  .left-panel, .right-panel, .info-panel { padding: 16px; max-width: none; }
-  .room-card, .booking-card { padding: 14px; }
-  .asset-chip { font-size: 12px; padding: 5px 8px; }
-  .room-header, .booking-header { padding-bottom: 8px; }
-  .quick-info { flex-direction: column; gap: 12px; }
-  .room-scroll, .booking-scroll { max-height: none; padding-right: 0; }
+  .left-panel,
+  .right-panel,
+  .info-panel {
+    padding: 16px;
+    max-width: none;
+  }
+  .room-card,
+  .booking-card {
+    padding: 14px;
+  }
+  .asset-chip {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+  .room-header,
+  .booking-header {
+    padding-bottom: 8px;
+  }
+  .quick-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .room-scroll,
+  .booking-scroll {
+    max-height: none;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 440px) {
-  .top-logo { display: none; }
-  .user-actions, .logout-btn { flex: 1 1 auto; }
+  .top-logo {
+    display: none;
+  }
+  .user-actions,
+  .logout-btn {
+    flex: 1 1 auto;
+  }
 }
 
 /* --- MÖRKT TEMA --- */
@@ -651,70 +744,164 @@ body {
     --role-admin-text: #fed7aa;
   }
 
-  .top-header { background-color: var(--color-bg-panel); }
-  
-  .panel, .left-panel, .right-panel, .info-panel {
+  .top-header {
+    background-color: var(--color-bg-panel);
+  }
+
+  .panel,
+  .left-panel,
+  .right-panel,
+  .info-panel {
     background: var(--color-bg-panel);
     border-color: var(--color-border);
     box-shadow: 0 2px 6px #00000033;
     color: var(--color-text-muted);
   }
 
-  .room-card h3, .booking-card h3 { color: var(--color-text-main); }
-  .room-card p, .booking-card p, .user-name { color: var(--color-text-muted); }
-  .user-box { background: var(--color-text-muted); color: var(--color-text-on-primary) !important; }
-  .stats-box, .benefits-box { background: var(--color-text-muted) !important; color: var(--color-bg-panel) !important; }
+  .room-card h3,
+  .booking-card h3 {
+    color: var(--color-text-main);
+  }
+  .room-card p,
+  .booking-card p,
+  .user-name {
+    color: var(--color-text-muted);
+  }
+  .user-box {
+    background: var(--color-text-muted);
+    color: var(--color-text-on-primary) !important;
+  }
+  .stats-box,
+  .benefits-box {
+    background: var(--color-text-muted) !important;
+    color: var(--color-bg-panel) !important;
+  }
 }
 
 /* =========================================
    ANIMATION KEYFRAMES
    ========================================= */
-@keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes spin {
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 @keyframes nudge {
-  0% { transform: scale(1) translateX(0); }
-  25% { transform: scale(1.02) translateX(-5px); }
-  50% { transform: scale(0.98) translateX(0) translateY(-2px); }
-  75% { transform: scale(1.02) translateX(-5px); }
-  100% { transform: scale(1) translateX(0); }
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  25% {
+    transform: scale(1.02) translateX(-5px);
+  }
+  50% {
+    transform: scale(0.98) translateX(0) translateY(-2px);
+  }
+  75% {
+    transform: scale(1.02) translateX(-5px);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+  }
 }
 
 @keyframes pop-in {
-  0% { transform: scale(0); opacity: 0; }
-  80% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes pop-in-modal {
-  0% { transform: scale(0); opacity: 0; }
-  40% { transform: scale(1.1); opacity: 1; }
-  60% { transform: scale(0.95); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes slide-in-elastic {
-  0% { transform: translateX(120%); opacity: 0; }
-  60% { transform: translateX(-10px); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-@keyframes slide-out { to { transform: translateX(120%); opacity: 0; } }
-@keyframes progress-shrink { from { width: 100%; } to { width: 0%; } }
+@keyframes slide-out {
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+@keyframes progress-shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
 
 @keyframes pulse-border {
-  0% { box-shadow: 0 0 0 0 rgba(145, 54, 203, 0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(145, 54, 203, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(145, 54, 203, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(145, 54, 203, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(145, 54, 203, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(145, 54, 203, 0);
+  }
 }
 
 @keyframes pulse-green {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }

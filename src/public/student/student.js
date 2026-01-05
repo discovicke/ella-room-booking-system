@@ -9,6 +9,7 @@ import { BookingModal } from "../components/booking.modal.js";
 let allBookings = [];
 let cachedRooms = [];
 let currentTab = "upcoming";
+let showCancelled = false; // Default: hide cancelled bookings
 
 // --- Components ---
 const bookingModal = new BookingModal("booking-modal", "booking-form");
@@ -26,13 +27,21 @@ if (currentUser) {
   bookingModal.onBookingSuccess = () => loadBookings();
 }
 
-// --- Tab Logic ---
+// --- Tab & Toggle Logic ---
 const tabUpcoming = document.getElementById("tab-upcoming");
 const tabHistory = document.getElementById("tab-history");
+const checkboxCancelled = document.getElementById("show-cancelled");
 
 if (tabUpcoming && tabHistory) {
   tabUpcoming.addEventListener("click", () => switchTab("upcoming"));
   tabHistory.addEventListener("click", () => switchTab("history"));
+}
+
+if (checkboxCancelled) {
+  checkboxCancelled.addEventListener("change", (e) => {
+    showCancelled = e.target.checked;
+    updateBookingList();
+  });
 }
 
 function switchTab(tab) {
@@ -84,6 +93,12 @@ function updateBookingList() {
   // 1. Filter
   const filteredBookings = allBookings.filter((booking) => {
     const endTime = new Date(booking.end_time);
+    const isCancelled = booking.status === "cancelled";
+
+    // Toggle logic: If unchecked, filter OUT cancelled bookings
+    if (!showCancelled && isCancelled) return false;
+
+    // Tab logic
     return currentTab === "upcoming" ? endTime >= now : endTime < now;
   });
 
@@ -94,8 +109,8 @@ function updateBookingList() {
     return currentTab === "upcoming" ? timeA - timeB : timeB - timeA;
   });
 
-  // 3. Render using the new Component!!
-  // Only passing the unbook callback if we are in the "upcoming" tab
+  // 3. Render using the shared Component
+  // Only pass the unbook callback if we are in the "upcoming" tab
   const onUnbookCallback = currentTab === "upcoming" ? handleUnbook : null;
 
   renderBookings(filteredBookings, container, onUnbookCallback);
