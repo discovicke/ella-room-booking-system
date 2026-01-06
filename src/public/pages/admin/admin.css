@@ -383,3 +383,25 @@ dialog::backdrop {
   max-height: 400px;
   overflow-y: auto;
 }
+
+/* #createRoomForm label {
+  display: block;
+  margin-top: 1rem;
+  font-weight:  500;
+}
+
+#createRoomForm input,
+#createRoomForm select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display:  flex;
+  gap: 1rem;
+  margin-top:  1.5rem;
+  justify-content: flex-end;
+} */
