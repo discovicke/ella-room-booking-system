@@ -270,13 +270,14 @@ dialog::backdrop {
 
 }
 
+
 .modal-content h3 {
   margin-top: 0;
   margin-bottom: 16px;
   color: var(--color-primary);
 }
 
-/* change style on add user and close buttons */
+
 
 /* Form styling */
 .form-group {
@@ -312,11 +313,15 @@ dialog::backdrop {
 .form-actions {
   display: flex;
   gap: 10px;
+  justify-content: center;
   margin-top: 16px;
 }
 
+/* modal button _-----------_-- */
+
+
 .btn-primary {
-  background-color: var(--color-success);
+  background: var(--color-success);
   color: var(--color-text-on-primary);
   border: none;
   padding: 10px 20px;
@@ -334,7 +339,9 @@ dialog::backdrop {
   transform: scale(0.98);
 }
 
-.btn-secondary {
+/* if not using .modal-content button form [type="button"]  in styles.css*/
+
+/* .btn-secondary {
   background-color:  var(--color-danger);
   
   color: var(--color-text-on-primary);
@@ -343,26 +350,36 @@ dialog::backdrop {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s var(--ease-smooth);
-}
+} */
 
-.btn-secondary:hover {
+/* .btn-secondary:hover {
   background-color: var(--color-danger-hover);
 }
 .btn-secondary:active {
   background-color: var(--color-danger-active);
   transform: scale(0.98);
-}
-
-/* Section header */
+} */
+/* ---------- */
+/* Section header user */
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
+  display: grid;
+  justify-content:flex-start;
+  margin-bottom: 2px;
 }
 
 .section-header h2 {
-  margin: 0;
-  font-size: 22px;
+  text-align: center;
+  font-size: 20px;
   color: var(--color-primary);
+}
+
+.section-header button {
+  margin: 2px;
+
+}
+.section-header #userList {
+  margin-left: auto;
+  scroll-behavior: auto;
+  max-height: 400px;
+  overflow-y: auto;
 }
