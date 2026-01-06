@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
 
   <title>ella | Admin</title>
 </head>
+
 <body>
 
   <header class="top-header">
@@ -29,30 +31,64 @@
         <h2>Användare</h2>
         <button id="createUserBtn" class="btn-primary">➕ Skapa ny användare</button>
         <div id="userList"></div>
+        <!-- modal for adding/ editing rooms maybe move -->
+        <dialog id="createRoomModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Skapa nytt rum</h2>
+        </div>
+        <form id="createRoomForm">
+          <label for="roomName">Rum namn:</label>
+          <input type="text" id="roomName" name="name" required>
+    
+          <label for="roomType">Typ *</label>
+          <select id="roomType" name="type" required>
+            <option value="">-- Välj typ --</option>
+            <option value="classroom">Klassrum</option>
+            <option value="lab">Laboratorium</option>
+            <option value="meeting">Mötesrum</option>
+          </select>
+    
+          <label for="roomCapacity">Kapacitet *</label>
+          <input type="number" id="roomCapacity" name="capacity" required min="1" required>
+    
+          <label for="roomAssets">Utrustnings tillgångar</label>
+          <input type="text" id="roomAssets" name="assets" placeholder="Exempel: Projektor, Whiteboard">
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" data-close-modal="createRoomModal">Avbryt</button>
+            <button type="submit" class="btn-primary">Skapa Rum</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
       </div>
     </section>
+
+    
+      
   </main>
-  
+
   <dialog id="createUserModal">
     <div class="modal-content">
       <h3>Skapa ny användare</h3>
-      
+
       <form id="createUserForm">
         <div class="form-group">
           <label for="userName">Namn:</label>
           <input type="text" id="userName" name="name" required>
         </div>
-        
+
         <div class="form-group">
           <label for="userEmail">E-post:</label>
           <input type="email" id="userEmail" name="email" required>
         </div>
-        
+
         <div class="form-group">
           <label for="userPassword">Lösenord: </label>
           <input type="password" id="userPassword" name="password" required minlength="6">
         </div>
-        
+
         <div class="form-group">
           <label for="userRole">Roll:</label>
           <select id="userRole" name="role" required>
@@ -62,7 +98,7 @@
             <option value="admin">Admin</option>
           </select>
         </div>
-        
+
         <div class="form-actions">
           <button type="submit" class="btn-confirm">Skapa</button>
           <button type="button" id="cancelCreateUser" class="btn-secondary">Avbryt</button>
@@ -70,6 +106,10 @@
       </form>
     </div>
   </dialog>
+
+  <!-- modal for adding/ editing rooms  maybe move here!!!-->
+  
+
 
   <!-- admin layout  for left and right panels -->
   <div class="admin-layout">
@@ -87,7 +127,7 @@
         <h2>Rum</h2>
         <button class="add-room-btn" id="add-room-btn">+ Lägg till rum</button>
       </div>
-      
+
       <div id="student-room-list"></div>
     </section>
 
@@ -111,7 +151,8 @@
         <p>Laddar bokningar...</p>
       </div>
     </section>
-   
+
   </div>
 </body>
+
 </html>
