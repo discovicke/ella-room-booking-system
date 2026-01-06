@@ -620,7 +620,7 @@ body {
   margin-top: 10px;
   border: none;
   border-radius: 8px;
-  background: var(--color-primary);
+  background: var(--color-success);
   color: var(--color-text-on-primary);
   font-weight: 600;
   cursor: pointer;
@@ -628,10 +628,31 @@ body {
 }
 
 .modal-content form button[type="submit"]:hover {
-  background: var(--color-primary-hover);
+  background: var(--color-success-hover);
 }
 .modal-content form button[type="submit"]:active {
-  background: var(--color-primary-active);
+  background: var(--color-success-active);
+  transform: scale(0.98) translateY(-1px) !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+}
+.modal-content form button[type="button"] {
+  background: var(--color-danger);
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+.modal-content form button[type="button"]:hover {
+  background: var(--color-danger-hover);
+}
+.modal-content form button[type="button"]:active {
+  background: var(--color-danger-click);
   transform: scale(0.98) translateY(-1px) !important;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
 }
