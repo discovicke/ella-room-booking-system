@@ -32,7 +32,7 @@ app.use("/components", express.static("src/public/components"));
 // ==========================
 app.use(
   "/login",
-  express.static("src/public/pages/login", { index: "login.html" })
+  express.static("src/public/pages/login", { index: "index.html" })
 );
 app.get("/403", (req, res) =>
   res.sendFile("403.html", { root: "src/public/pages" })
@@ -78,6 +78,7 @@ app.use("/api/bookings", authenticate, bookingsRouter);
 // 🔀 5. REDIRECTS & ERRORS
 // ==========================
 app.get("/", (req, res) => res.redirect("/login"));
+app.get("/index.html", (req, res) => res.redirect("/login"));
 
 // Catch-all 404 (Must be last)
 app.use((req, res) => {
