@@ -1,6 +1,6 @@
-import API from "../api/api.js";
-import {ROLES} from "../../constants/roles.js";
-import { showToast, showSuccess, showError, showInfo } from '../utils/toast.js';
+import API from "../../api/api.js";
+import {ROLES} from "../../../constants/roles.js";
+import { showToast, showSuccess, showError, showInfo } from '../../utils/toast.js';
 
 const loginForm = document.getElementById("loginForm");
 

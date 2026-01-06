@@ -30,9 +30,16 @@ app.use("/components", express.static("src/public/components"));
 // ==========================
 // 🔓 2. PUBLIC PAGES
 // ==========================
-app.use("/login", express.static("src/public/login", { index: "login.html" }));
-app.get("/403", (req, res) => res.sendFile("403.html", { root: "src/public" }));
-app.get("/404", (req, res) => res.sendFile("404.html", { root: "src/public" }));
+app.use(
+  "/login",
+  express.static("src/public/pages/login", { index: "login.html" })
+);
+app.get("/403", (req, res) =>
+  res.sendFile("403.html", { root: "src/public/pages" })
+);
+app.get("/404", (req, res) =>
+  res.sendFile("404.html", { root: "src/public/pages" })
+);
 
 // ==========================
 // 🛡️ 3. PROTECTED PAGES (HTML VIEWS)
@@ -41,19 +48,19 @@ app.use(
   "/student",
   authenticate,
   authorize(ROLES.STUDENT),
-  express.static("src/public/student", { index: "student.html" })
+  express.static("src/public/pages/student", { index: "student.html" })
 );
 app.use(
   "/teacher",
   authenticate,
   authorize(ROLES.TEACHER),
-  express.static("src/public/teacher", { index: "teacher.html" })
+  express.static("src/public/pages/teacher", { index: "teacher.html" })
 );
 app.use(
   "/admin",
   authenticate,
   authorize(ROLES.ADMIN),
-  express.static("src/public/admin", { index: "admin.html" })
+  express.static("src/public/pages/admin", { index: "admin.html" })
 );
 
 // ==========================
