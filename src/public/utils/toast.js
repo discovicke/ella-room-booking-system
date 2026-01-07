@@ -109,6 +109,15 @@ function injectStyles() {
   line-height: var(--leading-normal);
   color: var(--color-danger);
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+.toast .toast-close:hover {
+  color: var(--color-danger-hover);
+}
+.toast .toast-close:active {
+   color: var(--color-danger-click);
 }
 `;
     const s = document.createElement('style');

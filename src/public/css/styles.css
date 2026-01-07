@@ -588,8 +588,13 @@ small {
 }
 
 ::selection {
-    background: var(--color-primary-surface);
-    color: var(--color-primary-active);
+    background-color: rgba(145, 54, 203, 0.25);
+    color: inherit;
+}
+
+::-moz-selection {
+    background-color: rgba(145, 54, 203, 0.25);
+    color: inherit;
 }
 
 ::-webkit-scrollbar {
@@ -627,7 +632,6 @@ small {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 100px;
     background: #1f293766;
     backdrop-filter: blur(4px);
     opacity: 0;
@@ -841,7 +845,7 @@ small {
 }
 
 .modal-content form button[type="submit"]:active {
-    background: var(--color-success-active);
+    background: var(--color-success-click);
     transform: scale(0.98) translateY(-1px) !important;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
 }
@@ -1058,7 +1062,7 @@ small {
         --color-asset-bg: #1f2937;
         --color-asset-text: #e5e7eb;
         --color-asset-border: #4b5563;
-        --color-primary-surface: #2d1b3a;
+        --color-primary-surface: #432452;
         --color-success-bg: #064e3b;
         --color-warning-bg: #78350f;
         --color-danger-bg: #7f1d1d;
@@ -1112,6 +1116,14 @@ small {
     .modal-content form input[type="date"]::-webkit-calendar-picker-indicator:hover {
         filter: invert(60%) sepia(50%) saturate(500%) hue-rotate(260deg) brightness(1.1);
     }
+
+
+    ::selection {
+        /* Ökar till 0.45 opacitet för att synas bättre mot mörk bakgrund */
+        background-color: rgba(145, 54, 203, 0.45);
+        color: var(--color-text-on-primary);
+    }
+
 }
 
 /* =========================================
@@ -1216,17 +1228,6 @@ small {
     }
 }
 
-@keyframes pulse-border {
-    0% {
-        box-shadow: 0 0 0 0 rgba(145, 54, 203, 0.4);
-    }
-    70% {
-        box-shadow: 0 0 0 6px rgba(145, 54, 203, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(145, 54, 203, 0);
-    }
-}
 
 @keyframes pulse-green {
     0% {
@@ -1247,7 +1248,9 @@ small {
     70% {
         box-shadow: 0 0 0 10px rgba(255, 59, 48, 0);
     }
-    100% {}
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+    }
 }
 
 @keyframes pulse-border {
