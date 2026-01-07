@@ -292,27 +292,25 @@ body {
 .status {
   display: inline-block;
   padding: 6px 10px;
-  border-radius: 999px;
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
   min-width: 86px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  text-align: end;
   user-select: none;
 }
 
 .status.active {
-  background: var(--color-success-bg);
-  color: var(--color-text-main);
-  border: 1px solid #cfead3;
+  color: var(--color-success);
+  /*  background: var(--color-success-bg);
+  border: 1px solid #cfead3;  */
 }
 
 .status.cancelled {
-  background: var(--color-danger-bg);
-  color: var(--color-text-main);
-  border: 1px solid #f2c6c6;
+  color: var(--color-danger);
+  /*  background: var(--color-text-main);
+  border: 1px solid #f2c6c6;  */
 }
 
 /* Unbook button inside booking card */
@@ -454,7 +452,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   padding: 4px 10px;
-  border-radius: 12px;
+  border-radius: 6px;
   margin-left: 4px;
   background: var(--color-bg-card);
   color: var(--color-text-muted);
