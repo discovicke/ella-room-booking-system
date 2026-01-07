@@ -26,6 +26,6 @@ bookingsRouter.post("/", authenticate, bookingController.createBooking);
 bookingsRouter.put("/:id", authenticate, bookingController.updateBooking);
 
 // DELETE /api/bookings/:id - Delete booking by ID (All authenticated users)
-bookingsRouter.delete("/:id", authenticate, bookingController.deleteBooking);
+// bookingsRouter.delete("/:id", authenticate, bookingController.deleteBooking); // Never used so commented out
 
 export default bookingsRouter;
