@@ -1,505 +1,468 @@
 
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     min-height: 100%;
     overflow-y: auto;
-    
+
 }
 
 /* Layout */
 .admin-layout {
-  height: calc(100vh - var(--top-header-height));
-  max-height: calc(100vh - var(--top-header-height));
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  justify-content: center;
-  gap: 24px;
-  padding: 20px 20px 40px;
-  box-sizing: border-box;
-  background: transparent;
+    height: calc(100vh - var(--top-header-height));
+    max-height: calc(100vh - var(--top-header-height));
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px 20px 40px;
+    box-sizing: border-box;
+    background: transparent;
 }
 
 .left-panel, .right-panel {
-  /* background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px; */
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 /* Sammanfattning */
 .summary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .summary-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-main);
-  border-radius: 8px;
-  padding: 14px;
-  font-weight: 500;
-  box-shadow: 0 2px 6px #0000000a;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-main);
+    border-radius: 8px;
+    padding: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 6px #0000000a;
 }
 
 /* Rumskort */
 .room-card .room-actions {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 12px;
-  gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    gap: 10px;
 }
 
 
 .room-card .room-actions button {
-  position: static;
-  right: auto;
-  top: auto;
-  transform: none;
-  
-  background: var(--color-success);
-  color: var(--color-text-on-primary);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-smooth);
-  user-select: none;
+    position: static;
+    right: auto;
+    top: auto;
+    transform: none;
+
+    background: var(--color-success);
+    color: var(--color-text-on-primary);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-smooth);
+    user-select: none;
 }
 
-.room-card  .room-actions button:hover {
-  background: var(--color-success-hover);
+.room-card .room-actions button:hover {
+    background: var(--color-success-hover);
 }
 
 .room-card .room-actions button:active {
-  background: var(--color-success-click);
-  transform: scale(0.98);
+    background: var(--color-success-click);
+    transform: scale(0.98);
 }
 
 .room-card .room-actions #delete-room {
-  background: var(--color-danger);
+    background: var(--color-danger);
 }
 
 .room-card .room-actions #delete-room:hover {
-  background: var(--color-danger-hover);
+    background: var(--color-danger-hover);
 }
 
 .room-card .room-actions #delete-room:active {
-  background: var(--color-danger-click);
-  transform: scale(0.98);
+    background: var(--color-danger-click);
+    transform: scale(0.98);
 }
+
 .room-card .room-actions #edit-room {
-  background: var(--color-warning);
+    background: var(--color-warning);
 }
+
 .room-card .room-actions #edit-room:hover {
-  background: var(--color-warning-hover);
+    background: var(--color-warning-hover);
 }
+
 .room-card .room-actions #edit-room:active {
-  background: var(--color-warning-click);
-  transform: scale(0.98);
+    background: var(--color-warning-click);
+    transform: scale(0.98);
 }
+
 .room-card .room-actions #mark-as-occupied {
-  background: var(--color-success);
+    background: var(--color-success);
 }
+
 .room-card .room-actions #mark-as-occupied:hover {
-  background: var(--color-success-hover);
+    background: var(--color-success-hover);
 }
+
 .room-card .room-actions #mark-as-occupied:active {
-  background: var(--color-success-click);
-  transform: scale(0.98);
+    background: var(--color-success-click);
+    transform: scale(0.98);
 }
+
 .add-room-btn {
-  margin-top: 16px;
-  background: var(--color-success);
-  color: var(--color-text-on-primary);
-  border: none;
-  padding: 10px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-smooth);
-  user-select: none;
+    margin-top: 16px;
+    background: var(--color-success);
+    color: var(--color-text-on-primary);
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-smooth);
+    user-select: none;
 }
+
 .add-room-btn:hover {
-  background: var(--color-success-hover);
+    background: var(--color-success-hover);
 }
 
 .add-room-btn:active {
-  background: var(--color-success-click);
-  transform: scale(0.98);
+    background: var(--color-success-click);
+    transform: scale(0.98);
 }
 
 
 /* Högerpanel */
 .right-panel {
-  background: var(--color-bg-panel);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 20px;
-  overflow-y: auto;
+    background: var(--color-bg-panel);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 
 /* Modal styling */
 dialog[open] {
-  display: block;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  width: clamp(300px, 90vw, 540px);
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  padding: 0;
-  max-width: 540px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
+    display: block;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: clamp(300px, 90vw, 540px);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 0;
+    max-width: 540px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
 }
- 
+
 dialog::backdrop {
-  background-color:  rgba(0, 0, 0, 0.5);
-} 
+    background-color: rgba(0, 0, 0, 0.5);
+}
 
 .user-card {
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: var(--color-bg-card);
-  transition: all 0.3s ease;
-  position: initial;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: var(--color-bg-card);
+    transition: all 0.3s ease;
+    position: initial;
 }
 
 .user-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px #00000014, 0 4px 6px -2px #0000000a;
-  border-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px #00000014, 0 4px 6px -2px #0000000a;
+    border-color: var(--color-primary-hover);
 }
 
-.user-card .user-info  h4{
-  margin: 0;
-  font-size: 18px;
-  color: var(--color-text-main);
+.user-card .user-info h4 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text-main);
 }
 
 .user-card .user-info p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: var(--color-text-muted);
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
 }
 
 .role-badge {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 12px;
-  border: 1px solid var(--color-border);
-  margin-top: 6px;
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    margin-top: 6px;
 }
 
 .role-badge.role-student {
-  background: var(--role-student-bg);
-  color: var(--role-student-text);
+    background: var(--role-student-bg);
+    color: var(--role-student-text);
 }
+
 .role-badge.role-teacher {
-  background: var(--role-teacher-bg);
-  color: var(--role-teacher-text);
+    background: var(--role-teacher-bg);
+    color: var(--role-teacher-text);
 }
+
 .role-badge.role-admin {
-  background: var(--role-admin-bg);
-  color: var(--role-admin-text);
+    background: var(--role-admin-bg);
+    color: var(--role-admin-text);
 }
 
 .user-actions .btn-edit,
 .user-actions .btn-delete {
-  border: none;
-  border-radius: 6px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--color-text-on-primary);
-  transition: all 0.2s var(--ease-smooth);
-  user-select: none;
-  margin: 5px 0;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text-on-primary);
+    transition: all 0.2s var(--ease-smooth);
+    user-select: none;
+    margin: 5px 0;
 }
 
 .user-actions .btn-edit {
-  background: var(--color-success);
-  
+    background: var(--color-success);
+
 }
 
 .user-actions .btn-edit:hover {
-  background: var(--color-success-hover);
+    background: var(--color-success-hover);
 }
 
 .user-actions .btn-edit:active {
-  background: var(--color-success-click);
-  transform: scale(0.98);
+    background: var(--color-success-click);
+    transform: scale(0.98);
 }
 
 .user-actions .btn-delete {
-  background: var(--color-danger);
+    background: var(--color-danger);
 }
 
 .user-actions .btn-delete:hover {
-  background: var(--color-danger-hover);
+    background: var(--color-danger-hover);
 }
 
 .user-actions .btn-delete:active {
-  background: var(--color-danger-click);
-  transform: scale(0.98);
+    background: var(--color-danger-click);
+    transform: scale(0.98);
 }
 
-.modal-content  {
-  background: var(--color-bg-panel);
-  color: var(--color-text-main);
-  border-radius: 10px;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  overflow: auto;
-  border: transparent;
-  opacity: 1 ease-in-out 0.3s var(--ease-elastic);
+.modal-content {
+    background: var(--color-bg-panel);
+    color: var(--color-text-main);
+    border-radius: 10px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    overflow: auto;
+    border: transparent;
+    opacity: 1 ease-in-out 0.3s var(--ease-elastic);
 
 }
 
 
 .modal-content h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: var(--color-primary);
 }
-
 
 
 /* Form styling */
 .modal-content form .form-group {
-  margin-bottom: 14px;
+    margin-bottom: 14px;
 }
 
 .modal-content form .form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
-  color: var(--color-text-main);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--color-text-main);
 }
 
 .modal-content form .form-group input,
 .modal-content form .form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  font-size: 14px;
-  background: var(--color-bg-card);
-  color: var(--color-text-main);
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--color-bg-card);
+    color: var(--color-text-main);
 }
 
 
 .form-group input:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: var(--color-primary-hover);
-  box-shadow: 0 0 0 2px rgba(145, 54, 203, 0.2);
+    outline: none;
+    border-color: var(--color-primary-hover);
+    box-shadow: 0 0 0 2px rgba(145, 54, 203, 0.2);
 }
 
 /* Buttons */
 .form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 16px;
 }
 
 /* modal button _-----------_-- */
 
-
 .btn-primary {
-  background: var(--color-success);
-  color: var(--color-text-on-primary);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s var(--ease-smooth);
+    background: var(--color-success);
+    color: var(--color-text-on-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s var(--ease-smooth);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-success-hover);
+    background-color: var(--color-success-hover);
 }
+
 .btn-primary:active {
-  background-color: var(--color-success-click);
-  transform: scale(0.98);
+    background-color: var(--color-success-click);
+    transform: scale(0.98);
 }
 
-/* if not using .modal-content button form [type="button"]  in styles.css*/
-
-/* .btn-secondary {
-  background-color:  var(--color-danger);
-  
-  color: var(--color-text-on-primary);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s var(--ease-smooth);
-} */
-
-/* .btn-secondary:hover {
-  background-color: var(--color-danger-hover);
-}
-.btn-secondary:active {
-  background-color: var(--color-danger-active);
-  transform: scale(0.98);
-} */
-/* ---------- */
 /* Section header user */
 .section-header {
-  display: grid;
-  justify-content:flex-start;
-  margin-bottom: 2px;
+    display: grid;
+    justify-content: flex-start;
+    margin-bottom: 2px;
 }
 
 .section-header h2 {
-  text-align: center;
-  font-size: 20px;
-  color: var(--color-primary);
+    text-align: center;
+    font-size: 20px;
+    color: var(--color-primary);
 }
 
 .section-header button {
-  margin: 2px;
+    margin: 2px;
 
 }
+
 .section-header #userList {
-  margin-left: auto;
-  scroll-behavior: auto;
-  max-height: 400px;
-  overflow-y: auto;
+    margin-left: auto;
+    scroll-behavior: auto;
+    max-height: 400px;
+    overflow-y: auto;
 }
-
-/* #createRoomForm label {
-  display: block;
-  margin-top: 1rem;
-  font-weight:  500;
-}
-
-#createRoomForm input,
-#createRoomForm select {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-}
-
-.modal-actions {
-  display:  flex;
-  gap: 1rem;
-  margin-top:  1.5rem;
-  justify-content: flex-end;
-} */
 
 /* SIDEBAR */
 .admin-sidebar {
-  width: 200px;
-  background: var(--color-bg-panel);
-  border-right: 1px solid var(--color-border);
-  padding: 20px 0;
-  position: fixed;
-  top: var(--top-header-height);
-  bottom: 0;
-  left: 0;
+    width: 200px;
+    background: var(--color-bg-panel);
+    border-right: 1px solid var(--color-border);
+    padding: 20px 0;
+    position: fixed;
+    top: var(--top-header-height);
+    bottom: 0;
+    left: 0;
 }
 
 .admin-sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .sidebar-item {
-  padding: 14px 20px;
-  cursor: pointer;
-  font-weight: 500;
-  color: var(--color-text-main);
-  transition: background 0.2s;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--color-text-main);
+    transition: background 0.2s;
 }
 
 .sidebar-item:hover {
-  background: var(--color-bg-hover);
+    background: var(--color-bg-hover);
 }
 
 .sidebar-item.active {
-  background: var(--color-primary);
-  color: var(--color-text-on-primary);
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
 }
 
 /* Push main content to the right */
 main, .admin-layout {
-  margin-left: 220px;
+    margin-left: 220px;
 }
 
 .user-filter-bar {
-  display: flex;
-  gap: 12px;
-  margin: 12px 10px 20px;
+    display: flex;
+    gap: 12px;
+    margin: 12px 10px 20px;
 }
 
 .user-filter-bar input,
 .user-filter-bar select {
-  padding: 8px 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  background: var(--color-bg-card);
-  color: var(--color-text-main);
-  font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-card);
+    color: var(--color-text-main);
+    font-size: 14px;
 }
 
 .user-filter-bar select,
 .user-filter-bar input {
-  width: 250px;        /* statisk bredd */
-  min-width: 200px;    /* förhindrar krympning */
-  max-width: 200px;    /* förhindrar expansion */
-  box-sizing: border-box;
+    width: 250px; /* statisk bredd */
+    min-width: 200px; /* förhindrar krympning */
+    max-width: 200px; /* förhindrar expansion */
+    box-sizing: border-box;
 }
 
 .user-filter-bar .show-all-users input {
-  width: auto;
-  min-width: 0;
-  max-width: none;
-  cursor: pointer;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    cursor: pointer;
 }
 
 /* Valfritt: Styla labeln så att texten hamnar snyggt bredvid */
 .show-all-users {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  white-space: nowrap; /* Hindrar texten från att radbrytas */
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap; /* Hindrar texten från att radbrytas */
+    cursor: pointer;
 }
 
 .user-filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 1rem; /* valfritt, men gör det snyggare */
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* valfritt, men gör det snyggare */
 }
 
 #createUserBtn {
-  margin-left: auto; /* trycker knappen längst till höger */
+    margin-left: auto; /* trycker knappen längst till höger */
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  margin-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-right: 10px;
 }

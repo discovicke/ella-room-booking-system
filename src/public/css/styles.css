@@ -597,12 +597,6 @@ body {
     display: none;
 }
 
-/*
-.modal:not([hidden]) {
-  display: flex;
-}
-  */
-
 .modal-content h3 {
     color: var(--color-primary);
     margin: 0 0 8px;
