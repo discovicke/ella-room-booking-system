@@ -81,7 +81,7 @@ body {
   flex: 0 0 auto;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-bg-body);
+  background-color: var(--color-bg-panel);
   border-bottom: 1px solid var(--color-border);
   padding: 10px;
   position: sticky;
@@ -185,8 +185,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 15px;
-  padding-bottom: 12px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.room-header p {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 .room-header h2,
@@ -197,7 +201,7 @@ body {
 .room-header p,
 .booking-header p {
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   color: #777;
 }
 
@@ -850,7 +854,6 @@ body {
   }
 
   .booking-tabs {
-  
   align-items: flex-start;
   gap: 6px;
  
@@ -899,10 +902,6 @@ body {
     --role-teacher-text: #e9d5ff;
     --role-admin-bg: #7c2d12;
     --role-admin-text: #fed7aa;
-  }
-
-  .top-header {
-    background-color: var(--color-bg-panel);
   }
 
   .panel,
