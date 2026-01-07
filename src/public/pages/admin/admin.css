@@ -280,19 +280,19 @@ dialog::backdrop {
 
 
 /* Form styling */
-.form-group {
+.modal-content form .form-group {
   margin-bottom: 14px;
 }
 
-.form-group label {
+.modal-content form .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight:  500;
+  font-weight: 500;
   color: var(--color-text-main);
 }
 
-.form-group input,
-.form-group select {
+.modal-content form .form-group input,
+.modal-content form .form-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--color-border);
@@ -301,6 +301,7 @@ dialog::backdrop {
   background: var(--color-bg-card);
   color: var(--color-text-main);
 }
+
 
 .form-group input:focus,
 .form-group select:focus {
