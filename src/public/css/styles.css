@@ -307,18 +307,27 @@ body {
   min-width: 86px;
   text-align: end;
   user-select: none;
+  position: relative;
+}
+
+.status.active::after {
+  content: "✓";
+  padding-left: 6px;
+  color: var(--color-success);
+}
+
+.status.cancelled::after {
+  content: "✖";
+  padding-left: 6px;
+  color: var(--color-danger);
 }
 
 .status.active {
   color: var(--color-success);
-  /*  background: var(--color-success-bg);
-  border: 1px solid #cfead3;  */
 }
 
 .status.cancelled {
   color: var(--color-danger);
-  /*  background: var(--color-text-main);
-  border: 1px solid #f2c6c6;  */
 }
 
 .booking-card:has(.status.active):hover {
