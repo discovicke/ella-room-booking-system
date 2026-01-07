@@ -73,13 +73,52 @@ export class RoomModal {
       floor_number: parseInt(formData.get('floor')) || null
     };
 
+   // ✅ Extract assets from form (comma-separated string)
+    const assetsInput = formData.get('assets');
+    const assets = assetsInput 
+      ? assetsInput.split(',').map(a => a.trim()).filter(a => a. length > 0)
+      : [];
+
     try {
+      let roomId = this.editingRoomId;
+
       if (this.editingRoomId) {
+        // UPDATE existing room
         await API.updateRoom(this.editingRoomId, roomData);
-        showSuccess('Rum uppdaterat');
-      } else {
-        await API. createRoom(roomData);
-        showSuccess(`Rum ${roomData.room_number} skapat! `);
+         const existingRooms = await API.getRooms(true);
+      const room = existingRooms.find(r => r.id === this.editingRoomId);
+      
+      if (room && room.assets) {
+        for (const asset of room.assets) {
+          try {
+            await API.deleteRoomAsset(asset.id);
+          } catch (err) {
+            console.error(`Failed to delete old asset: `, err);
+          }
+        }
+      }
+      
+      showSuccess('Rum uppdaterat');
+    } else {
+      // CREATE new room
+      const newRoom = await API.createRoom(roomData);
+      
+      if (newRoom && newRoom.id) {
+        roomId = newRoom.id;
+      }
+      
+      showSuccess(`Rum ${roomData.room_number} skapat!`);
+    }
+
+      // ✅ Add assets if provided
+      if (roomId && assets.length > 0) {
+        for (const asset of assets) {
+          try {
+            await API.createRoomAsset(roomId, asset);
+          } catch (err) {
+            console.error(`Failed to add asset "${asset}": `, err);
+          }
+        }
       }
 
       this.close();
