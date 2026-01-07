@@ -15,7 +15,7 @@ export class RoomModal {
     if (! this.modal || !this.form) return;
 
     // Close button
-    const closeBtn = this.modal.querySelector('[data-close-modal]');
+    const closeBtn = this.modal.querySelector('add-room-btn');
     if (closeBtn) {
       closeBtn.addEventListener('click', () => this.close());
     }
