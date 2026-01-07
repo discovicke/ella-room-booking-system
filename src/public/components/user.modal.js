@@ -1,5 +1,6 @@
 import API from "../api/api.js";
 import { showError, showSuccess } from "../utils/toast.js";
+import { translateError } from "../utils/translator.utils.js";
 
 export class UserModal {
   constructor(modalId, formId, onSuccess) {
@@ -45,7 +46,8 @@ export class UserModal {
       this.editingUserId = userId;
 
       // Populate Form
-      document.getElementById("userName").value = user.display_name || user.name;
+      document.getElementById("userName").value =
+        user.display_name || user.name;
       document.getElementById("userEmail").value = user.email;
       document.getElementById("userRole").value = user.role;
 
@@ -106,7 +108,7 @@ export class UserModal {
       if (this.onSuccess) this.onSuccess(); // Reload list
     } catch (error) {
       console.error(error);
-      showError(`Operation misslyckades: ${error.message}`);
+      showError(`Operation misslyckades: ${translateError(error.message)}`);
     }
   }
 }

@@ -406,3 +406,102 @@ dialog::backdrop {
   margin-top:  1.5rem;
   justify-content: flex-end;
 } */
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 200px;
+  background: var(--color-bg-panel);
+  border-right: 1px solid var(--color-border);
+  padding: 20px 0;
+  position: fixed;
+  top: var(--top-header-height);
+  bottom: 0;
+  left: 0;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--color-text-main);
+  transition: background 0.2s;
+}
+
+.sidebar-item:hover {
+  background: var(--color-bg-hover);
+}
+
+.sidebar-item.active {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+/* Push main content to the right */
+main, .admin-layout {
+  margin-left: 220px;
+}
+
+.user-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin: 12px 10px 20px;
+}
+
+.user-filter-bar input,
+.user-filter-bar select {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-card);
+  color: var(--color-text-main);
+  font-size: 14px;
+}
+
+.user-filter-bar select,
+.user-filter-bar input {
+  width: 250px;        /* statisk bredd */
+  min-width: 200px;    /* förhindrar krympning */
+  max-width: 200px;    /* förhindrar expansion */
+  box-sizing: border-box;
+}
+
+.user-filter-bar .show-all-users input {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  cursor: pointer;
+}
+
+/* Valfritt: Styla labeln så att texten hamnar snyggt bredvid */
+.show-all-users {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  white-space: nowrap; /* Hindrar texten från att radbrytas */
+  cursor: pointer;
+}
+
+.user-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* valfritt, men gör det snyggare */
+}
+
+#createUserBtn {
+  margin-left: auto; /* trycker knappen längst till höger */
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-right: 10px;
+}

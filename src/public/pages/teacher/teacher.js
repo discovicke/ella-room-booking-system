@@ -1,9 +1,10 @@
-import API from "../api/api.js";
-import { showError, showSuccess } from "../utils/toast.js";
-import { loadUser, setupLogout } from "../components/auth.manager.js";
-import { renderRooms } from "../components/room.renderer.js";
-import { renderBookings as renderBookingList } from "../components/booking.renderer.js";
-import { BookingModal } from "../components/booking.modal.js";
+import API from "../../api/api.js";
+import { showError, showSuccess } from "../../utils/toast.js";
+import { loadUser, setupLogout } from "../../components/auth.manager.js";
+import { renderRooms } from "../../components/room.renderer.js";
+import { renderBookings as renderBookingList } from "../../components/booking.renderer.js";
+import { BookingModal } from "../../components/booking.modal.js";
+import { translateError } from "../../utils/translator.utils.js";
 
 // --- Global State ---
 let allBookings = [];
@@ -81,7 +82,7 @@ async function loadRooms() {
     updateQuickInfo(cachedRooms);
   } catch (error) {
     console.error("Could not load rooms", error);
-    showError("Kunde inte ladda rum.");
+    showError(translateError(error.message) || "Kunde inte ladda rum.");
   }
 }
 
@@ -100,7 +101,7 @@ async function loadBookings() {
     updateQuickInfo(cachedRooms);
   } catch (err) {
     console.error("Failed to load bookings:", err);
-    showError("Kunde inte ladda bokningar.");
+    showError(translateError(err.message));
   }
 }
 
@@ -141,7 +142,7 @@ async function handleUnbook(bookingId) {
     showSuccess("Bokningen har avbokats.");
   } catch (err) {
     console.error("Failed to unbook:", err);
-    showError("Avbokning misslyckades.");
+    showError("Avbokning misslyckades: " + translateError(err.message));
   }
 }
 
