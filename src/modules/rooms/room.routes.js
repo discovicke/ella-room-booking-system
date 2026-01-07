@@ -9,14 +9,6 @@
  * - Imported by: 'src/app.js'
  */
 
-// =======================================
-//      HEJ @ANDRÉ HEATONLOVER PONTÉN
-//      START PÅ APIANROPET ÄR:
-//      -----------------------
-//      | localhost/api/rooms |
-//      -----------------------
-// =======================================
-
 import express from "express";
 import * as roomController from "./room.controller.js";
 import { authenticate } from "../../middleware/authentication.middleware.js";
@@ -50,6 +42,10 @@ roomsRouter.delete(
 
 // Assets under a room
 //roomsRouter.get("/:id/assets", roomController.listAssetsByRoom);
+
+// COMMENTED OUT - ASSETS NOT USED YET
+
+/* 
 roomsRouter.post(
   "/:id/assets",
   authenticate,
@@ -70,5 +66,6 @@ roomsRouter.delete(
   authorize(ROLES.ADMIN),
   roomController.deleteRoomAsset
 );
+*/
 
 export default roomsRouter;
