@@ -1,4 +1,8 @@
 // Frontend API layer
+import {
+  translateError,
+  translateStatusCode,
+} from "../utils/translator.utils.js";
 
 /**
  * Helper to make authenticated API calls.
@@ -36,7 +40,10 @@ async function apiFetch(url, options = {}) {
     // Try to get error message from response body
     try {
       const errorData = await response.json();
-      const errorMessage = errorData.error || errorData.message || translateStatusCode(response.status);
+      const errorMessage =
+        errorData.error ||
+        errorData.message ||
+        translateStatusCode(response.status);
       throw new Error(translateError(errorMessage));
     } catch (jsonError) {
       // If JSON parsing fails, use status code translation
@@ -129,46 +136,35 @@ const API = {
     });
   },
   async createUser(userData) {
-    return await apiFetch('/api/users', {
-      method: 'POST',
-      body: JSON.stringify(userData)
+    return await apiFetch("/api/users", {
+      method: "POST",
+      body: JSON.stringify(userData),
     });
   },
   async updateUser(userId, userData) {
     return await apiFetch(`/api/users/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify(userData)
+      method: "PUT",
+      body: JSON.stringify(userData),
     });
   },
- 
-async createRoom(roomData) {
-    return await apiFetch('/api/rooms', {
-      method: 'POST',
-      body: JSON.stringify(roomData)
+
+  async createRoom(roomData) {
+    return await apiFetch("/api/rooms", {
+      method: "POST",
+      body: JSON.stringify(roomData),
     });
   },
   async updateRoom(roomId, roomData) {
     return await apiFetch(`/api/rooms/${roomId}`, {
-      method: 'PUT',
-      body: JSON.stringify(roomData)
+      method: "PUT",
+      body: JSON.stringify(roomData),
     });
   },
   async deleteRoom(roomId) {
-    return await apitFetch('/api/rooms/${roomId}', {
-      method: 'DELETE'
+    return await apitFetch("/api/rooms/${roomId}", {
+      method: "DELETE",
     });
   },
-    
-
-
-  // TODO: Implement getRoom(id) - GET /api/rooms/:id
-
-  // TODO: Implement getBookings() - GET /api/bookings
-  // TODO: Implement createBooking(bookingData) - POST /api/bookings
-  // TODO: Implement updateBooking(id, bookingData) - PUT /api/bookings/:id
-  // TODO: Implement deleteBooking(id) - DELETE /api/bookings/:id
-  // TODO: Implement getBookingsByUser(userId) - GET /api/users/:id/bookings
-
 };
 window.API = API; // For debugging
 

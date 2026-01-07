@@ -4,6 +4,7 @@ import { loadUser, setupLogout } from "../components/auth.manager.js";
 import { renderRooms } from "../components/room.renderer.js";
 import { renderBookings } from "../components/booking.renderer.js";
 import { BookingModal } from "../components/booking.modal.js";
+import { translateError } from "../utils/translator.utils.js";
 
 // --- Global State ---
 let allBookings = [];
@@ -82,7 +83,7 @@ async function loadBookings() {
     updateBookingList();
   } catch (err) {
     console.error("Failed to load bookings:", err);
-    showError(err.message);
+    showError(translateError(err.message));
   }
 }
 
