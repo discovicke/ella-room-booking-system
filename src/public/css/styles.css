@@ -626,9 +626,9 @@ body {
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: transparent;
   font-size: 14px;
-  color: var(--color-text-main);
+  color: var(--color-asset-text);
+  background: var(--color-asset-bg);
   font-family: inherit;
 }
 
