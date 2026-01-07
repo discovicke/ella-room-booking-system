@@ -10,9 +10,6 @@ const userRouter = express.Router();
 // GET /api/users - Get all users (Admin only)
 userRouter.get("/", authenticate, authorize(ROLES.ADMIN), getAllUsers);
 
-// GET /api/users/:id - Get user by ID (Admin only)
-userRouter.get("/:id", authenticate, authorize(ROLES.ADMIN), getUserById);
-
 // POST /api/users - Create a new user (Admin only)
 userRouter.post("/", authenticate, authorize(ROLES.ADMIN), createUser);
 
@@ -21,5 +18,14 @@ userRouter.put('/:id', authenticate, authorize(ROLES.ADMIN), updateUser);
 
 // DELETE /api/users/:id - Delete a user (Admin only)
 userRouter.delete("/:id", authenticate, authorize(ROLES.ADMIN), deleteUser);
+
+/* ----------------------------------------------------------
+   UNUSED ROUTE!
+   Frontend använder local filtering (allUsers.find) istället 
+   för att hämta enskilda användare via API.
+   
+// GET /api/users/:id - Get user by ID (Admin only)
+userRouter.get("/:id", authenticate, authorize(ROLES.ADMIN), getUserById);
+*/
 
 export default userRouter;
