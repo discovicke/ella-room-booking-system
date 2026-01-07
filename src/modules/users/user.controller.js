@@ -98,7 +98,7 @@ export const deleteUser = (req, res) => {
       return res.status(404).json({ error: 'Användare hittades inte' });
     }
 
-    console.log(`Användare finns:  ${user.Display_name}`);
+    console.log(`Användare finns:  ${user.display_name}`);
 
     const changes = userRepo. deleteUser(userId);
     
@@ -118,7 +118,7 @@ export const deleteUser = (req, res) => {
  export const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, email, role, password } = req.body;
+    const { display_name, email, role, password } = req.body;
 
     const user = userRepo.getUserById(userId);
     if (!user) {
@@ -126,7 +126,7 @@ export const deleteUser = (req, res) => {
     }
 
     const updates = { 
-      Display_name: name || user.Display_name, 
+      display_name: display_name || user.display_name,
       email: email || user.email, 
       role: role || user. role,
       class: user.class 

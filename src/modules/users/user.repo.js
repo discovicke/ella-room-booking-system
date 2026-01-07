@@ -40,13 +40,13 @@ export function findUserByRole(role) {
   return users;
 }
 export function findUserByName(name) {
-  const query = `SELECT * FROM users WHERE Display_name = ?`;
+  const query = `SELECT * FROM users WHERE display_name = ?`;
   const users = db.prepare(query).all(name);
   return users;
 }
 export function createUser(user) {
   const query = `
-    INSERT INTO users (email, password_hash, role, Display_name, class)
+    INSERT INTO users (email, password_hash, role, display_name, class)
     VALUES (?, ?, ?, ?, ?)
   `;
   const result = db
@@ -55,7 +55,7 @@ export function createUser(user) {
       user.email,
       user.password_hash,
       user.role,
-      user.Display_name,
+      user.display_name,
       user.class
     );
   return result.lastInsertRowid;
@@ -63,7 +63,7 @@ export function createUser(user) {
 export function updateUser(id, user) {
   const query = `
     UPDATE users
-    SET email = ?, password_hash = ?, role = ?, Display_name = ?, class = ?
+    SET email = ?, password_hash = ?, role = ?, display_name = ?, class = ?
     WHERE id = ?
   `;
   const result = db
@@ -72,7 +72,7 @@ export function updateUser(id, user) {
       user.email,
       user.password_hash,
       user.role,
-      user.Display_name,
+      user.display_name,
       user.class,
       id
     );

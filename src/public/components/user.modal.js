@@ -45,8 +45,7 @@ export class UserModal {
       this.editingUserId = userId;
 
       // Populate Form
-      document.getElementById("userName").value =
-        user.display_name || user.name;
+      document.getElementById("userName").value = user.display_name || user.name;
       document.getElementById("userEmail").value = user.email;
       document.getElementById("userRole").value = user.role;
 
@@ -77,7 +76,7 @@ export class UserModal {
     const formData = new FormData(this.form);
 
     const userData = {
-      Display_name: formData.get("name"),
+      display_name: formData.get("name"),
       email: formData.get("email"),
       role: formData.get("role"),
     };
@@ -100,7 +99,7 @@ export class UserModal {
         }
         userData.password = password;
         await API.createUser(userData);
-        showSuccess(`Användare skapad: ${userData.name}`);
+        showSuccess(`Användare skapad: ${userData.display_name}`);
       }
 
       this.close();

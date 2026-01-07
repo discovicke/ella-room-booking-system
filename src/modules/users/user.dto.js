@@ -7,7 +7,7 @@ export class CreateUserDTO {
     this.email = data.email;
     this.password = data.password;
     this.role = data.role || "student"; // Default role
-    this.display_name = data.Display_name;
+    this.display_name = data.display_name;
 
     // 'class' is a reserved keyword in JavaScript, so we map it to 'user_class' internally
     this.user_class = data.class || null;
@@ -40,7 +40,7 @@ export class CreateUserDTO {
       email: this.email,
       password_hash: hashedPassword,
       role: this.role,
-      Display_name: this.display_name, // Matches DB column
+      display_name: this.display_name, // Matches DB column
       class: this.user_class, // Matches DB column
     };
   }
@@ -51,7 +51,7 @@ export class UpdateUserDTO {
   constructor(data) {
     this.email = data.email;
     this.role = data.role;
-    this.display_name = data.Display_name;
+    this.display_name = data.display_name;
     this.user_class = data.class;
   }
 
@@ -60,7 +60,7 @@ export class UpdateUserDTO {
     if (this.email !== undefined) fields.email = this.email;
     if (this.role !== undefined) fields.role = this.role;
     if (this.display_name !== undefined)
-      fields.Display_name = this.display_name;
+      fields.display_name = this.display_name;
     if (this.user_class !== undefined) fields.class = this.user_class;
 
     if (Object.keys(fields).length === 0) {
