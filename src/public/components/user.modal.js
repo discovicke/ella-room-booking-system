@@ -77,7 +77,7 @@ export class UserModal {
     const formData = new FormData(this.form);
 
     const userData = {
-      name: formData.get("name"),
+      Display_name: formData.get("name"),
       email: formData.get("email"),
       role: formData.get("role"),
     };
