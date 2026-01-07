@@ -26,11 +26,11 @@ function injectStyles() {
 /* Toast card */
 .toast {
   pointer-events: auto;
-  background: var(--color-bg-panel);
+  background: var(--color-bg-toast);
   border-left: 4px solid #10B981;
   padding: 12px 16px;
   border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   gap: 12px;

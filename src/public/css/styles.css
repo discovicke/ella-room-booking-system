@@ -39,6 +39,8 @@
   --color-asset-text: #475569;
   --color-asset-border: #e2e8f0;
 
+  --color-bg-toast: #F4F5F4;
+
   --color-text-main: #1f2937;
   --color-text-muted: #6b7280;
   --color-text-on-primary: #f5f5f5;
@@ -79,7 +81,7 @@ body {
   flex: 0 0 auto;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-bg-body);
+  background-color: var(--color-bg-panel);
   border-bottom: 1px solid var(--color-border);
   padding: 10px;
   position: sticky;
@@ -183,8 +185,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 15px;
-  padding-bottom: 12px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.room-header p {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 .room-header h2,
@@ -195,7 +201,7 @@ body {
 .room-header p,
 .booking-header p {
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   color: #777;
 }
 
@@ -246,7 +252,7 @@ body {
   cursor: pointer;
   color: var(--color-text-muted, #6b7280);
   border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .tab-btn:hover {
@@ -256,17 +262,19 @@ body {
 .tab-btn.active {
   color: var(--color-primary, #9036c8);
   border-bottom: 2px solid var(--color-primary, #9036c8);
+  transition: all 0.3s ease;
 }
 
 /* --- BOOKING LIST & CARDS --- */
 .room-scroll,
 .booking-scroll {
-  padding-top: 6px;
+  padding-top: 18px;
   flex: 1 1 auto;
   overflow-y: auto;
   box-sizing: border-box;
   min-height: 0;
-  margin-top: 6px;
+  margin-top: 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 .booking-card {
@@ -274,6 +282,8 @@ body {
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
+  margin-right: 4px;
+  margin-left: 8px;
   background: var(--color-bg-card);
   transition: all 0.3s ease;
   position: relative;
@@ -311,6 +321,16 @@ body {
   border: 1px solid #f2c6c6;  */
 }
 
+.booking-card:has(.status.active):hover {
+  border-color: var(--color-success-hover);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.08);
+}
+
+.booking-card:has(.status.cancelled):hover {
+  border-color: var(--color-danger-hover);
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.08);
+}
+
 /* Unbook button inside booking card */
 .booking-card button {
   position: absolute;
@@ -345,14 +365,15 @@ body {
   background: var(--color-bg-card);
   transition: all 0.3s ease;
   margin-bottom: 16px;
+  margin-right: 4px;
+  margin-left: 8px;
   position: relative;
   z-index: 600;
 }
 
-.room-card:hover,
-.booking-card:hover {
+.room-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px #00000014, 0 4px 6px -2px #0000000a;
+  box-shadow: 0 10px 15px -3px rgba(141, 107, 255, 0.08), 0 4px 6px -2px rgba(177, 114, 255, 0.04);
   border-color: var(--color-primary-hover);
 }
 
@@ -627,7 +648,7 @@ body {
 .time-slot:hover {
   border-color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 /* Selected state with pulse */
@@ -640,8 +661,7 @@ body {
 .time-slot.selected::after {
   content: "✓";
   position: absolute;
-  top: 2px;
-  right: 4px;
+  top: 2px; right: 4px;
 }
 
 .modal-content form textarea {
@@ -871,6 +891,7 @@ body {
     --color-bg-body: #111827;
     --color-bg-panel: #1f2937;
     --color-bg-card: #1e2530;
+    --color-bg-toast: #3d4659;
     --color-border: #374151;
     --color-text-main: #f3f4f6;
     --color-text-muted: #9ca3af;
@@ -888,10 +909,6 @@ body {
     --role-teacher-text: #e9d5ff;
     --role-admin-bg: #7c2d12;
     --role-admin-text: #fed7aa;
-  }
-
-  .top-header {
-    background-color: var(--color-bg-panel);
   }
 
   .panel,
