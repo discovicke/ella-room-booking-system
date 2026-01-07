@@ -29,6 +29,18 @@ export function loadUser() {
   const roleEl = document.getElementById("user-role");
   if (roleEl) {
     roleEl.textContent = capitalize(user.role);
+    if(user.role === 'teacher'){
+      roleEl.textContent = capitalize('utbildare')
+    }
+    if(user.role === 'student'){
+      roleEl.textContent = capitalize('elev')
+    }
+    if(user.role === 'admin'){
+      roleEl.textContent = capitalize('admin')
+    }
+    if (user.role === 'admin' && window.matchMedia('(min-width: 900px)').matches) {
+      roleEl.textContent = capitalize('administratör')
+    }
     // Reset classes and add user-role + specific role class
     roleEl.className = `user-role ${user.role}`;
   }
