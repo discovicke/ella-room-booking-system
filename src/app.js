@@ -83,6 +83,11 @@ app.get("/login", (req, res) => {
   res.redirect("/");
 });
 
+// if /index.html redirect to /
+app.get("/index.html", (req, res) => {
+  res.redirect("/");
+});
+
 // Catch-all 404 (Must be last)
 app.use((req, res) => {
   if (req.accepts("html")) return res.status(404).redirect("/404");
