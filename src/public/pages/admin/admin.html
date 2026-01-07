@@ -26,47 +26,61 @@
   </header>
 
   <main>
-    <section class="user-management">
+    <nav class="admin-sidebar">
+      <ul>
+        <li class="sidebar-item active" data-target="overview-panel">Översikt</li>
+        <li class="sidebar-item" data-target="bookings-panel">Bokningar</li>
+        <li class="sidebar-item" data-target="rooms-panel">Rum</li>
+        <li class="sidebar-item" data-target="users-panel">Användare</li>
+      </ul>
+    </nav>
+
+    <section class="user-management" data-panel="users-panel" style="display:none;">
       <div class="section-header">
-        <h2>Användare</h2>
-        <button id="createUserBtn" class="btn-primary">➕ Skapa ny användare</button>
-        <div id="userList"></div>
-        <!-- modal for adding/ editing rooms maybe move -->
-        <dialog id="createRoomModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Skapa nytt rum</h2>
-        </div>
-        <form id="createRoomForm">
-          <label for="roomName">Rum namn:</label>
-          <input type="text" id="roomName" name="name" required>
-    
-          <label for="roomType">Typ *</label>
-          <select id="roomType" name="type" required>
-            <option value="">-- Välj typ --</option>
-            <option value="classroom">Klassrum</option>
-            <option value="lab">Laboratorium</option>
-            <option value="meeting">Mötesrum</option>
-          </select>
-    
-          <label for="roomCapacity">Kapacitet *</label>
-          <input type="number" id="roomCapacity" name="capacity" required min="1" required>
-    
-          <label for="roomAssets">Utrustnings tillgångar</label>
-          <input type="text" id="roomAssets" name="assets" placeholder="Exempel: Projektor, Whiteboard">
-          <div class="modal-actions">
-            <button type="button" class="btn-secondary" data-close-modal="createRoomModal">Avbryt</button>
-            <button type="submit" class="btn-primary">Skapa Rum</button>
-          </div>
-        </form>
+        <h2>Översikt Användare</h2>
+        <button id="createUserBtn" class="btn-primary">+ Skapa ny användare</button>
+        
       </div>
-    </dialog>
+
+      <!-- FILTERBAR  -->
+      <div class="user-filter-bar">
+
+        <!-- 1. Välj användare -->
+        <select id="userDropdown">
+          <option value="">Välj användare...</option>
+        </select>
+
+        <!-- 2. Rollfilter -->
+        <select id="userRoleFilter">
+          <option value="all">Alla roller</option>
+          <option value="student">Student</option>
+          <option value="teacher">Lärare</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <!-- 3. Sökfält -->
+        <input type="text" id="userSearch" placeholder="Sök användare..." />
+
+        <!-- 4. Visa alla användare -->
+        <label class="show-all-users">
+          <input type="checkbox" id="showAllUsers" />
+          Visa alla användare
+        </label>
+
+        
 
       </div>
+
+      <!-- LISTA -->
+      <div id="userList"></div>
     </section>
 
-    
-      
+    <!-- modal for adding/ editing rooms maybe move -->
+    <!-- (Denna del rör vi inte nu) -->
+
+    </div>
+    </section>
+
   </main>
 
   <dialog id="createUserModal">
@@ -76,7 +90,7 @@
       <form id="createUserForm">
         <div class="form-group">
           <label for="createUserName">Namn:</label>
-            <input type="text" id="createUserName" name="name" required>
+          <input type="text" id="createUserName" name="name" required>
         </div>
 
         <div class="form-group">
@@ -107,14 +121,11 @@
     </div>
   </dialog>
 
-  <!-- modal for adding/ editing rooms  maybe move here!!!-->
-  
-
-
   <!-- admin layout  for left and right panels -->
   <div class="admin-layout">
 
-    <section class="left-panel">
+    <section class="left-panel" data-panel="overview-panel">
+
       <h2>Översikt</h2>
       <div class="summary-grid">
         <div class="summary-card">Totalt antal rum: <strong id="summary-total-rooms">0</strong></div>
@@ -123,15 +134,52 @@
         <div class="summary-card">Totala bokningar: <strong id="summary-total-bookings">0</strong></div>
       </div>
 
-      <div class="room-header-row" style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>Rum</h2>
-        <button class="add-room-btn" id="add-room-btn">+ Lägg till rum</button>
+      <div data-panel="rooms-panel" style="display:none;">
+        <div class="room-header-row" style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>Rum</h2>
+          <button class="add-room-btn" id="add-room-btn">+ Lägg till rum</button>
+        </div>
+
+        <div id="student-room-list"></div>
+
+        <!-- Rumsmodalen ligger kvar här, oförändrad -->
+        <dialog id="createRoomModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2>Skapa nytt rum</h2>
+            </div>
+            <form id="createRoomForm">
+              <label for="roomName">Rum namn:</label>
+              <input type="text" id="roomName" name="name" required>
+
+              <label for="roomType">Typ *</label>
+              <select id="roomType" name="type" required>
+                <option value="">-- Välj typ --</option>
+                <option value="classroom">Klassrum</option>
+                <option value="lab">Laboratorium</option>
+                <option value="meeting">Mötesrum</option>
+              </select>
+
+              <label for="roomCapacity">Kapacitet *</label>
+              <input type="number" id="roomCapacity" name="capacity" required min="1">
+
+              <label for="roomAssets">Utrustnings tillgångar</label>
+              <input type="text" id="roomAssets" name="assets" placeholder="Exempel: Projektor, Whiteboard">
+
+              <div class="modal-actions">
+                <button type="button" class="btn-secondary" data-close-modal="createRoomModal">Avbryt</button>
+                <button type="submit" class="btn-primary">Skapa Rum</button>
+              </div>
+            </form>
+          </div>
+        </dialog>
+
       </div>
 
       <div id="student-room-list"></div>
     </section>
 
-    <section class="right-panel">
+    <section class="right-panel" data-panel="bookings-panel" style="display:none;">
       <div class="booking-header">
         <div class="header-top">
           <h2>Bokningshantering</h2>
