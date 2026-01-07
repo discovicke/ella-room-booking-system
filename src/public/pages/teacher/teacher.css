@@ -59,4 +59,24 @@
   letter-spacing: 0.1em;
 }
 
+@media (max-width: 630px) {
+  .info-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .quick-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .info-panel h3 {
+    margin: 0 0 4px 0;
+  }
+
+  .info-panel p {
+    padding-right: 0;
+  }
 }
