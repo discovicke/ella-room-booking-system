@@ -3,6 +3,7 @@ import { createRoomCard } from "../components/room.renderer.js";
 import { renderBookings } from "../components/booking.renderer.js";
 import { renderUsers } from "../components/user.renderer.js";
 import { UserModal } from "../components/user.modal.js";
+import { RoomModal } from "../../components/room.modal.js";
 import { loadUser, setupLogout } from "../components/auth.manager.js";
 import { showError, showSuccess } from "../utils/toast.js";
 
@@ -19,6 +20,7 @@ let userRoleFilter = "all";
 
 // --- Components ---
 const userModal = new UserModal("createUserModal", "createUserForm", loadUsers);
+const roomModal = new RoomModal("createRoomModal", "createRoomForm", loadRooms);
 
 // --- Initialization ---
 const currentUser = loadUser();
@@ -41,7 +43,6 @@ if (currentUser) {
   loadBookings();
   loadUsers();
 }
-
 // --- Sidebar Navigation ---
 function setupSidebar() {
   const items = document.querySelectorAll(".sidebar-item");
@@ -213,10 +214,28 @@ function renderAdminRooms(rooms) {
     return createRoomCard(room, actionButtons);
   }).join("");
 
-  container.onclick = (e) => {
-    if (e.target.classList.contains("btn-delete-room")) showError("Ta bort rum: Ej implementerat");
-    if (e.target.classList.contains("btn-edit-room")) showError("Redigera rum: Ej implementerat");
+  container.onclick = async (e) => {
+    const roomId = e.target.dataset.id;
+    
+    if (e.target.classList.contains("btn-delete-room")) {
+      await handleDeleteRoom(roomId);
+    }
+    if (e.target.classList. contains("btn-edit-room")) {
+      roomModal.openForEdit(roomId);
+    }
   };
+}
+
+async function handleDeleteRoom(roomId) {
+  if (!confirm("⚠️ Är du säker på att du vill ta bort detta rum?")) return;
+
+  try {
+    await API.deleteRoom(roomId);
+    showSuccess("Rum borttaget");
+    loadRooms();
+  } catch (error) {
+    showError(`Kunde inte ta bort:  ${error.message}`);
+  }
 }
 
 // --- Bookings ---
@@ -321,18 +340,8 @@ function setText(id, txt) {
   if (el) el.textContent = txt;
 }
 
-// --- Room Modal Controls ---
+//  --- Room Modal Controls ---
 const addRoomBtn = document.getElementById("add-room-btn");
-const roomModal = document.getElementById("createRoomModal");
-
-if (addRoomBtn && roomModal) {
-  addRoomBtn.addEventListener("click", () => {
-    roomModal.showModal();
-  });
+if (addRoomBtn) {
+  addRoomBtn.addEventListener("click", () => roomModal.openForCreate());
 }
-
-document.querySelectorAll("[data-close-modal='createRoomModal']").forEach(btn => {
-  btn.addEventListener("click", () => {
-    roomModal.close();
-  });
-});
