@@ -269,12 +269,13 @@ body {
 /* --- BOOKING LIST & CARDS --- */
 .room-scroll,
 .booking-scroll {
-  padding-top: 6px;
+  padding-top: 18px;
   flex: 1 1 auto;
   overflow-y: auto;
   box-sizing: border-box;
   min-height: 0;
-  margin-top: 6px;
+  margin-top: 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
 }
 
 .booking-card {
