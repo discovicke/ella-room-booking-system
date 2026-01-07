@@ -9,8 +9,13 @@ export class BookingModal {
     this.closeBtn = this.modal?.querySelector("#modal-close");
     this.roomLabel = document.getElementById("modal-room-label");
 
+    this.dateInput = document.getElementById('booking-date');
+    this.startHourSelect = document.getElementById('start-hour');
+    this.notesTextarea = document.getElementById('notes');
+
     this.currentRoom = null;
     this.currentUser = null;
+    this.selectedDuration = null;
     this.onBookingSuccess = null; // Callback
 
     this.init();
@@ -38,8 +43,37 @@ export class BookingModal {
     // Prevent clicks inside content from closing
     this.modalContent?.addEventListener("click", (e) => e.stopPropagation());
 
+    // Set min-date to today
+    const today = new Date().toISOString().split('T')[0];
+    this.dateInput?.setAttribute('min', today);
+
+    // Validate date (can't book weekends)
+    this.dateInput?.addEventListener('input', (e) => this.validateDate(e));
+
+    // Handle time-slot buttons
+    document.querySelectorAll('.time-slot').forEach(slot => {
+      slot.addEventListener('click', () => this.selectDuration(slot));
+    });
+
     // Handle Submit
     this.form.addEventListener("submit", (e) => this.handleBooking(e));
+  }
+
+  validateDate(e) {
+    const selected = new Date(e.target.value);
+    const day = selected.getDay();
+
+    if (day === 0 || day === 6) {
+      showError('Du kan endast boka måndag–fredag');
+      this.nudge();
+      e.target.value = '';
+    }
+  }
+
+  selectDuration(slot) {
+    document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+    slot.classList.add('selected');
+    this.selectedDuration = parseInt(slot.dataset.hours);
   }
 
   nudge() {
@@ -84,38 +118,59 @@ export class BookingModal {
 
   async handleBooking(event) {
     event.preventDefault();
+
     if (!this.currentRoom || !this.currentUser) {
       showError("Du måste vara inloggad för att boka.");
       return;
     }
 
-    const formData = new FormData(this.form);
-    const bookingData = {
-      room_id: this.currentRoom.id,
-      user_id: this.currentUser.id,
-      start_time: formData.get("start_time"),
-      end_time: formData.get("end_time"),
-      notes: formData.get("notes"),
-    };
-
-    if (!bookingData.start_time || !bookingData.end_time) {
-      showError("Vänligen fyll i tiderna.");
+    if (!this.selectedDuration) {
+      showError('Välj en längd för bokningen');
+      this.nudge();
       return;
     }
 
+    const date = this.dateInput.value;
+    const startHour = this.startHourSelect.value;
+    const notes = this.notesTextarea.value;
+
+    if (!date || !startHour) {
+      showError('Vänligen fyll i datum och starttid');
+      this.nudge();
+      return;
+    }
+
+    // Convert to datetime format
+    const startTime = `${date}T${startHour.padStart(2, '0')}:00:00`;
+    const endHour = parseInt(startHour) + this.selectedDuration;
+    const endTime = `${date}T${endHour.toString().padStart(2, '0')}:00:00`;
+
+    // Validate that end time does not exceed 19:00
+    if (endHour > 19) {
+      showError('Bokningen kan inte sträcka sig efter 19:00');
+      this.nudge();
+      return;
+    }
+
+    const bookingData = {
+      room_id: this.currentRoom.id,
+      user_id: this.currentUser.id,
+      start_time: startTime,
+      end_time: endTime,
+      notes: notes || null
+    };
+
     try {
       await API.createBooking(bookingData);
-      showSuccess(
-        `Bokat rum ${this.currentRoom.room_number || this.currentRoom.number}!`
-      );
+      showSuccess(`Bokat rum ${this.currentRoom.room_number || this.currentRoom.number}!`);
       this.close();
 
       if (this.onBookingSuccess) {
         this.onBookingSuccess();
       }
     } catch (err) {
-      console.error(err);
-      showError(err.message || "Bokning misslyckades");
+      console.error('Booking failed:', err);
+      showError(err.message || 'Bokningen misslyckades');
     }
   }
 }
