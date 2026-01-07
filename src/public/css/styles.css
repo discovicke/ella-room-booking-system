@@ -529,7 +529,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 2px 6px #0000000a;
   padding: 20px;
-  max-width: 720px;
+  max-width: 500px;
   width: 100%;
   transform: scale(0.9) translateY(-20px);
   transition: transform 0.4s var(--ease-elastic), opacity 0.3s ease;
@@ -579,14 +579,15 @@ body {
 
 .modal-content form label {
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
   font-size: 14px;
   color: var(--color-text-muted);
 }
 
-.modal-content form label > input,
-.modal-content form label > textarea,
-.modal-content form label > select {
+.modal-content form input,
+.modal-content form textarea,
+.modal-content form select {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -597,6 +598,7 @@ body {
   background: transparent;
   font-size: 14px;
   color: var(--color-text-main);
+  font-family: inherit;
 }
 
 .modal-content form input:focus,
@@ -606,7 +608,7 @@ body {
   border-color: var(--color-primary-hover);
 }
 
-.modal-content form label > textarea {
+.modal-content form textarea {
   height: 140px;
   max-height: 300px;
   overflow: auto;
