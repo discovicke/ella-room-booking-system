@@ -162,9 +162,6 @@ async createRoom(roomData) {
 
 
   // TODO: Implement getRoom(id) - GET /api/rooms/:id
-  // TODO: Implement createRoom(roomData) - POST /api/rooms
-  // TODO: Implement updateRoom(id, roomData) - PUT /api/rooms/:id
-  // TODO: Implement deleteRoom(id) - DELETE /api/rooms/:id
 
   // TODO: Implement getBookings() - GET /api/bookings
   // TODO: Implement createBooking(bookingData) - POST /api/bookings
@@ -172,9 +169,6 @@ async createRoom(roomData) {
   // TODO: Implement deleteBooking(id) - DELETE /api/bookings/:id
   // TODO: Implement getBookingsByUser(userId) - GET /api/users/:id/bookings
 
-  // TODO: Implement getUsers() - GET /api/users
-  // TODO: Implement getUser(id) - GET /api/users/:id
-  // TODO: Implement createUser(userData) - POST /api/users
 };
 window.API = API; // For debugging
 
