@@ -60,12 +60,30 @@
       <h3>Boka rum</h3>
       <p id="modal-room-label"></p>
       <form id="booking-form">
+        <label for="booking-date">Datum</label>
+        <input type="date" id="booking-date" name="date" required />
 
-        <label for="start_time">Starttid</label>
-        <input id="start_time" type="datetime-local" name="start_time" required />
+        <label for="start-hour">Starttid</label>
+        <select id="start-hour" name="start_hour" required>
+          <option value="">Välj starttid</option>
+          <option value="08">08:00</option>
+          <option value="09">09:00</option>
+          <option value="10">10:00</option>
+          <option value="11">11:00</option>
+          <option value="12">12:00</option>
+          <option value="13">13:00</option>
+          <option value="14">14:00</option>
+          <option value="15">15:00</option>
+          <option value="16">16:00</option>
+        </select>
 
-        <label for="end_time">Sluttid</label>
-        <input id="end_time" type="datetime-local" name="end_time" required />
+        <label>Längd</label>
+        <div class="booking-grid">
+          <div class="time-slot" data-hours="2">2h</div>
+          <div class="time-slot" data-hours="4">4h</div>
+          <div class="time-slot" data-hours="6">6h</div>
+          <div class="time-slot" data-hours="8">8h</div>
+        </div>
 
         <label for="notes">Anteckning</label>
         <textarea id="notes" name="notes" rows="3"></textarea>
