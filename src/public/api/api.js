@@ -161,10 +161,10 @@ const API = {
     });
   },
   async deleteRoom(roomId) {
-    return await apiFetch("/api/rooms/${roomId}", {
-      method: "DELETE",
-    });
-  },
+  return await apiFetch(`/api/rooms/${roomId}`, {
+    method: "DELETE",
+  });
+}
 };
 window.API = API; // For debugging
 
