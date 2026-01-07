@@ -26,7 +26,7 @@ function injectStyles() {
 /* Toast card */
 .toast {
   pointer-events: auto;
-  background: var(--color-bg-card);
+  background: var(--color-bg-panel);
   border-left: 4px solid #10B981;
   padding: 12px 16px;
   border-radius: 8px;

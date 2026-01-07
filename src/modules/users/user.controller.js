@@ -94,15 +94,15 @@ export const deleteUser = (req, res) => {
     const user = userRepo. getUserById(userId);
     
     if (!user) {
-      console.log('❌ Användare hittades inte');
+      console.log('Användare hittades inte');
       return res.status(404).json({ error: 'Användare hittades inte' });
     }
 
-    console.log(`✅ Användare finns:  ${user.Display_name}`);
+    console.log(`Användare finns:  ${user.Display_name}`);
 
     const changes = userRepo. deleteUser(userId);
     
-    console.log(`✅ Raderade ${changes} rad(er)`);
+    console.log(`Raderade ${changes} rad(er)`);
 
     if (changes === 0) {
       return res.status(500).json({ error: 'Kunde inte radera' });
@@ -110,7 +110,7 @@ export const deleteUser = (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    console.error('❌ Controller error:', error);
+    console.error('Controller error:', error);
     res.status(500).json({ error: 'Serverfel', message: error.message });
   }
 };

@@ -27,17 +27,14 @@ export class BookingModal {
       if (e.key === "Escape" && !this.modal.hidden) this.close();
     });
 
-    // Close/Nudge on background click
+    // Nudge on background click (prevent accidental close)
     this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) {
-        // Optional: Nudge animation if clicking outside
-        if (this.modalContent) {
-          this.modalContent.classList.remove("nudge");
-          void this.modalContent.offsetWidth; // Trigger reflow
-          this.modalContent.classList.add("nudge");
-          setTimeout(() => this.modalContent.classList.remove("nudge"), 300);
-        }
-        this.close();
+      if (e.target === this.modal && this.modalContent) {
+        // Nudge animation if clicking outside
+        this.modalContent.classList.remove("nudge");
+        void this.modalContent.offsetWidth; // Trigger reflow
+        this.modalContent.classList.add("nudge");
+        setTimeout(() => this.modalContent.classList.remove("nudge"), 300);
       }
     });
 
@@ -60,10 +57,11 @@ export class BookingModal {
       }`;
     }
 
+    // Show modal backdrop
     this.modal.removeAttribute("hidden");
     this.modal.classList.add("open");
 
-    // Pop-in animation
+    // Pop-in animation for modal content
     if (this.modalContent) {
       this.modalContent.classList.remove("pop-in");
       void this.modalContent.offsetWidth;
