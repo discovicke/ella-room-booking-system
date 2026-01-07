@@ -26,6 +26,6 @@ bookingsRouter.post("/", authenticate, bookingController.createBooking);
 bookingsRouter.put("/:id", authenticate, bookingController.updateBooking);
 
 // DELETE /api/bookings/:id - Delete booking by ID (All authenticated users)
-// bookingsRouter.delete("/:id", authenticate, bookingController.deleteBooking); // Never used so commented out
+// bookingsRouter.delete("/:id", authenticate, bookingController.deleteBooking); // Never (we do soft cancelling by just changing status to "cancelled" with PUT) used so commented out
 
 export default bookingsRouter;

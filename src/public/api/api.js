@@ -154,17 +154,32 @@ const API = {
       body: JSON.stringify(roomData),
     });
   },
+
+  async createRoomAsset(roomId, assetName) {
+    return await apiFetch(`/api/rooms/${roomId}/assets`, {
+      method: "POST",
+      body: JSON.stringify({ asset: assetName }),
+    });
+  },
+
   async updateRoom(roomId, roomData) {
     return await apiFetch(`/api/rooms/${roomId}`, {
       method: "PUT",
       body: JSON.stringify(roomData),
     });
   },
+
   async deleteRoom(roomId) {
     return await apiFetch(`/api/rooms/${roomId}`, {
       method: "DELETE",
     });
   },
+
+  async deleteRoomAsset(assetId) {
+    return await apiFetch(`/api/rooms/assets/${assetId}`, {
+      method: "DELETE",
+    });
+  }
 };
 window.API = API; // For debugging
 

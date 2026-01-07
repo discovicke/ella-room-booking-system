@@ -39,20 +39,38 @@ export const createRoom = (req, res) => {
   try {
     const { room_number, type, capacity, location, floor_number } =
       req.body || {};
-    if (!room_number || !type) {
-      return res.status(400).send();
+
+    if (!room_number || ! type) {
+      return res. status(400).json({ error: "Rumsnummer och typ krävs" });
     }
-    roomRepo.createRoom({
+
+    const existing = roomRepo.getRoomByRoomNumber(room_number);
+    if (existing) {
+      return res. status(409).json({ 
+        error: `Rum ${room_number} finns redan` 
+      });
+    }
+
+    
+    const newRoom = roomRepo.createRoom({
       room_number,
       type,
-      capacity,
-      location,
-      floor_number,
+      capacity:  capacity || null,
+      location:  location || null,
+      floor_number: floor_number || null,
     });
-    return res.status(201).send();
+
+    return res.status(201).json(newRoom); 
   } catch (err) {
     console.error("Error creating room:", err);
-    return res.sendStatus(500);
+    
+    if (err.code === 'ERR_SQLITE_ERROR' && err.errstr?.includes('UNIQUE')) {
+      return res. status(409).json({ 
+        error: "Rumsnummer finns redan" 
+      });
+    }
+
+    return res.status(500).json({ error: "Serverfel - försök igen senare" });
   }
 };
 
@@ -169,6 +187,8 @@ export const updateRoomAsset = (req, res) => {
 
     const existing = roomRepo.getAssetById(assetId);
     if (!existing) return res.sendStatus(404);
+
+    
 
     let newRoomId = existing.room_id;
     if (room_id !== undefined) {

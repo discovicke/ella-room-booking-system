@@ -9,14 +9,6 @@
  * - Imported by: 'src/app.js'
  */
 
-// =======================================
-//      HEJ @ANDRÉ HEATONLOVER PONTÉN
-//      START PÅ APIANROPET ÄR:
-//      -----------------------
-//      | localhost/api/rooms |
-//      -----------------------
-// =======================================
-
 import express from "express";
 import * as roomController from "./room.controller.js";
 import { authenticate } from "../../middleware/authentication.middleware.js";
@@ -50,6 +42,7 @@ roomsRouter.delete(
 
 // Assets under a room
 //roomsRouter.get("/:id/assets", roomController.listAssetsByRoom);
+
 roomsRouter.post(
   "/:id/assets",
   authenticate,
@@ -57,13 +50,17 @@ roomsRouter.post(
   roomController.createRoomAsset
 );
 
-//// Assets by id
+// NO TIME TO IMPLEMENT CORRECTLY, SO COMMENTING OUT FOR NOW
+// Assets by id
+/*
 roomsRouter.put(
   "/assets/:assetId",
   authenticate,
   authorize(ROLES.TEACHER, ROLES.ADMIN),
   roomController.updateRoomAsset
 );
+*/
+
 roomsRouter.delete(
   "/assets/:assetId",
   authenticate,

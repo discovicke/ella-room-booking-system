@@ -56,7 +56,6 @@ body {
     right: auto;
     top: auto;
     transform: none;
-
     background: var(--color-success);
     color: var(--color-text-on-primary);
     border: none;
@@ -152,7 +151,7 @@ dialog[open] {
     display: block;
     position: fixed;
     left: 50%;
-    top: 50%;
+    top: 100%;
     transform: translate(-50%, -50%);
     z-index: 1000;
     width: clamp(300px, 90vw, 540px);
@@ -395,7 +394,7 @@ dialog::backdrop {
 }
 
 .sidebar-item:hover {
-    background: var(--color-bg-hover);
+    background: var(--color-primary-hover);
 }
 
 .sidebar-item.active {
