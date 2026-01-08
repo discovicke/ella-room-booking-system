@@ -38,7 +38,7 @@ export class RoomModal {
       
       if (!room) throw new Error('Rum hittades inte');
 
-      this.editingRoomId = roomId;
+      this.editingRoomId = Number(roomId);
 
       // Populate form
       document.getElementById('roomName').value = room.room_number || '';
@@ -80,13 +80,13 @@ export class RoomModal {
       : [];
 
     try {
-      let roomId = this.editingRoomId;
+      let roomId = this.editingRoomId ? Number(this.editingRoomId) : null;
 
       if (this.editingRoomId) {
         // UPDATE existing room
         await API.updateRoom(this.editingRoomId, roomData);
          const existingRooms = await API.getRooms(true);
-      const room = existingRooms.find(r => r.id === this.editingRoomId);
+      const room = existingRooms.find(r => r.id === roomId);
       
       if (room && room.assets) {
         for (const asset of room.assets) {
