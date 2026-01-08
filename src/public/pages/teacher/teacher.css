@@ -1,4 +1,4 @@
-/* --- TEACHER LAYOUT (3 kolumner) --- */
+/* --- TEACHER LAYOUT --- */
 .teacher-layout {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -11,7 +11,7 @@
   overflow: hidden;
 }
 
-/* --- QUICK INFO & FÖRMÅNER (höger panel) --- */
+/* --- QUICK INFO --- */
 .info-panel {
   grid-column: 1 / -1;
   min-height: 0;

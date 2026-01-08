@@ -72,14 +72,14 @@ async function loadRooms() {
   try {
     cachedRooms = await API.getRooms(true);
 
-    // 1. Render Rooms (using shared component)
+    // Render Rooms 
     const container = document.getElementById("student-room-list");
     renderRooms(cachedRooms, container, (roomId) => {
       const room = cachedRooms.find((r) => String(r.id) === String(roomId));
       if (room) bookingModal.open(room);
     });
 
-    // 2. Update Status/Quick Info
+    // Update Status/Quick Info
     updateQuickInfo(cachedRooms);
   } catch (error) {
     console.error("Could not load rooms", error);
@@ -90,10 +90,8 @@ async function loadRooms() {
 // --- Booking Logic ---
 async function loadBookings() {
   try {
-    // Alla bokningar för statusfältet (Aktuell status)
     allBookings = await API.getBookings();
 
-    // Användarens bokningar för "Mina bokningar"
     if (currentUser && currentUser.id) {
       userBookings = await API.getBookingsByUser(currentUser.id);
     }
@@ -110,7 +108,7 @@ function updateBookingList() {
   const container = document.querySelector(".booking-scroll");
   const now = new Date();
 
-  // 1. Filter based on tab & cancellation toggle (endast användarens bokningar)
+  // 1. Filter based on tab & cancellation toggle 
   const filteredBookings = userBookings.filter((booking) => {
     const endTime = new Date(booking.end_time);
     const isCancelled = booking.status === "cancelled";
@@ -151,18 +149,18 @@ async function handleUnbook(bookingId) {
   }
 }
 
-// --- Helpers: platser, rum, aktiva bokningar ---
+// --- Helpers ---
 
-// Totalt antal sittplatser
+// Total seats
 function countTotalSeats(rooms) {
   return rooms.reduce((sum, r) => sum + (r.capacity || 0), 0);
 }
 
-// Lediga sittplatser JUST NU
+// Avaliable seats (right now)
 function countAvailableSeatsNow(rooms, bookings) {
   const now = new Date();
 
-  // Hitta rum som är upptagna just nu
+  // Find unavaliable rooms
   const occupiedRoomIds = new Set(
     bookings
       .filter((b) => {
@@ -173,13 +171,11 @@ function countAvailableSeatsNow(rooms, bookings) {
       .map((b) => b.room_id)
   );
 
-  // Summera kapaciteten i rum som INTE är upptagna
   return rooms
     .filter((r) => !occupiedRoomIds.has(r.id))
     .reduce((sum, r) => sum + (r.capacity || 0), 0);
 }
 
-// Lediga rum JUST NU
 function countAvailableRoomsNow(rooms, bookings) {
   const now = new Date();
 
@@ -196,7 +192,7 @@ function countAvailableRoomsNow(rooms, bookings) {
   return rooms.filter((r) => !occupiedRoomIds.has(r.id)).length;
 }
 
-// Aktiva bokningar (alla i systemet JUST NU)
+// Active bookings 
 function countActiveBookings(bookings) {
   const now = new Date();
 
@@ -209,19 +205,13 @@ function countActiveBookings(bookings) {
 
 // --- Quick Info / Status ---
 function updateQuickInfo(rooms) {
+
   const totalRooms = rooms.length;
-
-  // Live: lediga rum (alla rum som inte är upptagna just nu)
   const availableRooms = countAvailableRoomsNow(rooms, allBookings);
-
-  // Live: sittplatser
   const totalSeats = countTotalSeats(rooms);
   const availableSeats = countAvailableSeatsNow(rooms, allBookings);
-
-  // Live: aktiva bokningar (alla användare)
   const activeBookings = countActiveBookings(allBookings);
 
-  // DOM-element
   const elAvailable = document.getElementById("available-rooms");
   const elTotal = document.getElementById("total-rooms");
   const elActive = document.getElementById("active-bookings");
