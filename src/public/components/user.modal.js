@@ -69,15 +69,19 @@ export class UserModal {
       const user = await API.getUserById(userId);
       this.editingUserId = userId;
 
-      // Populate Form
-      document.getElementById("userName").value =
-        user.display_name || user.name;
-      document.getElementById("userEmail").value = user.email;
-      document.getElementById("userRole").value = user.role;
+      const setField = (name, value = "") => {
+        const field = this.form?.elements?.namedItem(name);
+        if (field) field.value = value ?? "";
+      };
 
-      // Update UI for Edit Mode
-      this.modal.querySelector("h3").textContent = "Redigera användare";
-      const passField = document.getElementById("userPassword");
+      setField("name", user.display_name || user.name || "");
+      setField("email", user.email || "");
+      setField("role", user.role || "");
+
+      const title = this.modal.querySelector("h3");
+      if (title) title.textContent = "Redigera användare";
+
+      const passField = this.form?.elements?.namedItem("password");
       if (passField) {
         passField.required = false;
         passField.value = "";
