@@ -427,9 +427,9 @@ main, .admin-layout {
 
 .user-filter-bar select,
 .user-filter-bar input {
-    width: 250px; /* statisk bredd */
-    min-width: 200px; /* förhindrar krympning */
-    max-width: 200px; /* förhindrar expansion */
+    width: 150px; /* statisk bredd */
+    min-width: 150px; /* förhindrar krympning */
+    max-width: 500px; /* förhindrar expansion */
     box-sizing: border-box;
 }
 
@@ -465,5 +465,19 @@ main, .admin-layout {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    margin-top: 1rem;
     margin-right: 10px;
+}
+
+#userDropdown {
+  width: 350px !important;
+}
+
+#userSearch {
+  width: 300px;
+}
+
+#userList {
+  max-height: 70vh;
+  overflow-y: auto;
 }

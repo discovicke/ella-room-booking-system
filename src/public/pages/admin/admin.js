@@ -105,10 +105,134 @@ function updateUserDropdown() {
     );
   }
 
+  const container = document.getElementById("userList");
+  const selectedId = dropdown.value;
+
+  // Om sökfältet är tomt och ingen användare är vald → töm listan och avbryt
+  if (userSearchQuery.trim() === "" && !selectedId && userRoleFilter === "all") {
+    if (container) container.innerHTML = "";
+    return;
+  }
+
+  // Uppdatera dropdown
   dropdown.innerHTML =
     `<option value="">Välj användare...</option>` +
     filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
+
+  // ⭐ Om dropdown har ett valt ID → visa bara den användaren
+  if (selectedId) {
+    const user = allUsers.find(u => u.id == selectedId);
+    if (user) {
+      renderUsers(
+        [user],
+        container,
+        (id) => userModal.openForEdit(id),
+        (id) => deleteUser(id)
+      );
+      return;
+    }
+  }
+
+  // Om rollfilter är aktivt → visa alla filtrerade användare
+  if (userRoleFilter !== "all") {
+    renderUsers(
+      filtered,
+      container,
+      (id) => userModal.openForEdit(id),
+      (id) => deleteUser(id)
+    );
+    return;
+  }
+
+  // Annars → visa alla filtrerade användare (t.ex. vid sökning)
+  renderUsers(
+    filtered,
+    container,
+    (id) => userModal.openForEdit(id),
+    (id) => deleteUser(id)
+  );
 }
+
+  
+
+// Annars → visa alla filtrerade användare
+renderUsers(
+  filtered,
+  container,
+  (id) => userModal.openForEdit(id),
+  (id) => deleteUser(id)
+);
+
+
+// Sökfunktion
+function getFilteredUsers() {
+  let filtered = [...allUsers];
+
+  if (userRoleFilter !== "all") {
+    filtered = filtered.filter(u => u.role === userRoleFilter);
+  }
+
+  if (userSearchQuery.trim() !== "") {
+    const q = userSearchQuery.toLowerCase();
+    filtered = filtered.filter(u =>
+      (u.display_name || "").toLowerCase().includes(q)
+    );
+  }
+
+  return filtered;
+}
+
+function updateUserUI() {
+  const filtered = getFilteredUsers();
+
+  // Uppdatera dropdown
+  const dropdown = document.getElementById("userDropdown");
+  if (dropdown) {
+    dropdown.innerHTML =
+      `<option value="">Välj användare...</option>` +
+      filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
+  }
+
+  // Uppdatera listan om "Visa alla" är aktivt
+  const showAll = document.getElementById("showAllUsers");
+  const container = document.getElementById("userList");
+
+  if (container) {
+
+    // Om dropdown har ett valt ID, visa bara den användaren
+    const dropdown = document.getElementById("userDropdown");
+    const selectedId = dropdown ? dropdown.value : "";
+
+    if (selectedId) {
+      const user = allUsers.find(u => u.id == selectedId);
+      if (user) {
+        renderUsers(
+          [user],
+          container,
+          (id) => userModal.openForEdit(id),
+          (id) => deleteUser(id)
+        );
+        return;
+      }
+    }
+
+    // Om "Visa alla" är ikryssat → visa filtrerade användare
+    if (showAll && showAll.checked) {
+      renderUsers(
+        filtered,
+        container,
+        (id) => userModal.openForEdit(id),
+        (id) => deleteUser(id)
+      );
+    } else {
+      // Om inget valt och showAll inte är aktivt → töm listan
+      container.innerHTML = "";
+    }
+  }
+
+}
+
+
 
 // --- User Filters ---
 function setupUserFilters() {
@@ -121,6 +245,7 @@ function setupUserFilters() {
     searchInput.addEventListener("input", (e) => {
       userSearchQuery = e.target.value;
       updateUserDropdown();
+
     });
   }
 
@@ -137,17 +262,20 @@ function setupUserFilters() {
       if (!container) return;
 
       if (e.target.checked) {
+        // Visa ALLA användare (ofilterat)
         renderUsers(
           allUsers,
           container,
           (id) => userModal.openForEdit(id),
           (id) => deleteUser(id)
         );
+
       } else {
         container.innerHTML = "";
       }
     });
   }
+
 
   if (dropdown) {
     dropdown.addEventListener("change", (e) => {
@@ -216,11 +344,11 @@ function renderAdminRooms(rooms) {
 
   container.onclick = async (e) => {
     const roomId = e.target.dataset.id;
-    
+
     if (e.target.classList.contains("btn-delete-room")) {
       await handleDeleteRoom(roomId);
     }
-    if (e.target.classList. contains("btn-edit-room")) {
+    if (e.target.classList.contains("btn-edit-room")) {
       roomModal.openForEdit(roomId);
     }
   };
