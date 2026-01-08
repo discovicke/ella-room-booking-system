@@ -193,13 +193,15 @@ small {
     max-height: calc(100vh - var(--top-header-height));
     flex: 1 1 auto;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 600px));
-    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1600px;
+    justify-content: space-between;
     gap: 24px;
-    padding: 20px 20px 40px;
+    padding: 2em 1.5em;
     overflow: hidden;
     box-sizing: border-box;
     background: transparent;
+    margin: 0 2em;
 }
 
 /* --- PANELER --- */
