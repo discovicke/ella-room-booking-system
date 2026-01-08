@@ -1,101 +1,70 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/2XOSb5hU)
-# .NET25: Fullstack
 
-Ett projekt där vi skapar en server och klient, i formen av en Node server som
-tillhandahåller en vanlig webbsida.
 
-## Hur allt fungerar
+# ![ELLA Logo](src/public/assets/ELLA%20small.png) ELLA - Edugrade Location & Logistics Assistant 
+ELLA är ett fullständigt rumbokningssystem byggt för utbildningsmiljöer med tre olika användarroller: Admin, Lärare och Elev. Systemet erbjuder en modern och responsiv gränssnittsdesign med rollbaserad åtkomstkontroll.
+Vi bifogar härunder emails och lösenord som ligger i vår SQLite-databas så du kan logga in och faktiskt se hemsidan. Lösenorden är hashade så vi kan inte bifoga någon skärmdump, men kanske lättare att kopiera från tabellen bara.
 
-Innan utveckling påbörjas ska **node** och **npm** installeras, och följande
-kommand ska köras:
+## Testanvändare
+| Email  | Lösen | Roll |
+| ------------- | ------ |:-------------:|
+| anette.johansson@edugrade.com | FluentInCSN | Admin |
+| oscar.marcusson@edugrade.com | ducksducks| Lärare |
+| andre.ponten@edu.edugrade.com | heaton| Elev |
+| christian.gennari@edu.edugrade.com| scalar | Elev |
+| marcus.loov@edu.edugrade.com| javascriptlover | Elev |
+| viktor.johansson@edu.edugrade.com| ettanlös | Elev |
 
-```bash
-npm init
-npm install express --save
-```
+## Huvudfunktioner
+### Bokningshantering
+* Boka studierum med val av datum, starttid och längd (2h, 4h, 6h eller 8h)
+* Avboka rum för aktiva bokningar
+* Visa bokningar uppdelat på "Kommande" och "Historik"
+* Filtrera bort avbokade bokningar via checkbox
+* Validering förhindrar bokningar på helger och efter 19:00
+### Rumsadministration (Admin)
+* Skapa nya rum med rumsnamn, typ, kapacitet, våning och utrustning
+* Redigera befintliga rum
+* Ta bort rum med säkerhetsbekräftelse
+* Översikt visar lediga/upptagna rum
+### Användarhantering (Admin)
+* Skapa användare med namn, email, lösenord och roll
+* Redigera användaruppgifter
+* Ta bort användare
+* Sök efter användare via sökfält
+* Filtrera användare baserat på roll (Student/Lärare/Admin)
+* Dropdown för snabbåtkomst till specifika användare
+### Dashboard & Statistik (Admin)
+* Totalt antal rum och lediga rum
+* Aktiva bokningar och totala bokningar
+* Realtidsuppdatering vid ändringar
+## Teknisk Stack
+* Frontend: HTML5, CSS3 (med CSS-variabler), Vanilla JavaScript
+* Backend: Node.js med Express
+* Databas: SQLite3
+* Autentisering: Session-baserad med cookies och bcrypt för lösenordshantering
+* Arkitektur: MVC-struktur med middleware för autentisering och auktorisering
 
-Och för den som vill:
+## Säkerhet
+* Rollbaserad åtkomstkontroll (RBAC) – varje roll har specifika rättigheter
+* Hashade lösenord med bcrypt
+* Session management med automatisk rensning av utgångna sessioner
+* Skyddade API-endpoints – kräver autentisering
+* Input-validering både på frontend och backend
+ 
+## UI/UX-funktioner
+* Responsiv design – fungerar på desktop, tablet och mobil
+* Toast-notifikationer för feedback vid åtgärder
+* Modala dialoger för bokningar och formulär med nudge-animation vid felaktig input
+* Bekräftelsedialoger vid borttagning av användare/rum
+* Dark mode-stöd via CSS-variabler
+* Tillgänglighetsanpassat med semantisk HTML och ARIA-attribut
 
-```bash
-npm install nodemon --save-dev
-```
+## Noterbart
+* Modulär JavaScript – kod är uppdelad i återanvändbara komponenter (BookingModal, UserModal, RoomModal)
+* API-wrapper – centraliserad hantering av alla API-anrop
+* Error handling – översättning av tekniska felmeddelanden till användarvänliga texter
+* State management – lokal hantering av användare, rum och bokningar med filtrering
+* Optimerad rendering – effektiv uppdatering av UI baserat på filterval
 
-Uppladdning via commits och push fungerar som det brukar!
-
-## Begränsningar
-
-- Inga bibliotek eller tredjepartskod får användas, all HTML, CSS och JavaScript
-  ska skrivas för hand, med undantaget att [Express](https://expressjs.com/) och
-  [nodemon](https://www.npmjs.com/package/nodemon) ska användas såklart!
-
-- Inga externa resurser får användas, eventuella typsnitt, bilder, ljudfiler,
-  videor och så vidare ska finnas i detta GitHub repo och tillhandahållas av
-  Node servern så att klienten kommer åt dem
-
-- Det ska finnas **en** `package.json` i hela projektet, och den ska vara
-  bredvid den här README filen, inte under någon annan mapp
-
-- **Alla** API endpoints som skapas på servern **ska anropas** av klienten
-
-- Servern ska gå att starta via `npm start` utan extra argument, filredigering
-  eller krav på att något annat ska vara igång
-
-- Det ska gå att navigera till [localhost](http://localhost) utan att få `404`
-  (_vi ska alltså inte behöva navigera till
-  [localhost/index.html](http://localhost/index.html) eller motsvarande_)
-
-## Godkänt
-
-För den här uppgiften finns det inga tester, utan det gäller att skapa följande:
-
-- En **Node server** som använder **Express** och:
-
-  - Tillhandahåller statiska filer för klienten (_index.html, styles.css osv_)
-
-  - Lyssnar på port `80`
-
-  - Har ett **REST** API med minst:
-    - en `GET`
-    - en `POST`
-    > ⚠️ **OBS**: Båda ska vara för samma resurs (med samma URL) om det endast
-    > finns **en** GET och **en** POST i hela API:et!
-
-<br>
-
-- En **klient** (_dvs själva webbsidan_) som:
-
-  - Består av **minst** (_men gärna fler om många sidor önskas_):
-    - `index.html` (som ska vara åtkomlig via endast `/`, inte bara
-      `/index.html`)
-    - `styles.css`
-    - `index.js`
-    > 💡**Tips**: Placera dessa filer under en `public` mapp som i de senare
-    > uppgifterna, och använd
-    > [static files](https://expressjs.com/en/starter/static-files.html) för att
-    > leverera dem till webben automatiskt!
-
-  - Anropar och användare datan från alla endpoints i **REST** API:et via
-    `fetch`
-
-## Väl Godkänt
-
-Utöver kraven för godkänt behövs följande för att få **VG**:
-
-- Ha ett automatiskt mörkt tema baserat på webbläsarinställningar
-
-- Fungera på både mobila enheter liksom vanliga datorer, dvs alla olika
-  skärmstorlekar ska fungera inom en rimlig marginal utan att webbsidan går
-  sönder
-
-- En egen 404 sida som passar in med resten av sidan
-
-- Uppfyller följande krav från kursplanen:
-
-  - med gott resultat utveckla i HTML5 och tar tydlig hänsyn till
-    tillgänglighet, semantik och kompatibilitet
-
-  - med gott resultat utveckla i CSS3 för att omsätta designkrav i praktiken och
-    tar tydlig hänsyn till anpassning för olika enheter och kompatibilitet.
-
-  - Eleven tar dessutom tydligt hänsyn till tillgänglighet, semantik,
-    kompatibilitet och anpassning för olika enheter
+ELLA är ett nästintill komplett exempel på en modern webbapplikation med tydlig separation mellan frontend och backend, säker autentisering och en användarvänlig gränssnittsdesign.
+Vi hoppas att den kan komma till användning på Edugrade för att kunna lösa bokningsproblematiken när det hålls externa kurser på skolan så att elever kan se och boka rum när de vill studera på plats. Den borde vara modulär nog för att koppla andra databaser till den för att lätt implementera den i verkligheten. Ni vet var ni hittar oss om ni är köpsugna :)
