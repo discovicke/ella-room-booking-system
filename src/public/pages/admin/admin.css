@@ -12,6 +12,16 @@
     background: transparent;
 }
 
+
+
+.user-filter-bar{
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    flex-wrap: wrap;
+    margin-right: 10px;
+}
+
 .left-panel, .right-panel {
     overflow-y: auto;
 }
@@ -405,6 +415,7 @@ dialog::backdrop {
 /* Push main content to the right */
 main, .admin-layout {
     margin-left: 220px;
+    margin-top: 2em;
 }
 
 .user-filter-bar {
@@ -466,4 +477,5 @@ main, .admin-layout {
     align-items: center;
     margin-bottom: 1rem;
     margin-right: 10px;
+    flex-wrap: wrap;
 }
