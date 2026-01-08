@@ -146,28 +146,28 @@
             </div>
 
             <form id="createRoomForm">
-              <label for="roomName">Rum namn:</label>
+              <label for="roomLocation">Rumsnamn</label>
+              <input type="text" id="roomLocation" name="location" placeholder="Kontor på övervåningen">
+
+              <label for="roomName">Rumsnummmer</label>
               <input type="text" id="roomName" name="name" required>
 
-              <label for="roomType">Typ *</label>
+              <label for="roomType">Typ</label>
               <select id="roomType" name="type" required>
                 <option value="">-- Välj typ --</option>
                 <option value="classroom">Klassrum</option>
-                <option value="lab">Laboratorium</option>
-                <option value="meeting">Mötesrum</option>
+                <option value="lab">Lab</option>
+                <option value="publicarea">Allmän yta</option>
               </select>
 
-              <label for="roomCapacity">Kapacitet *</label>
+              <label for="roomCapacity">Kapacitet</label>
               <input type="number" id="roomCapacity" name="capacity" required min="1">
 
-              <label for="roomAssets">Utrustnings tillgångar</label>
+              <label for="roomAssets">Utrustning i lokalen</label>
               <input type="text" id="roomAssets" name="assets" placeholder="Exempel: Projektor, Whiteboard">
-              
-              <label for="roomLocation">Plats</label>
-              <input type="text" id="roomLocation" name="location" placeholder="Grupprrum A">
 
               <label for="roomFloor">Våning</label>
-              <input type="number" id="roomFloor" name="floor" placeholder="skriv våningsnummer">
+              <input type="number" id="roomFloor" name="floor" placeholder="Våning 1, 2, etc.">
 
               <div class="modal-actions">
                 <button type="button" class="btn-secondary" data-close-modal="createRoomModal">Avbryt</button>
