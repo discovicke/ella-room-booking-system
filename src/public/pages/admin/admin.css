@@ -619,3 +619,16 @@ dialog::backdrop {
         flex-direction: column;
     }
 }
+
+#userDropdown {
+  width: 350px !important;
+}
+
+#userSearch {
+  width: 300px;
+}
+
+#userList {
+  max-height: 70vh;
+  overflow-y: auto;
+}
