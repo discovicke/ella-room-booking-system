@@ -406,7 +406,11 @@ function updateBookingList() {
 }
 
 async function handleAdminUnbook(bookingId) {
-  if (!confirm("Vill du verkligen avboka denna tid?")) return;
+  const confirmed = await showDangerConfirm(
+      "Är du säker på att du vill avboka rummet?",
+      "Avboka rummet"
+  );
+  if (!confirmed) return;
 
   try {
     await API.updateBooking(bookingId, { status: "cancelled" });
