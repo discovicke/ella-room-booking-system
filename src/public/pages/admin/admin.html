@@ -7,17 +7,15 @@
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="admin.css" />
   <script defer type="module" src="./admin.js"></script>
-
   <title>ella | Admin</title>
 </head>
 
 <body>
-
   <header class="top-header">
     <img class="top-logo" src="../assets/ELLA header.png" alt="Logo small" />
     <div class="user-actions">
       <div class="user-box">
-        <span class="user-icon">👤</span>
+        <span class="user-icon" aria-hidden="true">👤</span>
         <span class="user-label" id="username"></span>
         <span class="user-role admin" id="user-role">Admin</span>
       </div>
@@ -26,6 +24,8 @@
   </header>
 
   <main class="admin-layout">
+    <h1 class="visually-hidden">Adminpanel – hantering av rum, bokningar och användare</h1>
+
     <aside class="admin-sidebar">
       <nav class="sidebar-nav">
         <button class="sidebar-item active" data-panel="dashboard">
@@ -47,14 +47,10 @@
       </nav>
     </aside>
 
-    <!-- ========================= -->
     <!-- ADMIN CONTENT -->
-    <!-- ========================= -->
     <div class="admin-content">
 
-      <!-- ========================= -->
-      <!-- ÖVERSIKT PANEL -->
-      <!-- ========================= -->
+      <!-- OVERVIEW PANEL -->
       <section class="admin-panel active" id="overview-panel" data-panel="overview-panel">
         <h2>Översikt</h2>
 
@@ -66,9 +62,7 @@
         </div>
       </section>
 
-      <!-- ========================= -->
-      <!-- RUM PANEL -->
-      <!-- ========================= -->
+      <!-- ROOM PANEL -->
       <section class="admin-panel" data-panel="rooms-panel" style="display:none;">
 
         <div class="room-header-row">
@@ -115,12 +109,10 @@
             </form>
           </div>
         </dialog>
-        
+
       </section>
 
-      <!-- ========================= -->
-      <!-- BOKNINGAR PANEL -->
-      <!-- ========================= -->
+      <!-- BOOKING PANEL -->
       <section class="admin-panel" data-panel="bookings-panel" style="display:none;">
         <div class="booking-header">
           <div class="header-top">
@@ -141,11 +133,9 @@
         <div class="booking-scroll" id="admin-booking-list">
           <p>Laddar bokningar...</p>
         </div>
-      </section> <!-- bookings-panel -->
+      </section>
 
-      <!-- ========================= -->
-      <!-- ANVÄNDARE PANEL -->
-      <!-- ========================= -->
+      <!-- USER PANEL -->
       <section class="user-management" data-panel="users-panel" style="display:none;">
         <div class="section-header">
           <h2>Översikt Användare</h2>
@@ -175,9 +165,8 @@
         <div id="userList"></div>
       </section>
 
-      <!-- ========================= -->
-      <!-- MODAL: SKAPA ANVÄNDARE -->
-      <!-- ========================= -->
+      <!-- MODAL: CREATE USER -->
+
       <dialog id="createUserModal">
         <div class="modal-content">
           <h3>Skapa ny användare</h3>
@@ -216,49 +205,51 @@
         </div>
       </dialog>
 
-      <div class="modal-backdrop" id="booking-modal" hidden role="dialog" aria-modal="true" aria-labelledby="booking-title">
+      <!-- MODAL: BOOKING -->
+      <div class="modal-backdrop" id="booking-modal" hidden role="dialog" aria-modal="true"
+        aria-labelledby="booking-title">
 
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" id="modal-close" aria-label="Stäng dialog">×</button>
-    <h3 id="booking-title">Boka rum</h3>
-    <p id="modal-room-label"></p>
+        <div class="modal-content" onclick="event.stopPropagation()">
+          <button class="modal-close" id="modal-close" aria-label="Stäng dialog">×</button>
+          <h3 id="booking-title">Boka rum</h3>
+          <p id="modal-room-label"></p>
 
-    <form id="booking-form">
-      <label for="booking-date">Datum</label>
-      <input type="date" id="booking-date" name="date" required />
+          <form id="booking-form">
+            <label for="booking-date">Datum</label>
+            <input type="date" id="booking-date" name="date" required />
 
-      <label for="start-hour">Starttid</label>
-      <select id="start-hour" name="start_hour" required>
-        <option value="">Välj starttid</option>
-        <option value="08">08:00</option>
-        <option value="09">09:00</option>
-        <option value="10">10:00</option>
-        <option value="11">11:00</option>
-        <option value="12">12:00</option>
-        <option value="13">13:00</option>
-        <option value="14">14:00</option>
-        <option value="15">15:00</option>
-        <option value="16">16:00</option>
-      </select>
+            <label for="start-hour">Starttid</label>
+            <select id="start-hour" name="start_hour" required>
+              <option value="">Välj starttid</option>
+              <option value="08">08:00</option>
+              <option value="09">09:00</option>
+              <option value="10">10:00</option>
+              <option value="11">11:00</option>
+              <option value="12">12:00</option>
+              <option value="13">13:00</option>
+              <option value="14">14:00</option>
+              <option value="15">15:00</option>
+              <option value="16">16:00</option>
+            </select>
 
-      <label>Längd</label>
-      <div class="booking-grid">
-        <div class="time-slot" data-hours="2">2h</div>
-        <div class="time-slot" data-hours="4">4h</div>
-        <div class="time-slot" data-hours="6">6h</div>
-        <div class="time-slot" data-hours="8">8h</div>
+            <label>Längd</label>
+            <div class="booking-grid">
+              <div class="time-slot" data-hours="2">2h</div>
+              <div class="time-slot" data-hours="4">4h</div>
+              <div class="time-slot" data-hours="6">6h</div>
+              <div class="time-slot" data-hours="8">8h</div>
+            </div>
+
+            <label for="notes">Anteckning</label>
+            <textarea id="notes" name="notes" rows="3"></textarea>
+
+            <button type="submit">Bekräfta bokning</button>
+          </form>
+        </div>
       </div>
 
-      <label for="notes">Anteckning</label>
-      <textarea id="notes" name="notes" rows="3"></textarea>
 
-      <button type="submit">Bekräfta bokning</button>
-    </form>
-  </div>
-</div>
-
-
-    </div> <!-- admin-layout -->
+    </div>
   </main>
 </body>
 
