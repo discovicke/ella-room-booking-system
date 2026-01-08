@@ -52,7 +52,6 @@
     overflow-y: auto;
 }
 
-/* Sammanfattning */
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -77,7 +76,6 @@
     margin-bottom: 1em;
 }
 
-/* Rumskort */
 .room-card .room-actions {
     display: flex;
     flex-wrap: wrap;
@@ -170,8 +168,6 @@
     transform: scale(0.98);
 }
 
-
-/* Högerpanel */
 .right-panel {
     background: var(--color-bg-panel);
     border: 1px solid var(--color-border);
@@ -179,7 +175,6 @@
     padding: 20px;
     overflow-y: auto;
 }
-
 
 /* Modal styling */
 dialog[open] {
@@ -359,8 +354,7 @@ dialog::backdrop {
     margin-top: 16px;
 }
 
-/* modal button _-----------_-- */
-
+/* modal button */
 .btn-primary {
     background: var(--color-success);
     color: var(--color-text-on-primary);
@@ -410,7 +404,7 @@ dialog::backdrop {
     overflow-y: auto;
 }
 
-/* SIDEBAR */
+/* Sidebar */
 .admin-sidebar {
     flex: 0 0 240px;
     min-height: calc(100vh - var(--top-header-height));
@@ -487,9 +481,9 @@ dialog::backdrop {
 
 .user-filter-bar select,
 .user-filter-bar input {
-    width: 250px; /* statisk bredd */
-    min-width: 200px; /* förhindrar krympning */
-    max-width: 200px; /* förhindrar expansion */
+    width: 250px; 
+    min-width: 200px; 
+    max-width: 200px; 
     box-sizing: border-box;
 }
 
@@ -500,24 +494,23 @@ dialog::backdrop {
     cursor: pointer;
 }
 
-/* Valfritt: Styla labeln så att texten hamnar snyggt bredvid */
 .show-all-users {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: var(--font-sm);
-    white-space: nowrap; /* Hindrar texten från att radbrytas */
+    white-space: nowrap; 
     cursor: pointer;
 }
 
 .user-filter-bar {
     display: flex;
     align-items: center;
-    gap: 1rem; /* valfritt, men gör det snyggare */
+    gap: 1rem; 
 }
 
 #createUserBtn {
-    margin-left: auto; /* trycker knappen längst till höger */
+    margin-left: auto; 
 }
 
 .section-header {
