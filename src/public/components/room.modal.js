@@ -116,6 +116,7 @@ export class RoomModal {
           try {
             await API.createRoomAsset(roomId, asset);
           } catch (err) {
+            showError((`Kunde inte lägga till utrustning: ${asset}`));
             console.error(`Failed to add asset "${asset}": `, err);
           }
         }
