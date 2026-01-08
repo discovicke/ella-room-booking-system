@@ -49,11 +49,9 @@ if (currentUser) {
   loadUsers();
 }
 // --- Sidebar Navigation ---
-// Ta bort den gamla setupSidebar() funktionen och ersätt med:
 function setupSidebar() {
   const sidebarItems = document.querySelectorAll('.sidebar-item');
 
-  // Mappa sidebar data-panel till faktiska section element
   const panelMap = {
     'dashboard': document.querySelector('[data-panel="overview-panel"]'),
     'rooms': document.querySelector('[data-panel="rooms-panel"]'),
@@ -65,16 +63,13 @@ function setupSidebar() {
     item.addEventListener('click', () => {
       const panelId = item.dataset.panel;
 
-      // Ta bort active från alla sidebar-items
       sidebarItems.forEach(i => i.classList.remove('active'));
       item.classList.add('active');
 
-      // Göm alla paneler
       Object.values(panelMap).forEach(panel => {
         if (panel) panel.style.display = 'none';
       });
 
-      // Visa vald panel
       const targetPanel = panelMap[panelId];
       if (targetPanel) {
         targetPanel.style.display = 'block';
@@ -122,18 +117,16 @@ function updateUserDropdown() {
   const container = document.getElementById("userList");
   const selectedId = dropdown.value;
 
-  // Om sökfältet är tomt och ingen användare är vald → töm listan och avbryt
   if (userSearchQuery.trim() === "" && !selectedId && userRoleFilter === "all") {
     if (container) container.innerHTML = "";
     return;
   }
 
-  // Uppdatera dropdown
+  // Update dropdown
   dropdown.innerHTML =
     `<option value="">Välj användare...</option>` +
     filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
 
-  // ⭐ Om dropdown har ett valt ID → visa bara den användaren
   if (selectedId) {
     const user = allUsers.find(u => u.id == selectedId);
     if (user) {
@@ -147,7 +140,6 @@ function updateUserDropdown() {
     }
   }
 
-  // Om rollfilter är aktivt → visa alla filtrerade användare
   if (userRoleFilter !== "all") {
     renderUsers(
       filtered,
@@ -158,7 +150,6 @@ function updateUserDropdown() {
     return;
   }
 
-  // Annars → visa alla filtrerade användare (t.ex. vid sökning)
   renderUsers(
     filtered,
     container,
@@ -168,7 +159,6 @@ function updateUserDropdown() {
 }
 
 
-// Sökfunktion
 function getFilteredUsers() {
   let filtered = [...allUsers];
 
@@ -189,7 +179,6 @@ function getFilteredUsers() {
 function updateUserUI() {
   const filtered = getFilteredUsers();
 
-  // Uppdatera dropdown
   const dropdown = document.getElementById("userDropdown");
   if (dropdown) {
     dropdown.innerHTML =
@@ -197,13 +186,11 @@ function updateUserUI() {
       filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
   }
 
-  // Uppdatera listan om "Visa alla" är aktivt
   const showAll = document.getElementById("showAllUsers");
   const container = document.getElementById("userList");
 
   if (container) {
 
-    // Om dropdown har ett valt ID, visa bara den användaren
     const dropdown = document.getElementById("userDropdown");
     const selectedId = dropdown ? dropdown.value : "";
 
@@ -220,7 +207,6 @@ function updateUserUI() {
       }
     }
 
-    // Om "Visa alla" är ikryssat → visa filtrerade användare
     if (showAll && showAll.checked) {
       renderUsers(
         filtered,
@@ -229,7 +215,6 @@ function updateUserUI() {
         (id) => deleteUser(id)
       );
     } else {
-      // Om inget valt och showAll inte är aktivt → töm listan
       container.innerHTML = "";
     }
   }
@@ -266,7 +251,7 @@ function setupUserFilters() {
       if (!container) return;
 
       if (e.target.checked) {
-        // Visa ALLA användare (ofilterat)
+
         renderUsers(
           allUsers,
           container,
@@ -279,7 +264,6 @@ function setupUserFilters() {
       }
     });
   }
-
 
   if (dropdown) {
     dropdown.addEventListener("change", (e) => {
@@ -364,7 +348,6 @@ function renderAdminRooms(rooms) {
     if (e.target.classList.contains("btn-book-room")) {
   const room = allRooms.find(r => r.id == roomId);
 
-  // Admin bokar åt sig själv (du kan ändra detta senare)
   bookingModal.setUser(currentUser);
 
   bookingModal.open(room);
