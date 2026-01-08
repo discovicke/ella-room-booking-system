@@ -52,16 +52,17 @@ async function apiFetch(url, options = {}) {
   }
 
   // If response is empty (204 No Content, 201 Created without body) or not JSON, return null
-  const contentType = response.headers.get("content-type") || "";
-  if (
-    response.status === 204 ||
-    response.status === 201 ||
-    !contentType.includes("application/json")
-  ) {
+ if (response.status === 204) {
     return null;
   }
 
-  return response.json();
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return await response.json();
+  }
+
+  const text = await response.text();
+  return text ? text : null;
 }
 
 const API = {
