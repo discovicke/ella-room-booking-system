@@ -9,6 +9,7 @@ import { showError, showSuccess } from "../utils/toast.js";
 import { BookingModal } from "../components/booking.modal.js";
 
 
+import { showDangerConfirm } from "../utils/confirm.js";
 
 // --- State ---
 let allRooms = [];
@@ -167,16 +168,6 @@ function updateUserDropdown() {
 }
 
 
-
-// Annars → visa alla filtrerade användare
-renderUsers(
-  filtered,
-  container,
-  (id) => userModal.openForEdit(id),
-  (id) => deleteUser(id)
-);
-
-
 // Sökfunktion
 function getFilteredUsers() {
   let filtered = [...allUsers];
@@ -320,7 +311,11 @@ function setupUserFilters() {
 
 // --- Delete User ---
 async function deleteUser(userId) {
-  if (!confirm("⚠️ Är du säker på att du vill ta bort denna användare?")) return;
+  const confirmed = await showDangerConfirm(
+    "Är du säker på att du vill ta bort denna användare?",
+    "Ta bort användare"
+  );
+  if (!confirmed) return;
 
   try {
     await API.deleteUser(userId);
@@ -380,7 +375,11 @@ function renderAdminRooms(rooms) {
 }
 
 async function handleDeleteRoom(roomId) {
-  if (!confirm("⚠️ Är du säker på att du vill ta bort detta rum?")) return;
+  const confirmed = await showDangerConfirm(
+    "Är du säker på att du vill ta bort detta rum?",
+    "Ta bort rum"
+  );
+  if (!confirmed) return;
 
   try {
     await API.deleteRoom(roomId);

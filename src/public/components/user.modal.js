@@ -6,6 +6,7 @@ export class UserModal {
   constructor(modalId, formId, onSuccess) {
     this.modal = document.getElementById(modalId);
     this.form = document.getElementById(formId);
+    this.modalContent = this.modal?.querySelector(".modal-content");
     this.onSuccess = onSuccess; // Callback to reload list after success
     this.editingUserId = null;
 
@@ -21,8 +22,31 @@ export class UserModal {
       cancelBtn.addEventListener("click", () => this.close());
     }
 
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal.open) this.close();
+    });
+
+    // Nudge on background click (prevent accidental close)
+    this.modal.addEventListener("click", (e) => {
+      if (e.target === this.modal && this.modalContent) {
+        this.nudge();
+      }
+    });
+
+    // Prevent clicks inside content from closing
+    this.modalContent?.addEventListener("click", (e) => e.stopPropagation());
+
     // Handle Submit
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+  }
+
+  nudge() {
+    if (!this.modalContent) return;
+    this.modalContent.classList.remove("nudge");
+    void this.modalContent.offsetWidth;
+    this.modalContent.classList.add("nudge");
+    setTimeout(() => this.modalContent.classList.remove("nudge"), 300);
   }
 
   openForCreate() {
@@ -45,15 +69,19 @@ export class UserModal {
       const user = await API.getUserById(userId);
       this.editingUserId = userId;
 
-      // Populate Form
-      document.getElementById("userName").value =
-        user.display_name || user.name;
-      document.getElementById("userEmail").value = user.email;
-      document.getElementById("userRole").value = user.role;
+      const setField = (name, value = "") => {
+        const field = this.form?.elements?.namedItem(name);
+        if (field) field.value = value ?? "";
+      };
 
-      // Update UI for Edit Mode
-      this.modal.querySelector("h3").textContent = "Redigera användare";
-      const passField = document.getElementById("userPassword");
+      setField("name", user.display_name || user.name || "");
+      setField("email", user.email || "");
+      setField("role", user.role || "");
+
+      const title = this.modal.querySelector("h3");
+      if (title) title.textContent = "Redigera användare";
+
+      const passField = this.form?.elements?.namedItem("password");
       if (passField) {
         passField.required = false;
         passField.value = "";

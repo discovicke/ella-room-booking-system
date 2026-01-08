@@ -179,7 +179,7 @@ export class BookingModal {
     try {
       await API.createBooking(bookingData);
       showSuccess(
-        `Bokat rum ${this.currentRoom.room_number || this.currentRoom.number}!`
+        `Du har bokat ${this.currentRoom.location}!`
       );
       this.close();
 

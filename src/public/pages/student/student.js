@@ -5,6 +5,7 @@ import { renderRooms } from "../components/room.renderer.js";
 import { renderBookings } from "../components/booking.renderer.js";
 import { BookingModal } from "../components/booking.modal.js";
 import { translateError } from "../utils/translator.utils.js";
+import { showDangerConfirm } from "../utils/confirm.js";
 
 // --- Global State ---
 let allBookings = [];
@@ -118,7 +119,11 @@ function updateBookingList() {
 }
 
 async function handleUnbook(bookingId) {
-  if (!confirm("Vill du avboka bokningen?")) return;
+  const confirmed = await showDangerConfirm(
+    "Vill du avboka bokningen?",
+    "Avboka"
+  );
+  if (!confirmed) return;
 
   try {
     await API.updateBooking(bookingId, { status: "cancelled" });

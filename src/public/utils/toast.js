@@ -148,7 +148,7 @@ export function showToast(message = '', opts = {}) {
     toast.setAttribute('role', 'status');
 
     const icon = {
-        success: '✔️',
+        success: '️🎉',
         error: '⚠️',
         info: '🔔',
     }[type] || '🔔';
