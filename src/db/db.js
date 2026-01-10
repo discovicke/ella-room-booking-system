@@ -42,6 +42,11 @@ db.exec("PRAGMA journal_mode = WAL;");
 // By default, SQLite does NOT enforce foreign key relationships even if they're defined in the schema.
 // This pragma ensures referential integrity is maintained (prevents orphaned records, enforces CASCADE rules).
 db.exec("PRAGMA foreign_keys = ON;");
+
+// schema
+const schemaPath = path.resolve(__dirname, "../../db/schema.sql");
+db.exec(fs.readFileSync(schemaPath, "utf8"));
+
 // seed (kör bara om inga users finns)
 const userCount = db.prepare("SELECT COUNT(*) AS count FROM users").get();
 
