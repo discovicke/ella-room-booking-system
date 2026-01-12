@@ -1,11 +1,9 @@
-import API from "../api/api.js";
-import { createRoomCard } from "../components/room.renderer.js";
-import { renderBookings } from "../components/booking.renderer.js";
-import { renderUsers } from "../components/user.renderer.js";
-import { loadUser, setupLogout } from "../components/auth.manager.js";
-import { showError, showSuccess } from "../utils/toast.js";
-import { BookingModal } from "../components/booking.modal.js";
-import { showDangerConfirm } from "../utils/confirm.js";
+import API from "../../api/api.js";
+import { createRoomCard } from "../../components/room.renderer.js";
+import { renderBookings } from "../../components/booking.renderer.js";
+import { renderUsers } from "../../components/user.renderer.js";
+import { loadUser, setupLogout } from "../../components/auth.manager.js";
+import { showError, showSuccess } from "../../utils/toast.js";
 import { BookingModal } from "../../components/booking.modal.js";
 import { showDangerConfirm } from "../../utils/confirm.js";
 import {
@@ -83,14 +81,8 @@ function setupSidebar() {
 // --- Load Users ---
 async function loadUsers() {
   try {
-    const users = await API.getUsers();
-    allUsers = users;
-
-    updateUserDropdown();
-
-    const container = document.getElementById("userList");
-    if (container) container.innerHTML = "";
-
+    allUsers = await API.getUsers();
+    updateUserList(); // Display all users by default
   } catch (error) {
     console.error("Failed to load users:", error);
     const container = document.getElementById("userList");
@@ -98,11 +90,12 @@ async function loadUsers() {
   }
 }
 
-// --- Update dropdown based on filters ---
-function updateUserDropdown() {
-  const dropdown = document.getElementById("userDropdown");
-  if (!dropdown) return;
+// --- Update user list based on filters ---
+function updateUserList() {
+  const container = document.getElementById("userList");
+  if (!container) return;
 
+  // Get filtered users based on role and search query
   let filtered = [...allUsers];
 
   if (userRoleFilter !== "all") {
@@ -116,109 +109,45 @@ function updateUserDropdown() {
     );
   }
 
-  const container = document.getElementById("userList");
-  const selectedId = dropdown.value;
-
-  if (userSearchQuery.trim() === "" && !selectedId && userRoleFilter === "all") {
-    if (container) container.innerHTML = "";
-    return;
-  }
-
-  // Update dropdown
-  dropdown.innerHTML =
-    `<option value="">Välj användare...</option>` +
-    filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
-
-  if (selectedId) {
-    const user = allUsers.find(u => u.id == selectedId);
-    if (user) {
-      renderUsers(
-        [user],
-        container,
-        (id) => userModal.openForEdit(id),
-        (id) => deleteUser(id)
-      );
-      return;
-    }
-  }
-
-  if (userRoleFilter !== "all") {
-    renderUsers(
-      filtered,
-      container,
-      (id) => userModal.openForEdit(id),
-      (id) => deleteUser(id)
-    );
-    return;
-  }
-
+  // Render filtered users
   renderUsers(
     filtered,
     container,
     (id) => openEditUserModal(id, loadUsers),
     (id) => deleteUser(id)
   );
+
+  updateResetButtonVisibility();
 }
 
+// --- Reset filters ---
+function resetFilters() {
+  userRoleFilter = "all";
+  userSearchQuery = "";
 
-function getFilteredUsers() {
-  let filtered = [...allUsers];
+  const roleSelect = document.getElementById("userRoleFilter");
+  const searchInput = document.getElementById("userSearch");
 
-  if (userRoleFilter !== "all") {
-    filtered = filtered.filter(u => u.role === userRoleFilter);
-  }
+  if (roleSelect) roleSelect.value = "all";
+  if (searchInput) searchInput.value = "";
 
-  if (userSearchQuery.trim() !== "") {
-    const q = userSearchQuery.toLowerCase();
-    filtered = filtered.filter(u =>
-      (u.display_name || "").toLowerCase().includes(q)
-    );
-  }
-
-  return filtered;
+  updateUserList();
+  updateResetButtonVisibility();
 }
 
-function updateUserUI() {
-  const filtered = getFilteredUsers();
+// --- Update reset button visibility ---
+function updateResetButtonVisibility() {
+  const resetBtn = document.getElementById("resetFiltersBtn");
+  if (!resetBtn) return;
 
-  const dropdown = document.getElementById("userDropdown");
-  if (dropdown) {
-    dropdown.innerHTML =
-      `<option value="">Välj användare...</option>` +
-      filtered.map(u => `<option value="${u.id}">${u.display_name}</option>`).join("");
-  }
+  const hasActiveFilters = userRoleFilter !== "all" || userSearchQuery.trim() !== "";
 
-  const showAll = document.getElementById("showAllUsers");
-  const container = document.getElementById("userList");
-
-  if (container) {
-
-    const dropdown = document.getElementById("userDropdown");
-    const selectedId = dropdown ? dropdown.value : "";
-
-    if (selectedId) {
-      const user = allUsers.find(u => u.id == selectedId);
-      if (user) {
-        renderUsers(
-          [user],
-          container,
-          (id) => openEditUserModal(id, loadUsers),
-          (id) => deleteUser(id)
-        );
-        return;
-      }
-    }
-
-    if (showAll && showAll.checked) {
-      renderUsers(
-        filtered,
-        container,
-        (id) => openEditUserModal(id, loadUsers),
-        (id) => deleteUser(id)
-      );
-    } else {
-      container.innerHTML = "";
-    }
+  if (hasActiveFilters) {
+    resetBtn.style.opacity = "1";
+    resetBtn.style.pointerEvents = "auto";
+  } else {
+    resetBtn.style.opacity = "0.5";
+    resetBtn.style.pointerEvents = "auto";
   }
 }
 
@@ -226,41 +155,25 @@ function updateUserUI() {
 function setupUserFilters() {
   const searchInput = document.getElementById("userSearch");
   const roleSelect = document.getElementById("userRoleFilter");
-  const dropdown = document.getElementById("userDropdown");
-  const showAll = document.getElementById("showAllUsers");
+  const resetBtn = document.getElementById("resetFiltersBtn");
 
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       userSearchQuery = e.target.value;
-      updateUserDropdown();
-
+      updateUserList();
     });
   }
 
   if (roleSelect) {
     roleSelect.addEventListener("change", (e) => {
       userRoleFilter = e.target.value;
-      updateUserDropdown();
+      updateUserList();
     });
   }
 
-  if (showAll) {
-    showAll.addEventListener("change", (e) => {
-      const container = document.getElementById("userList");
-      if (!container) return;
-
-      if (e.target.checked) {
-
-        renderUsers(
-          allUsers,
-          container,
-          (id) => userModal.openForEdit(id),
-          (id) => deleteUser(id)
-        );
-
-      } else {
-        container.innerHTML = "";
-      }
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      resetFilters();
     });
   }
 }
