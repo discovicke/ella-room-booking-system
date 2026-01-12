@@ -40,12 +40,92 @@
     color: var(--color-primary);
 }
 
-.user-filter-bar{
+/* User Management Section */
+.user-management {
     display: flex;
-    flex-direction: row;
-    width: auto;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.user-management .section-header {
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+/* User filter bar with improved responsive layout */
+.user-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-bottom: 16px;
     flex-wrap: wrap;
-    margin-right: 10px;
+}
+
+.filter-inputs {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.user-filter-bar select,
+.user-filter-bar input[type="text"] {
+    font-family: "Nunito Sans", sans-serif;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: var(--font-sm);
+    background: var(--color-bg-panel);
+    color: var(--color-text-main);
+    transition: all 0.2s ease;
+}
+
+.user-filter-bar select:focus,
+.user-filter-bar input[type="text"]:focus {
+    outline: 2px solid rgba(144, 54, 200, 0.2);
+    border-color: var(--color-primary);
+}
+
+#userRoleFilter {
+    min-width: 150px;
+    flex: 0 1 auto;
+}
+
+#userSearch {
+    min-width: 200px;
+    flex: 1 1 auto;
+}
+
+.btn-reset {
+    font-family: "Nunito Sans", sans-serif;
+    padding: 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-panel);
+    color: var(--color-text-main);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-reset:hover {
+    background: var(--color-bg-card);
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-reset:active {
+    transform: translateY(0);
 }
 
 .left-panel, .right-panel {
@@ -201,6 +281,7 @@ dialog::backdrop {
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 16px;
+    margin-top: 8px;
     background: var(--color-bg-card);
     transition: all 0.3s ease;
     position: initial;
@@ -229,27 +310,33 @@ dialog::backdrop {
 
 .role-badge {
     display: inline-block;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 600;
+    font-family: "Nunito Sans", sans-serif;
     font-size: var(--font-xs);
-    border: 1px solid var(--color-border);
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
     margin-top: 6px;
+    background: var(--color-bg-card);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
 }
 
 .role-badge.role-student {
     background: var(--role-student-bg);
     color: var(--role-student-text);
+    border-color: var(--role-student-text);
 }
 
 .role-badge.role-teacher {
     background: var(--role-teacher-bg);
     color: var(--role-teacher-text);
+    border-color: var(--role-teacher-text);
 }
 
 .role-badge.role-admin {
     background: var(--role-admin-bg);
     color: var(--role-admin-text);
+    border-color: var(--role-admin-text);
 }
 
 .user-actions .btn-edit,
@@ -367,13 +454,12 @@ dialog .modal-content {
 .btn-primary,
 .btn-confirm {
     font-family: "Nunito Sans", sans-serif;
-    width: 100%;
     padding: 10px 14px;
     border: none;
     border-radius: 8px;
     background: var(--color-success);
     color: var(--color-text-on-primary);
-    font-size: var(--font-base);
+    font-size: var(--font-sm);
     font-weight: 700;
     line-height: var(--leading-normal);
     cursor: pointer;
@@ -631,17 +717,47 @@ dialog .modal-content {
 
     .user-filter-bar {
         flex-direction: column;
-        margin: 12px 0 20px;
+        align-items: stretch;
     }
 
-    .user-filter-bar select,
-    .user-filter-bar input {
+    .filter-inputs {
+        flex-direction: column;
         width: 100%;
+    }
+
+    .filter-inputs select,
+    .filter-inputs input[type="text"] {
+        width: 100% !important;
+        min-width: 100%;
         max-width: 100%;
+    }
+
+    .btn-reset {
+        width: 100%;
     }
 
     .admin-content {
         margin: 1em;
+    }
+
+
+    /* Responsive user cards */
+    .user-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-card .user-info {
+        align-self: flex-start;
+    }
+
+    .user-card .user-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .user-card .user-actions button {
+        flex: 1;
     }
 }
 
@@ -651,15 +767,226 @@ dialog .modal-content {
     }
 }
 
-#userDropdown {
-  width: 350px !important;
-}
-
-#userSearch {
-  width: 300px;
-}
 
 #userList {
-  max-height: 70vh;
+  flex: 1 1 auto;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
+
+#student-room-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* --- User Card Styling --- */
+.user-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.user-card .user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-card .user-info h4 {
+  margin: 0 0 8px 0;
+  color: var(--color-primary);
+  font-size: var(--font-base);
+  font-weight: 700;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.user-card .user-info p {
+  margin: 4px 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.user-card .role-badge {
+  display: inline-block;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-top: 8px;
+  background: var(--color-bg-card);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  text-transform: capitalize;
+}
+
+.user-card .role-badge.role-student {
+  background: var(--role-student-bg);
+  color: var(--role-student-text);
+  border-color: var(--role-student-text);
+}
+
+.user-card .role-badge.role-teacher {
+  background: var(--role-teacher-bg);
+  color: var(--role-teacher-text);
+  border-color: var(--role-teacher-text);
+}
+
+.user-card .role-badge.role-admin {
+  background: var(--role-admin-bg);
+  color: var(--role-admin-text);
+  border-color: var(--role-admin-text);
+}
+
+.user-card .user-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.user-card .user-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.user-card .btn-edit {
+  background: var(--color-warning);
+  color: white;
+}
+
+.user-card .btn-edit:hover {
+  background: var(--color-warning-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.user-card .btn-edit:active {
+  transform: translateY(0);
+}
+
+.user-card .btn-delete {
+  background: var(--color-danger);
+  color: white;
+}
+
+.user-card .btn-delete:hover {
+  background: var(--color-danger-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.user-card .btn-delete:active {
+  transform: translateY(0);
+}
+
+/* No data message */
+.no-data {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: 40px 20px;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+/* --- Custom Checkbox Styling for ALL checkboxes in Admin --- */
+
+/* Generic checkbox styling for all checkboxes in admin panel */
+.admin-layout input[type="checkbox"] {
+  /* Hide default checkbox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Custom checkbox design */
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-bg-panel);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.admin-layout input[type="checkbox"]:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-surface);
+}
+
+.admin-layout input[type="checkbox"]:focus {
+  outline: 2px solid rgba(144, 54, 200, 0.2);
+  outline-offset: 2px;
+}
+
+.admin-layout input[type="checkbox"]:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  animation: checkbox-pop 0.3s ease;
+}
+
+/* Checkmark */
+.admin-layout input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Animation when checking */
+@keyframes checkbox-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Label styling for checkboxes */
+.show-all-users,
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+.show-all-users:hover,
+.toggle-label:hover {
+  background-color: var(--color-bg-card);
+}
+

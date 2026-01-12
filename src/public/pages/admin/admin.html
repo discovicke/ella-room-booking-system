@@ -106,23 +106,20 @@
         </div>
 
         <div class="user-filter-bar">
-          <select id="userDropdown">
-            <option value="">Välj användare...</option>
-          </select>
+          <div class="filter-inputs">
+            <select id="userRoleFilter">
+              <option value="all">Alla roller</option>
+              <option value="student">Student</option>
+              <option value="teacher">Lärare</option>
+              <option value="admin">Admin</option>
+            </select>
 
-          <select id="userRoleFilter">
-            <option value="all">Alla roller</option>
-            <option value="student">Student</option>
-            <option value="teacher">Lärare</option>
-            <option value="admin">Admin</option>
-          </select>
+            <input type="text" id="userSearch" placeholder="Sök användare..." />
+          </div>
 
-          <input type="text" id="userSearch" placeholder="Sök användare..." />
-
-          <label class="show-all-users">
-            <input type="checkbox" id="showAllUsers" />
-            Visa alla användare
-          </label>
+          <button id="resetFiltersBtn" class="btn-reset" title="Återställ filter">
+            🔄 Återställ
+          </button>
         </div>
 
         <div id="userList"></div>
