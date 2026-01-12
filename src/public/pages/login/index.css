@@ -9,9 +9,6 @@
   gap: 40px;
 }
 
-/* TODO: Haptik button style */
-/* TODO: Variabelnamn för färger */
-
 /* Vänster och höger sida */
 .form-side,
 .art-side {
@@ -137,12 +134,12 @@ input:focus
 .inputGroup input:focus + .labelline,
 .inputGroup input:not(:placeholder-shown) + .labelline
 {
-  transform: translateY(-22px) scale(.88);
+  transform: translateY(-26px) scale(.88);
   color: #9136C8FF;
 }
 
 .inputGroup input:not(:placeholder-shown):not(:focus) + .labelline{
-  transform: translateY(-22px) scale(.88);
+  transform: translateY(-26px) scale(.88);
   border-color: #A9A9A9FF;
   color: #A9A9A9FF;
 }
