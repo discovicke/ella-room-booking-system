@@ -87,22 +87,14 @@ export const getUserById = (req, res) => {
 export const deleteUser = (req, res) => {
   try {
     const userId = req.params.id; 
-    
-    console.log(`🗑️ Controller: DELETE användare ${userId}`);
-    console.log(`🔍 userId type: ${typeof userId}, value: ${userId}`);
 
     const user = userRepo. getUserById(userId);
     
     if (!user) {
-      console.log('Användare hittades inte');
       return res.status(404).json({ error: 'Användare hittades inte' });
     }
 
-    console.log(`Användare finns:  ${user.display_name}`);
-
     const changes = userRepo. deleteUser(userId);
-    
-    console.log(`Raderade ${changes} rad(er)`);
 
     if (changes === 0) {
       return res.status(500).json({ error: 'Kunde inte radera' });

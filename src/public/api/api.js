@@ -90,8 +90,7 @@ const API = {
   },
 
   async createBooking(bookingData) {
-    console.log("Creating booking", bookingData);
-    return await apiFetch("/api/bookings", {
+    return this.#fetch("/api/bookings", {
       method: "POST",
       body: JSON.stringify(bookingData),
     });

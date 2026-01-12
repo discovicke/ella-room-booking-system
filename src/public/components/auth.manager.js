@@ -45,7 +45,6 @@ export function loadUser() {
     roleEl.className = `user-role ${user.role}`;
   }
 
-  console.log(`Inloggad som: ${displayName}`);
   showInfo("Inloggad som " + displayName, { title: "Välkommen!" });
 
   return user;
