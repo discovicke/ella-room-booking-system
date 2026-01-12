@@ -33,8 +33,11 @@ export const login = async (req, res) => {
 
     // Validate input
     if (!email || !password) {
+      console.log("❌ Missing email or password");
       return res.status(400).json({ error: "Email and password are required" });
     }
+
+    console.log(`🔍 Login attempt for: ${email}`);
 
     // Find user by email
     const user = findUserByEmail(email);
@@ -42,15 +45,23 @@ export const login = async (req, res) => {
     // Security: We use the exact same error message for "User Not Found"
     // and "Wrong Password" to prevent User Enumeration.
     if (!user) {
+      console.log(`❌ User not found: ${email}`);
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    console.log(`✅ User found: ${user.display_name} (${user.role})`);
+    console.log(`🔐 Hash preview: ${user.password_hash?.substring(0, 30)}...`);
+
     // Verify password
+    console.log("🔍 Verifying password...");
     const isValidPassword = await verifyPassword(password, user.password_hash);
 
     if (!isValidPassword) {
+      console.log("❌ Password verification failed");
       return res.status(401).json({ error: "Invalid credentials" });
     }
+
+    console.log("✅ Password verified successfully");
 
     // Generate token
     const token = generateToken();
@@ -73,15 +84,18 @@ export const login = async (req, res) => {
     const normalizedRole = (user.role || "").toLowerCase();
     const userResponse = { ...userWithoutPassword, role: normalizedRole };
 
+    console.log("✅ Login successful!");
+
     return res.status(200).json({
       message: "Login successful",
       user: userResponse,
       token: token,
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("💥 Login error:", error);
+    console.error("Stack trace:", error.stack);
 
-    return res.sendStatus(500);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
