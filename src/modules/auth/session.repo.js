@@ -25,7 +25,7 @@ import { db } from "../../db/db.js";
  */
 export function createSession(user_id, token, expires_at) {
   const stmt = `
-    INSERT INTO sessions (user_id, token, expires_at)
+    INSERT INTO sessions (user_id, session_token, expires_at)
     VALUES (?, ?, ?)
   `;
   const result = db.prepare(stmt).run(user_id, token, expires_at.toISOString());
@@ -41,7 +41,7 @@ export function createSession(user_id, token, expires_at) {
 export function validateSession(token) {
   const stmt = `
     SELECT * FROM sessions
-    WHERE token = ? AND expires_at > datetime('now')
+    WHERE session_token = ? AND expires_at > datetime('now')
   `;
   const session = db.prepare(stmt).get(token);
   return session;
@@ -54,7 +54,7 @@ export function validateSession(token) {
  * @returns {number} The number of rows affected (0 or 1)
  */
 export function deleteSession(token) {
-  const stmt = `DELETE FROM sessions WHERE token = ?`;
+  const stmt = `DELETE FROM sessions WHERE session_token = ?`;
   const result = db.prepare(stmt).run(token);
   return result.changes;
 }
