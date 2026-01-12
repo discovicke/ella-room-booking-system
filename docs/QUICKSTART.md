@@ -41,18 +41,18 @@ http://localhost:80
 Use one of these test accounts to log in:
 
 ### Admin Account
-- **Email:** anette.johansson@edugrade.com
-- **Password:** FluentInCSN
+- **Email:** admin@edugrade.com
+- **Password:** lösen123
 - **Access:** Full system control, user management, room management, statistics
 
 ### Teacher Account
-- **Email:** oscar.marcusson@edugrade.com
-- **Password:** ducksducks
+- **Email:** larare@edugrade.com
+- **Password:** lösen123
 - **Access:** Create bookings, view all rooms, priority booking
 
 ### Student Account
-- **Email:** andre.ponten@edu.edugrade.com
-- **Password:** heaton
+- **Email:** elev@edu.edugrade.com
+- **Password:** lösen123
 - **Access:** Create personal bookings, view available rooms
 
 ## What to Try
