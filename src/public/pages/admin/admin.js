@@ -2,14 +2,16 @@ import API from "../api/api.js";
 import { createRoomCard } from "../components/room.renderer.js";
 import { renderBookings } from "../components/booking.renderer.js";
 import { renderUsers } from "../components/user.renderer.js";
-import { UserModal } from "../components/user.modal.js";
-import { RoomModal } from "../../components/room.modal.js";
 import { loadUser, setupLogout } from "../components/auth.manager.js";
 import { showError, showSuccess } from "../utils/toast.js";
 import { BookingModal } from "../components/booking.modal.js";
-
-
 import { showDangerConfirm } from "../utils/confirm.js";
+import {
+  openCreateUserModal,
+  openEditUserModal,
+  openCreateRoomModal,
+  openEditRoomModal
+} from "../utils/modal.examples.js";
 
 // --- State ---
 let allRooms = [];
@@ -23,8 +25,6 @@ let userSearchQuery = "";
 let userRoleFilter = "all";
 
 // --- Components ---
-const userModal = new UserModal("createUserModal", "createUserForm", loadUsers);
-const roomModal = new RoomModal("createRoomModal", "createRoomForm", loadRooms);
 const bookingModal = new BookingModal("booking-modal", "booking-form");
 
 // --- Initialization ---
@@ -41,7 +41,7 @@ if (currentUser) {
 
   const createUserBtn = document.getElementById("createUserBtn");
   if (createUserBtn) {
-    createUserBtn.addEventListener("click", () => userModal.openForCreate());
+    createUserBtn.addEventListener("click", () => openCreateUserModal(loadUsers));
   }
 
   loadRooms();
@@ -153,7 +153,7 @@ function updateUserDropdown() {
   renderUsers(
     filtered,
     container,
-    (id) => userModal.openForEdit(id),
+    (id) => openEditUserModal(id, loadUsers),
     (id) => deleteUser(id)
   );
 }
@@ -200,7 +200,7 @@ function updateUserUI() {
         renderUsers(
           [user],
           container,
-          (id) => userModal.openForEdit(id),
+          (id) => openEditUserModal(id, loadUsers),
           (id) => deleteUser(id)
         );
         return;
@@ -211,7 +211,7 @@ function updateUserUI() {
       renderUsers(
         filtered,
         container,
-        (id) => userModal.openForEdit(id),
+        (id) => openEditUserModal(id, loadUsers),
         (id) => deleteUser(id)
       );
     } else {
@@ -342,7 +342,7 @@ function renderAdminRooms(rooms) {
       await handleDeleteRoom(roomId);
     }
     if (e.target.classList.contains("btn-edit-room")) {
-      roomModal.openForEdit(roomId);
+      openEditRoomModal(roomId, loadRooms);
     }
 
     if (e.target.classList.contains("btn-book-room")) {
@@ -483,5 +483,5 @@ function setText(id, txt) {
 //  --- Room Modal Controls ---
 const addRoomBtn = document.getElementById("add-room-btn");
 if (addRoomBtn) {
-  addRoomBtn.addEventListener("click", () => roomModal.openForCreate());
+  addRoomBtn.addEventListener("click", () => openCreateRoomModal(loadRooms));
 }
