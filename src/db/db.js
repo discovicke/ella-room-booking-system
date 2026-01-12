@@ -12,7 +12,7 @@ import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fs from "node:fs";
-import crypto from "node:crypto";
+import { hashPassword } from "../utils/security.utils.js";
 
 // 1. setup absolute paths
 const __filename = fileURLToPath(import.meta.url);
@@ -40,13 +40,6 @@ db.exec("PRAGMA foreign_keys = ON;");
 // schema
 const schemaPath = path.resolve(__dirname, "../../db/schema.sql");
 db.exec(fs.readFileSync(schemaPath, "utf8"));
-
-// hash helper (scrypt)
-function hashPassword(password) {
-  const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${hash}`;
-}
 
 // seed (kör bara om inga users finns)
 const userCount = db.prepare("SELECT COUNT(*) AS count FROM users").get();
