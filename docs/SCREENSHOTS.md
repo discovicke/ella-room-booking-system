@@ -37,6 +37,6 @@
 *Intuitive booking interface with validation*
 
 ## Mobile Responsive
-![Mobile View](screenschots/student-mobile.png)
+![Mobile View](screenshots/student-mobile.png)
 *Fully responsive design for all devices*
 
